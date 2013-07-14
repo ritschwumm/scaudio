@@ -1,17 +1,19 @@
 package scaudio.sample
 
+import java.nio.ByteOrder
+import java.nio.ByteBuffer
 import java.nio.ShortBuffer
 
 import scaudio.util._
 
-// NOTE treats the ShortBuffer as immutable
-
-/** a sample getting its data from a ShortBuffer */
-private final case class ShortBufferSample(val frameRate:Int, val channelCount:Int, sampleBuffer:ShortBuffer) extends Sample {
-	val frameCount	= sampleBuffer.limit / channelCount
+/** a Sample with 2 byte signed little endian data points */
+private final class ShortBufferSample(val frameRate:Int, val channelCount:Int, byteBuffer:ByteBuffer) extends Sample {
+	private val shortBuffer	= byteBuffer.duplicate.order(ByteOrder.LITTLE_ENDIAN).asShortBuffer
+	
+	val frameCount	= shortBuffer.limit / channelCount
 	
 	def get(frame:Int, channel:Int):Float	=
-			ShortAudio audioShort2Float (
-					sampleBuffer get (
+			ShortAudio decode (
+					shortBuffer get (
 							frame * channelCount + channel))
 }

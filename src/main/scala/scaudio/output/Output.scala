@@ -40,7 +40,7 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 					false)		// little endian
 	
 	private val desiredChannels:Seq[Int]	= 
-			config.headphone cata (Seq(2), Seq(2,4))
+			config.headphone cata (Seq(2), Seq(4, 2))
 		
 	private val openDataLineCandidates:Seq[Thunk[SourceDataLine]]	=
 			for {
@@ -112,22 +112,14 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 		while (offset < end) {
 			producer produce (speakerBuffer, phoneBuffer)
 			
-			val	speakerLeft		= ShortAudio audioClampFloat2Short speakerBuffer.left
-			val	speakerRight	= ShortAudio audioClampFloat2Short speakerBuffer.right
-			outputBuffer(offset+0)	= (speakerLeft	>> 0).toByte
-			outputBuffer(offset+1)	= (speakerLeft	>> 8).toByte
-			outputBuffer(offset+2)	= (speakerRight	>> 0).toByte
-			outputBuffer(offset+3)	= (speakerRight	>> 8).toByte
+			ShortAudio putClamped (speakerBuffer.left,	outputBuffer, offset+0)
+			ShortAudio putClamped (speakerBuffer.right,	outputBuffer, offset+2)
 			offset	+= 4
 			speakerBuffer.clear()
 			
 			if (phoneEnabled) {
-				val	phoneLeft		= ShortAudio audioClampFloat2Short phoneBuffer.left
-				val	phoneRight		= ShortAudio audioClampFloat2Short phoneBuffer.right
-				outputBuffer(offset+0)	= (phoneLeft	>> 0).toByte
-				outputBuffer(offset+1)	= (phoneLeft	>> 8).toByte
-				outputBuffer(offset+2)	= (phoneRight	>> 0).toByte
-				outputBuffer(offset+3)	= (phoneRight	>> 8).toByte
+				ShortAudio putClamped (phoneBuffer.left,	outputBuffer, offset+0)
+				ShortAudio putClamped (phoneBuffer.right,	outputBuffer, offset+2)
 				offset	+= 4
 				phoneBuffer.clear()
 			}

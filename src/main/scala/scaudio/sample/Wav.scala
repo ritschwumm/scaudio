@@ -2,7 +2,7 @@ package scaudio.sample
 
 import java.io._
 import java.nio.ByteOrder
-import java.nio.ShortBuffer
+import java.nio.ByteBuffer
 import java.nio.channels.FileChannel 
 
 import scutil.Implicits._
@@ -12,7 +12,6 @@ import scutil.tried._
 
 /** audio sample loaded from a wav file using a MappedByteBuffer */
 object Wav extends Logging {
-	/** may throw exception if not successful */
 	def load(file:File):Tried[Exception,Sample] =
 			Tried exceptionCatch loadImpl(file)
 	
@@ -53,9 +52,11 @@ object Wav extends Logging {
 		val	tag2	= mapped.getInt
 		if (tag2 != mkTag("WAVE"))	throw WavFormatException("expected WAVE header")
 		
-		var frameRateX		= None:Option[Int]
-		var channelCountX	= None:Option[Int]
-		var sampleBufferX	= None:Option[ShortBuffer]
+		case class FormatData(frameRate:Int, channelCount:Int, bitsPerSample:Int)
+	
+		var formatData	= None:Option[FormatData]
+		var sampleData	= None:Option[ByteBuffer]
+		
 		while (mapped.remaining != 0) {
 			if (mapped.remaining < 8)	throw WavFormatException("cannot find data tag")
 			val	tag	= mapped.getInt
@@ -65,36 +66,46 @@ object Wav extends Logging {
 			val skp	= (siz + 1) & -2
 			if (tag == mkTag("fmt ")) {
 				if (siz < 16)				throw WavFormatException("unexpected fmt chunk size: " + siz)
+				/*
+				0x0001 	WAVE_FORMAT_PCM			PCM
+				0x0003 	WAVE_FORMAT_IEEE_FLOAT	IEEE float
+				0x0006 	WAVE_FORMAT_ALAW		8-bit ITU-T G.711 A-law
+				0x0007 	WAVE_FORMAT_MULAW		8-bit ITU-T G.711 µ-law
+				0xFFFE 	WAVE_FORMAT_EXTENSIBLE 	Determined by SubFormat
+				*/
 				val	format			= mapped.getShort
 				if (format != 1)			throw WavFormatException("unexpected audio format in fmt chunk, expected 1 for PCM: " + format)
 				val channelCount	= mapped.getShort
 				// if (channelCount != 2)			throw WavFormatException("unexpected channel count in fmt chunk, expected 2 for stereo: " + channelCount)
 				val frameRate		= mapped.getInt
 				// if (frameRate != 44100)			throw WavFormatException("unexpected sample rate in fmt chunk, expected 44100 for cd quality: " + frameRate)
-				val byteRate		= mapped.getInt		// == SampleRate * NumChannels * BitsPerSample/8
-				val byteAlign		= mapped.getShort	// == NumChannels * BitsPerSample/8
+				val byteRate		= mapped.getInt		// == SampleRate * NumChannels * BitsPerSample / 8
+				val byteAlign		= mapped.getShort	// == NumChannels * BitsPerSample / 8
 				val bitsPerSample	= mapped.getShort
-				if (bitsPerSample != 16)	throw WavFormatException("unexpected wordsize in fmt chunk, expected 16 for cd quality: " + bitsPerSample)
+				if (bitsPerSample != 8
+				&& 	bitsPerSample != 16
+				&&	bitsPerSample != 24)	throw WavFormatException("unexpected wordsize in fmt chunk, expected 8, 16 or 24: " + bitsPerSample)
 				if (skp > 16) {
 					// skip extension:
 					// short size of extra params, doesn't exist with PCM
 					// extra params
 					mapped position (mapped.position + skp - 16)
 				}
-				channelCountX	= Some(channelCount)
-				frameRateX		= Some(frameRate)
+				formatData	= Some(FormatData(
+					channelCount	= channelCount,
+					frameRate		= frameRate,
+					bitsPerSample	= bitsPerSample
+				))
 			}
 			else if (tag == mkTag("data")) {
-				if (siz != skp)		throw WavFormatException("unexpected data chunk size: " + siz) 
 				val oldLimit	= mapped.limit
-				mapped order	ByteOrder.LITTLE_ENDIAN
-				val enough	= skp <= mapped.remaining
+				val enough		= skp <= mapped.remaining
 				if (!enough)	WARN("data tag too large")
 				val (todo,skip)	=
 						if (enough)	(siz,				skp)
 						else		(mapped.remaining,	mapped.remaining)
 				mapped limit	(mapped.position + todo)
-				sampleBufferX	= Some(mapped.asShortBuffer)
+				sampleData		= Some(mapped.slice.asReadOnlyBuffer)
 				mapped limit	oldLimit
 				mapped position	(mapped.position + skip)
 			}
@@ -104,10 +115,13 @@ object Wav extends Logging {
 			}
 		}
 		
-		val frameRateY		= frameRateX	getOrElse	{ throw WavFormatException("no frameRate found")	}
-		val channelCountY	= channelCountX	getOrElse	{ throw WavFormatException("no channelCount found")	}
-		val sampleBufferY	= sampleBufferX	getOrElse	{ throw WavFormatException("no sampleBuffer found")	}
+		val formatDataX	= formatData	getOrElse	{ throw WavFormatException("missing format data")	}
+		val sampleDataX	= sampleData	getOrElse	{ throw WavFormatException("missing sample data")	}
 		
-		ShortBufferSample(frameRateY, channelCountY, sampleBufferY)
+		formatDataX match {
+			case FormatData(frameRate, channelCount, 8)		=> new UByteBufferSample(frameRate, channelCount, sampleDataX)
+			case FormatData(frameRate, channelCount, 16)	=> new ShortBufferSample(frameRate, channelCount, sampleDataX)
+			case FormatData(frameRate, channelCount, 24)	=> new TripleBufferSample(frameRate, channelCount, sampleDataX)
+		}
 	}
 }

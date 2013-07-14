@@ -9,6 +9,8 @@ final class FrameBuffer {
 		right	= 0
 	}
 	
+	//------------------------------------------------------------------------------
+	
 	def set(left:Float, right:Float) {
 		this.left	= left
 		this.right	= right
@@ -22,5 +24,33 @@ final class FrameBuffer {
 	def mul(left:Float, right:Float) {
 		this.left	*= left
 		this.right	*= right
+	}
+	
+	//------------------------------------------------------------------------------
+	
+	def setValue(that:FrameBuffer) {
+		set(that.left, that.right)
+	}
+	
+	def addValue(that:FrameBuffer) {
+		add(that.left, that.right)
+	}
+	
+	def mulValue(that:FrameBuffer) {
+		mul(that.left, that.right)
+	}
+	
+	//------------------------------------------------------------------------------
+	
+	def setAll(value:Float) {
+		set(value, value)
+	}
+	
+	def addAll(value:Float) {
+		add(value, value)
+	}
+	
+	def mulAll(value:Float) {
+		mul(value, value)
 	}
 }
