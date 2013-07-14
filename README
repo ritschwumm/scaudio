@@ -1,0 +1,9 @@
+A simplistic audio library with support for WAV files and sinc interpolation
+
+To build this code, get and install SBT from 
+    https://github.com/sbt/sbt
+
+Use these commands to build:
+    git clone git@github.com:ritschwumm/scaudio.git
+    cd scaudio
+    sbt publish-local
