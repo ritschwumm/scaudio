@@ -10,10 +10,6 @@ import scaudio.util._
 
 /** a audio output using javax.sound.sampled */
 final class Output(config:OutputConfig, producer:FrameProducer) extends Logging {
-	val rate		= config.rate
-	val blockFrames	= config.blockFrames
-	val lineBlocks	= config.lineBlocks
-	
 	private val mixerInfos:Seq[Mixer.Info]	=
 			for {
 				mixerName	<- config.mixerNames map Some.apply
@@ -33,11 +29,11 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 					
 	private def mkAudioFormat(channels:Int):AudioFormat	=
 			new AudioFormat(
-					rate,		// sampleRate
-					16,			// sampleSizeInBits
-					channels,	// channels
-					true,   	// signed
-					false)		// little endian
+					 config.rate,	// sampleRate
+					16,				// sampleSizeInBits
+					channels,		// channels
+					true,   		// signed
+					false)			// little endian
 	
 	private val desiredChannels:Seq[Int]	= 
 			config.headphone cata (Seq(2), Seq(4, 2))
@@ -59,15 +55,15 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 	
 	private val usedOutputFormat	= sourceDataLine.getFormat
 	
-	val phoneEnabled	= usedOutputFormat.getChannels == 4
+	private val phoneEnabled	= usedOutputFormat.getChannels == 4
 	
-	private val blockBytes		= blockFrames * usedOutputFormat.getFrameSize
+	private val blockBytes		= config.blockFrames * usedOutputFormat.getFrameSize
 	private val outputBuffer 	= new Array[Byte](blockBytes)
 	
 	private val speakerBuffer	= new FrameBuffer
 	private val phoneBuffer		= new FrameBuffer
 	
-	sourceDataLine open (usedOutputFormat, lineBlocks*blockBytes)
+	sourceDataLine open (usedOutputFormat, config.lineBlocks * blockBytes)
 	sourceDataLine.start()
 	
 	@volatile 
@@ -82,24 +78,6 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 				loop()
 			}
 		}
-	}
-	
-	def start() {
-		driverThread.start()
-	}
-	
-	/** release all resources and stop the Thread */
-	def dispose() {
-		// NOTE sometimes isInterrupted doesn't seem to return true at all
-		keepOn	= false
-		driverThread.interrupt()
-		try {
-			driverThread.join()
-		}
-		catch { case e:InterruptedException =>
-			WARN("driverThread cannot be joined", e)
-		}
-		sourceDataLine.close()
 	}
 	
 	/** Thread main loop */
@@ -126,5 +104,36 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 		}
 		
 		sourceDataLine write (outputBuffer, 0, outputBuffer.length)
+	}
+	
+	//------------------------------------------------------------------------------
+	//## public api
+	
+	/** actual configuration */
+	val info:OutputInfo	= 
+			OutputInfo(
+				rate			= config.rate,
+				blockFrames		= config.blockFrames,
+				lineBlocks		= config.lineBlocks,
+				headphone		= phoneEnabled
+			)
+			
+	def start() {
+		require(keepOn, "already disposed Output cannot be started")
+		driverThread.start()
+	}
+	
+	/** release all resources and stop the Thread */
+	def dispose() {
+		// NOTE sometimes isInterrupted doesn't seem to return true at all
+		keepOn	= false
+		driverThread.interrupt()
+		try {
+			driverThread.join()
+		}
+		catch { case e:InterruptedException =>
+			WARN("driverThread cannot be joined", e)
+		}
+		sourceDataLine.close()
 	}
 }

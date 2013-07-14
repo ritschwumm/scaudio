@@ -1,5 +1,6 @@
 package scaudio.output
 
+/** suggestions for an output's configuration */
 case class OutputConfig(
 	// tried in order, then the default mixer
 	mixerNames:Seq[String],
