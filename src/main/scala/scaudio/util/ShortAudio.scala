@@ -1,6 +1,6 @@
 package scaudio.util
 
-import scutil.Math._
+import scutil.math._
 
 /** utility functions for cd quality 16 bit signed audio data */
 object ShortAudio {

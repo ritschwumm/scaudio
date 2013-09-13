@@ -1,6 +1,6 @@
 package scaudio.util
 
-import scutil.Math._
+import scutil.math._
 
 /** utility functions for 8 bit unsigned audio data */
 object UByteAudio {

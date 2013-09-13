@@ -5,10 +5,9 @@ import java.nio.ByteOrder
 import java.nio.ByteBuffer
 import java.nio.channels.FileChannel 
 
+import scutil.lang._
 import scutil.Implicits._
-import scutil.Resources._
 import scutil.log._
-import scutil.tried._
 
 /** audio sample loaded from a wav file using a MappedByteBuffer */
 object Wav extends Logging {
