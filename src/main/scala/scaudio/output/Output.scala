@@ -29,7 +29,7 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 					
 	private def mkAudioFormat(channels:Int):AudioFormat	=
 			new AudioFormat(
-					 config.rate,	// sampleRate
+					config.rate,	// sampleRate
 					16,				// sampleSizeInBits
 					channels,		// channels
 					true,   		// signed

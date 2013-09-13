@@ -2,12 +2,12 @@ name			:= "scaudio"
 
 organization	:= "de.djini"
 
-version			:= "0.4.0"
+version			:= "0.5.0"
 
 scalaVersion	:= "2.10.2"
 
 libraryDependencies	++= Seq(
-	"de.djini"	%% "scutil"	% "0.22.0"	% "compile"
+	"de.djini"	%% "scutil"	% "0.23.0"	% "compile"
 )
 
 scalacOptions	++= Seq(

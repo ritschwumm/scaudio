@@ -6,7 +6,7 @@ import java.nio.ByteBuffer
 import java.nio.channels.FileChannel 
 
 import scutil.Implicits._
-import scutil.Resource._
+import scutil.Resources._
 import scutil.log._
 import scutil.tried._
 
