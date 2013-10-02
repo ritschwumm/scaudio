@@ -12,7 +12,7 @@ import scutil.log._
 /** audio sample loaded from a wav file using a MappedByteBuffer */
 object Wav extends Logging {
 	def load(file:File):Tried[Exception,Sample] =
-			Tried exceptionCatch loadImpl(file)
+			Tried catchException loadImpl(file)
 	
 	/** may throw exception if not successful */
 	private def loadImpl(file:File):Sample = {
