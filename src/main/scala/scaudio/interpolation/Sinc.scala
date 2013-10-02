@@ -54,7 +54,7 @@ object Sinc extends Interpolation {
 		var tableIndex	= fract - size - 1
 		var accumulator	= 0.0f
 		while (sampleIndex <= sampleEnd) {
-			accumulator	= accumulator + (sincFromTable(tableIndex).toFloat * (buffer get sampleIndex))
+			accumulator	= accumulator + (sincFromTable(tableIndex) * (buffer get sampleIndex))
 			sampleIndex	= sampleIndex + 1
 			tableIndex	= tableIndex + 1
 		}
@@ -102,7 +102,7 @@ object Sinc extends Interpolation {
 		var tableIndex	= (fract - size - 1) * scale
 		var accumulator	= 0.0f
 		while (sampleIndex <= sampleEnd) {
-			accumulator	= accumulator + (sincFromTable(tableIndex).toFloat * (buffer get sampleIndex))
+			accumulator	= accumulator + (sincFromTable(tableIndex) * (buffer get sampleIndex))
 			sampleIndex	= sampleIndex + 1
 			tableIndex	= tableIndex + scale
 		}
@@ -125,11 +125,11 @@ object Sinc extends Interpolation {
 		out
 	}
 	
-	def sincFromTable(x:Double):Double	= {
+	def sincFromTable(x:Double):Float	= {
 		// TODO include some overshot in the table to save the range check
 		val index	= (abs(x) * sincTableOversampling).toInt
 		if (index < sincTableSize)	sincTable(index)
-		else						0.0
+		else						0f
 	}
 		
 	//------------------------------------------------------------------------------
