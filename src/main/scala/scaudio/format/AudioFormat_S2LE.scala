@@ -1,13 +1,13 @@
-package scaudio.util
+package scaudio.format
 
 import scutil.math._
 
 /** utility functions for cd quality 16 bit signed audio data */
-object ShortAudio {
+object AudioFormat_S2LE {
 	private val factor	= Short.MaxValue.toFloat
 	
-	def decode(value:Short):Float	= value.toFloat / factor
-	def encode(value:Float):Short	= (value * factor).toShort
+	@inline def decode(value:Short):Float	= value.toFloat / factor
+	@inline def encode(value:Float):Short	= (value * factor).toShort
 	
 	//------------------------------------------------------------------------------
 	

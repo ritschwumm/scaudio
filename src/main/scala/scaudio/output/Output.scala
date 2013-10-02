@@ -6,7 +6,7 @@ import scutil.lang._
 import scutil.Implicits._
 import scutil.log._
 
-import scaudio.util._
+import scaudio.format._
 
 /** a audio output using javax.sound.sampled */
 final class Output(config:OutputConfig, producer:FrameProducer) extends Logging {
@@ -90,14 +90,14 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 		while (offset < end) {
 			producer produce (speakerBuffer, phoneBuffer)
 			
-			ShortAudio putClamped (speakerBuffer.left,	outputBuffer, offset+0)
-			ShortAudio putClamped (speakerBuffer.right,	outputBuffer, offset+2)
+			AudioFormat_S2LE putClamped (speakerBuffer.left,	outputBuffer, offset+0)
+			AudioFormat_S2LE putClamped (speakerBuffer.right,	outputBuffer, offset+2)
 			offset	+= 4
 			speakerBuffer.clear()
 			
 			if (phoneEnabled) {
-				ShortAudio putClamped (phoneBuffer.left,	outputBuffer, offset+0)
-				ShortAudio putClamped (phoneBuffer.right,	outputBuffer, offset+2)
+				AudioFormat_S2LE putClamped (phoneBuffer.left,	outputBuffer, offset+0)
+				AudioFormat_S2LE putClamped (phoneBuffer.right,	outputBuffer, offset+2)
 				offset	+= 4
 				phoneBuffer.clear()
 			}

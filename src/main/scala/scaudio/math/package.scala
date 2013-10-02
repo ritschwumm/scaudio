@@ -1,11 +1,11 @@
-package scaudio.util
+package scaudio
 
 import scala.math._
 
 import scutil.math._
 
 /** math utilities */
-object Math {
+package object math {
 	// NOTE unboxed newtypes could be useful here
 	
 	val zeroGain		= 0.0
