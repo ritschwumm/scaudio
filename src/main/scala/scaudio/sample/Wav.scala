@@ -18,16 +18,6 @@ object Wav extends Logging {
 	
 	/** may throw exception if not successful */
 	private def loadImpl(file:File):Sample = {
-		/*
-		// raw file works like this
-		val	mappedBuffer	= new RandomAccessFile(decoded, "r").getChannel use { fc => 
-			fc map (FileChannel.MapMode.READ_ONLY, 0, decoded.length)
-		}
-		// madplay in raw mode outputs native order
-		mappedBuffer order ByteOrder.nativeOrder
-		mappedBuffer.asShortBuffer
-		*/
-		
 		// little endian 4 characters
 		def mkTag(s:String):Long	= {
 			val bytes	= s getBytes "US-ASCII"
@@ -38,11 +28,17 @@ object Wav extends Logging {
 			((bytes(0) & 0xff) <<  0)
 		}
 	
-		val	mapped	= new RandomAccessFile(file, "r").getChannel use { fc => 
-			fc map (FileChannel.MapMode.READ_ONLY, 0, file.length)
-		}
+		val	mapped:ByteBuffer	=
+				new RandomAccessFile(file, "r").getChannel use { fc => 
+					fc map (FileChannel.MapMode.READ_ONLY, 0, file.length)
+				}
 		// mapped.load()
-		mapped order ByteOrder.LITTLE_ENDIAN 
+		mapped order ByteOrder.LITTLE_ENDIAN
+		/*
+		// madplay in raw mode outputs native order
+		mapped order ByteOrder.nativeOrder
+		mapped.asShortBuffer
+		*/
 		
 		/*
 		// RIFX instead of RIFF for big endian data
@@ -119,7 +115,7 @@ object Wav extends Logging {
 				val oldLimit	= mapped.limit
 				val enough		= skp <= mapped.remaining
 				if (!enough)	WARN("data tag too large")
-				val (todo,skip)	=
+				val (todo, skip)	=
 						if (enough)	(siz,				skp)
 						else		(mapped.remaining,	mapped.remaining)
 				mapped limit	(mapped.position + todo)
