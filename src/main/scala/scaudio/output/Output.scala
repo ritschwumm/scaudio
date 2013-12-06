@@ -3,7 +3,7 @@ package scaudio.output
 import javax.sound.sampled._
 
 import scutil.lang._
-import scutil.Implicits._
+import scutil.implicits._
 import scutil.log._
 
 import scaudio.format._

@@ -1,6 +1,6 @@
 package scaudio.sample
 
-import scutil.Implicits._
+import scutil.implicits._
 
 import scaudio.interpolation.Channel
 
