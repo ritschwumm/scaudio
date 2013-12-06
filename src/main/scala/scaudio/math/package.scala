@@ -2,6 +2,7 @@ package scaudio
 
 import scala.math._
 
+import scutil.lang._
 import scutil.math._
 
 /** math utilities */
@@ -30,10 +31,10 @@ package object math {
 	
 	//------------------------------------------------------------------------------
 	
-	/** convert from an amplitude multiplication factor to a dB value */
+	/** convert from an amplitude multiplication factor to a dBi value */
 	def gain2dbi(gain:Double):Double	= 10 * log10(gain)
 	
-	/** convert from a dB value to an amplitude multiplication factor */
+	/** convert from a dBi value to an amplitude multiplication factor */
 	def dbi2gain(dB:Double):Double		= exp10(dB / 10)
 	
 	//------------------------------------------------------------------------------
@@ -43,4 +44,15 @@ package object math {
 	
 	/** convert from a linear 1-per-octave value to a frequency factor */
 	@inline def octave2frequency(octave:Double):Double		= exp2(octave)
+	
+	//------------------------------------------------------------------------------
+	
+	/** negative: first slow, then fast; positive: first fast, then slow */
+	def gammaFade(form:Double):Endo[Double]	= {
+		val scale	= exp(form)
+		it	=> exp(log(it) * scale)
+	}
+	
+	def cosineFade(it:Double):Double	=
+			(1 - cos(it * Pi)) / 2
 }
