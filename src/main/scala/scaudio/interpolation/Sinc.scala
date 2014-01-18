@@ -48,6 +48,7 @@ object Sinc extends Interpolation {
 		acc.toFloat
 		*/
 		
+		/*
 		// forward optimized
 		var sampleIndex	= index - size - 1
 		val sampleEnd	= index + size
@@ -57,6 +58,20 @@ object Sinc extends Interpolation {
 			accumulator	= accumulator + (sincFromTable(tableIndex) * (buffer get sampleIndex))
 			sampleIndex	= sampleIndex + 1
 			tableIndex	= tableIndex + 1
+		}
+		accumulator
+		*/
+		
+		// more forward optimized
+		var sampleIndex	= index - size - 1
+		val sampleEnd	= index + size
+		val scaleOver	= sincTableOversampling
+		var tableIndex	= (fract - size - 1) * scaleOver
+		var accumulator	= 0.0f
+		while (sampleIndex <= sampleEnd) {
+			accumulator	= accumulator + (sincFromTablePremultiplied(tableIndex) * (buffer get sampleIndex))
+			sampleIndex	= sampleIndex + 1
+			tableIndex	= tableIndex  + scaleOver
 		}
 		accumulator
 	}
@@ -95,16 +110,32 @@ object Sinc extends Interpolation {
 		(acc * scl).toFloat
 		*/
 		
+		/*
 		// forward optimized
-		val scale		= 1.0 / pitch
 		var sampleIndex	= index - size - 1
 		val sampleEnd	= index + size
+		val scale		= 1.0 / pitch
 		var tableIndex	= (fract - size - 1) * scale
 		var accumulator	= 0.0f
 		while (sampleIndex <= sampleEnd) {
 			accumulator	= accumulator + (sincFromTable(tableIndex) * (buffer get sampleIndex))
 			sampleIndex	= sampleIndex + 1
 			tableIndex	= tableIndex + scale
+		}
+		accumulator * scale.toFloat
+		*/
+		
+		// more forward optimized
+		var sampleIndex	= index - size - 1
+		val sampleEnd	= index + size
+		val scale		= 1.0 / pitch
+		val scaleOver	= sincTableOversampling * scale
+		var tableIndex	= (fract - size - 1) * scaleOver
+		var accumulator	= 0.0f
+		while (sampleIndex <= sampleEnd) {
+			accumulator	= accumulator + (sincFromTablePremultiplied(tableIndex) * (buffer get sampleIndex))
+			sampleIndex	= sampleIndex + 1
+			tableIndex	= tableIndex  + scaleOver
 		}
 		accumulator * scale.toFloat
 	}
@@ -125,9 +156,15 @@ object Sinc extends Interpolation {
 		out
 	}
 	
-	def sincFromTable(x:Double):Float	= {
+	/*
+	def sincFromTable(x:Double):Float	=
+			sincFromTablePremultiplied(x * sincTableOversampling)
+	*/
+	
+	// x is pre-multiplied with sincTableOversampling
+	def sincFromTablePremultiplied(x:Double):Float	= {
 		// TODO include some overshot in the table to save the range check
-		val index	= (abs(x) * sincTableOversampling).toInt
+		val index	= abs(x).toInt
 		if (index < sincTableSize)	sincTable(index)
 		else						0f
 	}
