@@ -103,6 +103,9 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 			}
 		}
 		
+		// if (sourceDataLine.available == sourceDataLine.getBufferSize) {
+		// 	ERROR("underrun")
+		// }
 		sourceDataLine write (outputBuffer, 0, outputBuffer.length)
 	}
 	
