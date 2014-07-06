@@ -2,7 +2,7 @@ name			:= "scaudio"
 
 organization	:= "de.djini"
 
-version			:= "0.29.0"
+version			:= "0.30.0"
 
 scalaVersion	:= "2.11.1"
 
