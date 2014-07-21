@@ -2,7 +2,7 @@ name			:= "scaudio"
 
 organization	:= "de.djini"
 
-version			:= "0.30.0"
+version			:= "0.30.1"
 
 scalaVersion	:= "2.11.1"
 
@@ -22,4 +22,9 @@ scalacOptions	++= Seq(
 	// "-language:experimental.macros"
 	"-feature",
 	"-optimize"
+)
+
+javacOptions	++= Seq(
+	"-source", "1.6",
+	"-target", "1.6"
 )
