@@ -1,5 +1,6 @@
 package scaudio.sample
 
+import scutil.lang.ISeq
 import scutil.implicits._
 
 import scaudio.interpolation.Channel
@@ -13,6 +14,6 @@ trait Sample {
 	def channel(index:Int):Option[Channel]	=
 			index < channelCount guard new SampleChannel(this, index)
 		
-	def channels:Seq[Channel]	=
+	def channels:ISeq[Channel]	=
 			0 until channelCount map { new SampleChannel(this, _) }
 }

@@ -10,7 +10,7 @@ import scaudio.format._
 
 /** a audio output using javax.sound.sampled */
 final class Output(config:OutputConfig, producer:FrameProducer) extends Logging {
-	private val mixerInfos:Seq[Mixer.Info]	=
+	private val mixerInfos:ISeq[Mixer.Info]	=
 			for {
 				mixerName	<- config.mixerNames map Some.apply
 				mixerInfo	<- AudioSystem.getMixerInfo.toVector
@@ -19,7 +19,7 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 			yield mixerInfo
 			
 	// NOTE null is the default mixer, we try this as a last resort
-	private val mixers:Seq[Mixer]	=
+	private val mixers:ISeq[Mixer]	=
 			mixerInfos :+ null map AudioSystem.getMixer
 		
 	private def mkLineInfo(audioFormat:AudioFormat):DataLine.Info	=
@@ -35,10 +35,10 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 					true,   		// signed
 					false)			// little endian
 	
-	private val desiredChannels:Seq[Int]	= 
-			config.headphone cata (Seq(2), Seq(4, 2))
+	private val desiredChannels:ISeq[Int]	= 
+			config.headphone cata (ISeq(2), ISeq(4, 2))
 		
-	private val openDataLineCandidates:Seq[Thunk[SourceDataLine]]	=
+	private val openDataLineCandidates:ISeq[Thunk[SourceDataLine]]	=
 			for {
 				mixer		<- mixers
 				channels	<- desiredChannels

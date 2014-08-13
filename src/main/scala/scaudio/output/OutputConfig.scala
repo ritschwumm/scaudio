@@ -1,9 +1,11 @@
 package scaudio.output
 
+import scutil.lang.ISeq
+
 /** suggestions for an output's configuration */
 case class OutputConfig(
 	// tried in order, then the default mixer
-	mixerNames:Seq[String],
+	mixerNames:ISeq[String],
 	rate:Int,
 	blockFrames:Int,
 	lineBlocks:Int,
