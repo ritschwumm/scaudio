@@ -64,7 +64,7 @@ object Wav extends Logging {
 			// chunks are aligned to even addresses
 			val skp	= (siz + 1) & -2
 			if (tag == mkTag("fmt ")) {
-				if (siz < 16)				throw WavFormatException(s"unexpected fmt chunk size:  ${siz}")
+				if (siz < 16)				throw WavFormatException(s"unexpected fmt chunk size: ${siz}")
 				/*
 				0x0001 	WAVE_FORMAT_PCM			PCM
 				0x0003 	WAVE_FORMAT_IEEE_FLOAT	IEEE float
