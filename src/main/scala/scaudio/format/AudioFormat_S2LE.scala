@@ -1,7 +1,5 @@
 package scaudio.format
 
-import scutil.math._
-
 /** utility functions for cd quality 16 bit signed audio data */
 object AudioFormat_S2LE {
 	private val factor	= Short.MaxValue.toFloat

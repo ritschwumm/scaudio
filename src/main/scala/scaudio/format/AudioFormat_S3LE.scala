@@ -1,7 +1,5 @@
 package scaudio.format
 
-import scutil.math._
-
 /** utility functions for 24 bit signed little endian audio data */
 object AudioFormat_S3LE {
 	private val factor	= 1 / (1 << 23).toFloat

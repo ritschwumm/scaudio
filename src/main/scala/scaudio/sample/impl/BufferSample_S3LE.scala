@@ -1,7 +1,6 @@
 package scaudio.sample.impl
 
 import java.nio.ByteBuffer
-import java.nio.ShortBuffer
 
 import scaudio.sample._
 import scaudio.format._

@@ -1,7 +1,5 @@
 package scaudio.format
 
-import scutil.math._
-
 /** utility functions for 8 bit unsigned audio data */
 object AudioFormat_U1 {
 	private val offset	= Byte.MinValue
