@@ -8,6 +8,7 @@ import scaudio.format._
 /** a Sample with 1 byte a-law data points interleaved per channel */
 final class BufferSample_ALaw(val frameRate:Int, channelCount:Int, byteBuffer:ByteBuffer) extends Sample {
 	val frameCount	= byteBuffer.limit / channelCount
+	val sampleBytes	= 1
 	
 	val channels:Seq[Channel]	=
 			(0 until channelCount).toArray map { channelIndex =>

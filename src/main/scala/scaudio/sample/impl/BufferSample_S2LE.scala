@@ -12,6 +12,7 @@ final class BufferSample_S2LE(val frameRate:Int, channelCount:Int, byteBuffer:By
 	private val shortBuffer	= byteBuffer.duplicate.order(ByteOrder.LITTLE_ENDIAN).asShortBuffer
 	
 	val frameCount	= shortBuffer.limit / channelCount
+	val sampleBytes	= 2
 	
 	val channels:Seq[Channel]	=
 			(0 until channelCount).toArray map { channelIndex =>

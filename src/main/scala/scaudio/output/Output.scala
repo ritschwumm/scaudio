@@ -8,6 +8,12 @@ import scutil.log._
 
 import scaudio.format._
 
+object Output {
+	private val sampleBits		= 16
+	private val lineChannels	= 2
+	private val frameBytes		= sampleBits/8*lineChannels
+}
+
 /** a audio output using javax.sound.sampled */
 final class Output(config:OutputConfig, producer:FrameProducer) extends Logging {
 	private val mixerInfos:ISeq[Mixer.Info]	=
@@ -24,19 +30,24 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 		
 	private def mkLineInfo(audioFormat:AudioFormat):DataLine.Info	=
 			new DataLine.Info(
-					classOf[SourceDataLine],
-					audioFormat)
+				classOf[SourceDataLine],
+				audioFormat
+			)
 					
 	private def mkAudioFormat(channels:Int):AudioFormat	=
 			new AudioFormat(
-					config.rate,	// sampleRate
-					16,				// sampleSizeInBits
-					channels,		// channels
-					true,   		// signed
-					false)			// little endian
+				config.rate,		// sampleRate
+				Output.sampleBits,	// sampleSizeInBits
+				channels,			// channels
+				true,   			// signed
+				false				// little endian
+			)
 	
 	private val desiredChannels:ISeq[Int]	= 
-			config.headphone cata (ISeq(2), ISeq(4, 2))
+			config.headphone cata (
+				ISeq(Output.lineChannels),
+				ISeq(2*Output.lineChannels, Output.lineChannels)
+			)
 		
 	private val openDataLineCandidates:ISeq[Thunk[SourceDataLine]]	=
 			for {
@@ -118,7 +129,8 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 				rate			= config.rate,
 				blockFrames		= config.blockFrames,
 				lineBlocks		= config.lineBlocks,
-				headphone		= phoneEnabled
+				headphone		= phoneEnabled,
+				frameBytes		= Output.frameBytes
 			)
 			
 	def start() {

@@ -12,6 +12,7 @@ final class BufferSample_F4(val frameRate:Int, val channelCount:Int, byteBuffer:
 	private val floatBuffer	= byteBuffer.duplicate.order(ByteOrder.LITTLE_ENDIAN).asFloatBuffer
 	
 	val frameCount	= floatBuffer.limit / channelCount
+	val sampleBytes	= 4
 	
 	val channels:Seq[Channel]	=
 			(0 until channelCount).toArray map { channelIndex =>

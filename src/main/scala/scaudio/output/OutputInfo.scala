@@ -5,5 +5,6 @@ case class OutputInfo(
 	rate:Int,
 	blockFrames:Int,
 	lineBlocks:Int,
-	headphone:Boolean
+	headphone:Boolean,
+	frameBytes:Int
 )
