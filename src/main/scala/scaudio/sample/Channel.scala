@@ -1,4 +1,11 @@
-package scaudio.interpolation
+package scaudio.sample
+
+object Channel {
+	object empty extends Channel {
+		val size:Int				= 0
+		def get(frame:Int):Float	= 0
+	}
+}
 
 trait Channel {
 	/** number of frames available */

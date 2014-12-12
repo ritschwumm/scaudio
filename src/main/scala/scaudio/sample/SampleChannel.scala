@@ -1,7 +1,5 @@
 package scaudio.sample
 
-import scaudio.interpolation.Channel
-
 /** reads a single channel from a Sample */
 final class SampleChannel(sample:Sample, index:Int) extends Channel {
 	/** number of frames available */

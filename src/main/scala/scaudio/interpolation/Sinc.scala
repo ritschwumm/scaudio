@@ -2,12 +2,15 @@ package scaudio.interpolation
 
 import scala.math._
 
+import scaudio.sample.Channel
+
 object Sinc extends Interpolation {
 	val wingSize	= 13
 	
 	//------------------------------------------------------------------------------
 	
 	def interpolate(buffer:Channel, frame:Double, pitch:Double):Float	= {
+		// NOTE when frame is integer and pitch is 1 we don't have to do anything
 		val	apitch	= abs(pitch)
 			 if (apitch == 0)	0
 		else if (apitch < 1)	slower(buffer, frame, apitch)
@@ -25,7 +28,6 @@ object Sinc extends Interpolation {
 		val ceiling	= ceil(frame)
 		val index	= ceiling.toInt
 		val fract	= ceiling - frame
-		// if (fract == 0.0) return (buffer get index)
 		val size	= wingSize
 		
 		/*
@@ -62,10 +64,10 @@ object Sinc extends Interpolation {
 		accumulator
 		*/
 		
-		// more forward optimized
+		// premultiplied table oversampling
 		var sampleIndex	= index - size - 1
 		val sampleEnd	= index + size
-		val scaleOver	= sincTableOversampling
+		val scaleOver	= sincTableOversampling // scale is 1.0
 		var tableIndex	= (fract - size - 1) * scaleOver
 		var accumulator	= 0.0f
 		while (sampleIndex <= sampleEnd) {
@@ -73,7 +75,7 @@ object Sinc extends Interpolation {
 			sampleIndex	= sampleIndex + 1
 			tableIndex	= tableIndex  + scaleOver
 		}
-		accumulator
+		accumulator // scale is 1.0
 	}
 	
 	/**
@@ -125,7 +127,7 @@ object Sinc extends Interpolation {
 		accumulator * scale.toFloat
 		*/
 		
-		// more forward optimized
+		// premultiplied table oversampling
 		var sampleIndex	= index - size - 1
 		val sampleEnd	= index + size
 		val scale		= 1.0 / pitch

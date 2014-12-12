@@ -2,6 +2,8 @@ package scaudio.interpolation
 
 import scala.math._
 
+import scaudio.sample.Channel
+
 /** simple linear interpolation */
 object Linear extends Interpolation {
 	def interpolate(buffer:Channel, frame:Double, pitch:Double):Float = {

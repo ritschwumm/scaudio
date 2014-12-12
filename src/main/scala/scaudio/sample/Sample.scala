@@ -3,7 +3,14 @@ package scaudio.sample
 import scutil.lang.ISeq
 import scutil.implicits._
 
-import scaudio.interpolation.Channel
+object Sample {
+	object empty extends Sample {
+		val frameRate:Int						= 1
+		val frameCount:Int						= 0
+		val channelCount:Int					= 0
+		def get(frame:Int, channel:Int):Float	= 0
+	}
+}
 
 trait Sample {
 	val frameRate:Int
