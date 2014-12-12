@@ -9,6 +9,15 @@ object Sinc extends Interpolation {
 	
 	//------------------------------------------------------------------------------
 	
+	/** samples needed for one output sample with an inclusive start- and an exclusive end-point */
+	def range(frame:Double, pitch:Double):(Int,Int)	= {
+		val	apitch	= abs(pitch)
+		val index	= ceil(frame).toInt
+			 if (apitch == 0)	(0,										0)
+		else if (apitch < 1)	(index-wingSize-1,						index+wingSize+1)
+		else					(index-ceil(wingSize*pitch).toInt-1,	index+ceil(wingSize*pitch).toInt+1)
+	}
+		
 	def interpolate(buffer:Channel, frame:Double, pitch:Double):Float	= {
 		// NOTE when frame is integer and pitch is 1 we don't have to do anything
 		val	apitch	= abs(pitch)

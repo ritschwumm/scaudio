@@ -1,6 +1,6 @@
 name			:= "scaudio"
 organization	:= "de.djini"
-version			:= "0.45.0"
+version			:= "0.46.0"
 
 scalaVersion	:= "2.11.4"
 scalacOptions	++= Seq(
