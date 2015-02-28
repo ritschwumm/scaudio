@@ -9,7 +9,7 @@ object AudioFormat_S3LE {
 			(	(	((b2 & 0xff) << 24)	|
 					((b1 & 0xff) << 16)	|
 					((b0 & 0xff) <<  8)
-				) 
+				)
 				>> 8
 			).toFloat
 	}

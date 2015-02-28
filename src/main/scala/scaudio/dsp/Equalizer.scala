@@ -13,14 +13,14 @@ object Equalizer {
  * Recommended frequencies are ...
  * lowfreq	= 880  Hz
  * highfreq = 5000 Hz
- * 
+ *
  * Set mixfreq to whatever rate your system is using (eg 48Khz)
  */
 final class Equalizer(lowfreq:Double, highfreq:Double, mixfreq:Double) {
 	// filter #1 (lowpass)
 	private val lf:Double	= 2 * sin(Pi * lowfreq / mixfreq)
 	private var f1p0:Double = 0.0		// poles
-	private var f1p1:Double = 0.0		 
+	private var f1p1:Double = 0.0		
 	private var f1p2:Double = 0.0
 	private var f1p3:Double = 0.0
 
@@ -80,7 +80,7 @@ final class Equalizer(lowfreq:Double, highfreq:Double, mixfreq:Double) {
 	def reset() {
 		// lf	= 0.0
 		f1p0	= 0.0
-		f1p1	= 0.0		 
+		f1p1	= 0.0		
 		f1p2	= 0.0
 		f1p3	= 0.0
 		// hf	= 0.0

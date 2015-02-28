@@ -36,8 +36,8 @@ object Sinc extends Interpolation {
 		
 		/*
 		// slow but clear
-		val parts	= -size-1 to size map { pos => 
-			windowedSinc(fract + pos) * (buffer get (index + pos)) 
+		val parts	= -size-1 to size map { pos =>
+			windowedSinc(fract + pos) * (buffer get (index + pos))
 		}
 		parts.sum.toFloat
 		*/
@@ -97,8 +97,8 @@ object Sinc extends Interpolation {
 		
 		/*
 		// slow but clear
-		val parts	= -size-1 to size map { pos => 
-			windowedSinc((fract + pos) / pitch) * (buffer get (index + pos)) 
+		val parts	= -size-1 to size map { pos =>
+			windowedSinc((fract + pos) / pitch) * (buffer get (index + pos))
 		}
 		(parts.sum / pitch).toFloat
 		*/
@@ -177,7 +177,7 @@ object Sinc extends Interpolation {
 		
 	//------------------------------------------------------------------------------
 		
-	def windowedSinc(x:Double):Double	= 
+	def windowedSinc(x:Double):Double	=
 			sinc(x) * blackman(x)
 		
 	def sinc(x:Double):Double	=

@@ -43,7 +43,7 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 				false				// little endian
 			)
 	
-	private val desiredChannels:ISeq[Int]	= 
+	private val desiredChannels:ISeq[Int]	=
 			config.headphone cata (
 				ISeq(Output.lineChannels),
 				ISeq(2*Output.lineChannels, Output.lineChannels)
@@ -77,10 +77,10 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 	sourceDataLine open (usedOutputFormat, config.lineBlocks * blockBytes)
 	sourceDataLine.start()
 	
-	@volatile 
+	@volatile
 	private var keepOn	= true
 	
-	private object driverThread extends Thread { 
+	private object driverThread extends Thread {
 		setPriority(Thread.MAX_PRIORITY)
 		setName("audio driver")
 		
@@ -124,7 +124,7 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 	//## public api
 	
 	/** actual configuration */
-	val info:OutputInfo	= 
+	val info:OutputInfo	=
 			OutputInfo(
 				rate			= config.rate,
 				blockFrames		= config.blockFrames,

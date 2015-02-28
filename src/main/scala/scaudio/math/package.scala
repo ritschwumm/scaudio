@@ -26,7 +26,7 @@ package object math {
 	// roughly Math.log(gain) * 6.0 / Math.log(2);
 	
 	/** convert from a dB value to an amplitude multiplication factor */
-	def db2gain(dB:Double):Double	= exp10(dB / 20) 
+	def db2gain(dB:Double):Double	= exp10(dB / 20)
 	// roughly Math.exp(dB * Math.log(2) / 6.0);
 	
 	//------------------------------------------------------------------------------

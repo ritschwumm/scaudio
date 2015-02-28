@@ -3,7 +3,7 @@ package scaudio.sample
 import java.io._
 import java.nio.ByteOrder
 import java.nio.ByteBuffer
-import java.nio.channels.FileChannel 
+import java.nio.channels.FileChannel
 
 import scutil.lang._
 import scutil.implicits._
@@ -29,7 +29,7 @@ object Wav extends Logging {
 		}
 	
 		val	mapped:ByteBuffer	=
-				new RandomAccessFile(file, "r").getChannel use { fc => 
+				new RandomAccessFile(file, "r").getChannel use { fc =>
 					fc map (FileChannel.MapMode.READ_ONLY, 0, file.length)
 				}
 		// mapped.load()
@@ -73,7 +73,7 @@ object Wav extends Logging {
 				0xFFFE 	WAVE_FORMAT_EXTENSIBLE 	Determined by SubFormat
 				*/
 				/*
-				WAVE_FORMAT_IEEE_FLOAT 
+				WAVE_FORMAT_IEEE_FLOAT
 				-	can have 24 bit sample size with 4 bytes container size (32 bits)
 				-	container size derived from block size and channel count
 				-	data is actually 32 bit IEEE float
