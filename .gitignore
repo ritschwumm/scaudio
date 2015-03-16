@@ -1,6 +1,5 @@
 target/
 project/boot/
 
-/doc
-/versatz
-
+/doc/
+/versatz/
