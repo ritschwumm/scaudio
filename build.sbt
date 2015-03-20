@@ -1,8 +1,8 @@
 name			:= "scaudio"
 organization	:= "de.djini"
-version			:= "0.52.0"
+version			:= "0.53.0"
 
-scalaVersion	:= "2.11.5"
+scalaVersion	:= "2.11.6"
 scalacOptions	++= Seq(
 	"-deprecation",
 	"-unchecked",
@@ -25,6 +25,6 @@ javacOptions	++= Seq(
 
 conflictManager	:= ConflictManager.strict
 libraryDependencies	++= Seq(
-	"de.djini"	%% "scutil-core"	% "0.65.0"	% "compile"
+	"de.djini"	%% "scutil-core"	% "0.66.0"	% "compile"
 )
 
