@@ -250,7 +250,7 @@ object BiQuadCoeffs {
 			)
 }
 
-case class BiQuadCoeffs(
+final case class BiQuadCoeffs(
 	a0:Double,
 	a1:Double,
 	a2:Double,
