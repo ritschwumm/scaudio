@@ -2,7 +2,6 @@ package scaudio.sample.impl
 
 import java.nio.ByteOrder
 import java.nio.ByteBuffer
-import java.nio.ShortBuffer
 import java.nio.FloatBuffer
 
 import scaudio.sample._
