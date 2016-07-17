@@ -60,11 +60,11 @@ object Wav extends Logging {
 			if (mapped.remaining < 8)	throw WavFormatException("cannot find data tag")
 			val	tag	= mapped.getInt
 			val siz	= mapped.getInt
-			if (siz + 1 == 0)	throw WavFormatException(s"unexpected chunk size: ${siz}")
+			if (siz + 1 == 0)			throw WavFormatException(s"unexpected chunk size: ${siz}")
 			// chunks are aligned to even addresses
 			val skp	= (siz + 1) & -2
 			if (tag == mkTag("fmt ")) {
-				if (siz < 16)				throw WavFormatException(s"unexpected fmt chunk size: ${siz}")
+				if (siz < 16)			throw WavFormatException(s"unexpected fmt chunk size: ${siz}")
 				/*
 				0x0001 	WAVE_FORMAT_PCM			PCM
 				0x0003 	WAVE_FORMAT_IEEE_FLOAT	IEEE float
