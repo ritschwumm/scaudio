@@ -1,8 +1,8 @@
 name			:= "scaudio"
 organization	:= "de.djini"
-version			:= "0.79.0"
+version			:= "0.80.0"
 
-scalaVersion	:= "2.12.0"
+scalaVersion	:= "2.12.1"
 scalacOptions	++= Seq(
 	"-deprecation",
 	"-unchecked",
@@ -14,23 +14,23 @@ scalacOptions	++= Seq(
 	// "-language:postfixOps",
 	// "-language:experimental.macros"
 	"-feature",
-	"-opt:box-unbox",
+	"-opt:l:project",
 	"-Ywarn-unused-import",
 	"-Xfatal-warnings",
 	"-Xlint"
 )
 javacOptions	++= Seq(
-	"-source", "1.7",
-	"-target", "1.7"
+	"-source", "1.8",
+	"-target", "1.8"
 )
 
 conflictManager	:= ConflictManager.strict
 libraryDependencies	++= Seq(
-	"de.djini"	%% "scutil-core"	% "0.92.0"	% "compile"
+	"de.djini"	%% "scutil-core"	% "0.93.0"	% "compile"
 )
 
 wartremoverErrors ++= Seq(
-	Wart.Any2StringAdd,
+	Wart.StringPlusAny,
 	Wart.EitherProjectionPartial,
 	Wart.OptionPartial,
 	Wart.Enumeration,
