@@ -49,7 +49,7 @@ object Wav extends Logging {
 		if (mapped.remaining < 12)	throw WavFormatException("cannot find RIFF header")
 		val	tag1	= mapped.getInt
 		if (tag1 != mkTag("RIFF"))	throw WavFormatException("expected RIFF header")
-		val	flen	= mapped.getInt
+		/*val	flen	= */mapped.getInt
 		val	tag2	= mapped.getInt
 		if (tag2 != mkTag("WAVE"))	throw WavFormatException("expected WAVE header")
 		
@@ -82,8 +82,8 @@ object Wav extends Logging {
 				val	format			= mapped.getShort
 				val channelCount	= mapped.getShort
 				val frameRate		= mapped.getInt
-				val byteRate		= mapped.getInt		// == SampleRate * NumChannels * BitsPerSample / 8
-				val byteAlign		= mapped.getShort	// == NumChannels * BitsPerSample / 8
+				/*val byteRate		= */mapped.getInt	// == SampleRate * NumChannels * BitsPerSample / 8
+				/*val byteAlign		= */mapped.getShort	// == NumChannels * BitsPerSample / 8
 				val bitsPerSample	= mapped.getShort
 				
 				// if (channelCount != 2)	throw WavFormatException("unexpected channel count in fmt chunk, expected 2 for stereo: " + channelCount)
