@@ -3,7 +3,7 @@ package scaudio
 import scala.math._
 
 import scutil.lang._
-import scutil.math._
+import scutil.math.functions._
 
 /** math utilities */
 package object math {

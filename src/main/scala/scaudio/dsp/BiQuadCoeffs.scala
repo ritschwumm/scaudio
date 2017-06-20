@@ -1,7 +1,7 @@
 package scaudio.dsp
 
 import scala.math._
-import scutil.math._
+import scutil.math.functions._
 
 /**
 all freq parameters are pre-divided by the sample rate
