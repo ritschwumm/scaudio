@@ -13,7 +13,7 @@ import scaudio.sample.impl._
 
 /** audio sample loaded from a wav file using a MappedByteBuffer */
 object Wav extends Logging {
-	def load(file:File):Tried[Exception,Sample] =
+	def load(file:File):Either[Exception,Sample] =
 			Catch.exception in loadImpl(file)
 	
 	/** may throw exception if not successful */
