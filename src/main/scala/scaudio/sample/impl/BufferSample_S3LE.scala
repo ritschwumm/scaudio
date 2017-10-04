@@ -7,7 +7,7 @@ import scaudio.format._
 
 /** a Sample with 3 byte signed little endian data points interleaved per channel */
 final class BufferSample_S3LE(val frameRate:Int, channelCount:Int, byteBuffer:ByteBuffer) extends Sample {
-	val frameCount	= byteBuffer.limit / channelCount / 3
+	val frameCount	= byteBuffer.limit() / channelCount / 3
 	val sampleBytes	= 3
 	
 	val channels:Seq[Channel]	=

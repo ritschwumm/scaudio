@@ -10,7 +10,7 @@ import scaudio.sample._
 final class BufferSample_F4(val frameRate:Int, val channelCount:Int, byteBuffer:ByteBuffer) extends Sample {
 	private val floatBuffer	= byteBuffer.duplicate.order(ByteOrder.LITTLE_ENDIAN).asFloatBuffer
 	
-	val frameCount	= floatBuffer.limit / channelCount
+	val frameCount	= floatBuffer.limit() / channelCount
 	val sampleBytes	= 4
 	
 	val channels:Seq[Channel]	=

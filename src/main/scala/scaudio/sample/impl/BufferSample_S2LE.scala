@@ -11,7 +11,7 @@ import scaudio.format._
 final class BufferSample_S2LE(val frameRate:Int, channelCount:Int, byteBuffer:ByteBuffer) extends Sample {
 	private val shortBuffer	= byteBuffer.duplicate.order(ByteOrder.LITTLE_ENDIAN).asShortBuffer
 	
-	val frameCount	= shortBuffer.limit / channelCount
+	val frameCount	= shortBuffer.limit() / channelCount
 	val sampleBytes	= 2
 	
 	val channels:Seq[Channel]	=

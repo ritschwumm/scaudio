@@ -108,24 +108,24 @@ object Wav extends Logging {
 					// skip extension:
 					// short size of extra params, doesn't exist with PCM
 					// extra params
-					mapped position (mapped.position + skp - 16)
+					mapped position (mapped.position() + skp - 16)
 				}
 			}
 			else if (tag == mkTag("data")) {
-				val oldLimit	= mapped.limit
+				val oldLimit	= mapped.limit()
 				val enough		= skp <= mapped.remaining
 				if (!enough)	WARN("data tag too large")
 				val (todo, skip)	=
 						if (enough)	(siz,				skp)
 						else		(mapped.remaining,	mapped.remaining)
-				mapped limit	(mapped.position + todo)
+				mapped limit	(mapped.position() + todo)
 				sampleData		= Some(mapped.slice.asReadOnlyBuffer)
 				mapped limit	oldLimit
-				mapped position	(mapped.position + skip)
+				mapped position	(mapped.position() + skip)
 			}
 			else {
 				// skip unexpected chunk
-				mapped position (mapped.position + skp)
+				mapped position (mapped.position() + skp)
 			}
 		}
 		
