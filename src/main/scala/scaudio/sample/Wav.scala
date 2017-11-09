@@ -60,11 +60,11 @@ object Wav extends Logging {
 			if (mapped.remaining < 8)	throw WavFormatException("cannot find data tag")
 			val	tag	= mapped.getInt
 			val siz	= mapped.getInt
-			if (siz + 1 == 0)			throw WavFormatException(s"unexpected chunk size: ${siz}")
+			if (siz + 1 == 0)			throw WavFormatException(show"unexpected chunk size: ${siz}")
 			// chunks are aligned to even addresses
 			val skp	= (siz + 1) & -2
 			if (tag == mkTag("fmt ")) {
-				if (siz < 16)			throw WavFormatException(s"unexpected fmt chunk size: ${siz}")
+				if (siz < 16)			throw WavFormatException(show"unexpected fmt chunk size: ${siz}")
 				/*
 				0x0001 	WAVE_FORMAT_PCM			PCM
 				0x0003 	WAVE_FORMAT_IEEE_FLOAT	IEEE float
@@ -93,15 +93,15 @@ object Wav extends Logging {
 					case (1,  8)	=> new BufferSample_U1(frameRate, channelCount, _)
 					case (1, 16)	=> new BufferSample_S2LE(frameRate, channelCount, _)
 					case (1, 24)	=> new BufferSample_S3LE(frameRate, channelCount, _)
-					case (1,  x)	=> throw WavFormatException(s"unexpected wordsize in fmt chunk ${format} (PCM), expected 8, 16 or 24: ${x}")
+					case (1,  x)	=> throw WavFormatException(show"unexpected wordsize in fmt chunk ${format} (PCM), expected 8, 16 or 24: ${x}")
 					case (3, 32)	=> new BufferSample_F4(frameRate, channelCount, _)
 					// NOTE (3, 64) is allowed, too
-					case (3,  x)	=> throw WavFormatException(s"unexpected wordsize in fmt chunk ${format} (IEEE), expected 32: ${x}")
+					case (3,  x)	=> throw WavFormatException(show"unexpected wordsize in fmt chunk ${format} (IEEE), expected 32: ${x}")
 					case (6,  8)	=> new BufferSample_ALaw(frameRate, channelCount, _)
-					case (6,  x)	=> throw WavFormatException(s"unexpected wordsize in fmt chunk ${format} (A-Law), expected 8: ${x}")
+					case (6,  x)	=> throw WavFormatException(show"unexpected wordsize in fmt chunk ${format} (A-Law), expected 8: ${x}")
 					case (7,  8)	=> new BufferSample_MuLaw(frameRate, channelCount, _)
-					case (7,  x)	=> throw WavFormatException(s"unexpected wordsize in fmt chunk ${format} (Mu-Law), expected 8: ${x}")
-					case (f,  _)	=> throw WavFormatException(s"unexpected audio format in fmt chunk, expected 1 (PCM), 3 (IEEE), 6 (A-Law) or 7 (Mu-Law): ${f}")
+					case (7,  x)	=> throw WavFormatException(show"unexpected wordsize in fmt chunk ${format} (Mu-Law), expected 8: ${x}")
+					case (f,  _)	=> throw WavFormatException(show"unexpected audio format in fmt chunk, expected 1 (PCM), 3 (IEEE), 6 (A-Law) or 7 (Mu-Law): ${f}")
 				}
 
 				if (skp > 16) {
