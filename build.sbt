@@ -1,6 +1,6 @@
 name			:= "scaudio"
 organization	:= "de.djini"
-version			:= "0.111.0"
+version			:= "0.112.0"
 
 scalaVersion	:= "2.12.3"
 scalacOptions	++= Seq(
@@ -26,7 +26,7 @@ javacOptions	++= Seq(
 
 conflictManager	:= ConflictManager.strict
 libraryDependencies	++= Seq(
-	"de.djini"	%% "scutil-core"	% "0.121.0"	% "compile"
+	"de.djini"	%% "scutil-core"	% "0.122.0"	% "compile"
 )
 
 wartremoverErrors ++= Seq(
