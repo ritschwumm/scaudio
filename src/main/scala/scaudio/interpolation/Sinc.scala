@@ -2,7 +2,6 @@ package scaudio.interpolation
 
 import scala.math._
 
-import scaudio.math
 import scaudio.sample.Channel
 
 object Sinc extends Interpolation {
@@ -76,13 +75,10 @@ object Sinc extends Interpolation {
 		var tableIndex	= (fract - size - 1) * scaleOver
 		var accumulator	= 0.0f
 		while (sampleIndex <= sampleEnd) {
-			val tmp	= (sincFromTablePremultiplied(tableIndex) * (buffer get sampleIndex))
-			check(tmp, "3")
-			accumulator	= accumulator + tmp
+			accumulator	= accumulator + (sincFromTablePremultiplied(tableIndex) * (buffer get sampleIndex))
 			sampleIndex	= sampleIndex + 1
 			tableIndex	= tableIndex  + scaleOver
 		}
-		check(accumulator, "5")
 		accumulator // scale is 1.0
 	}
 	
@@ -143,15 +139,11 @@ object Sinc extends Interpolation {
 		var tableIndex	= (fract - size - 1) * scaleOver
 		var accumulator	= 0.0f
 		while (sampleIndex <= sampleEnd) {
-			val tmp	= (sincFromTablePremultiplied(tableIndex) * (buffer get sampleIndex))
-			check(tmp, "2")
-			accumulator	= accumulator + tmp
+			accumulator	= accumulator + (sincFromTablePremultiplied(tableIndex) * (buffer get sampleIndex))
 			sampleIndex	= sampleIndex + 1
 			tableIndex	= tableIndex  + scaleOver
 		}
-		val tmp	= accumulator * scale.toFloat
-		check(tmp, "4")
-		tmp
+		accumulator * scale.toFloat
 	}
 	
 	//------------------------------------------------------------------------------
@@ -164,9 +156,7 @@ object Sinc extends Interpolation {
 		val out		= new Array[Float](sincTableSize)
 		var i		= 0
 		while (i < sincTableSize) {
-			val tmp	= windowedSinc(i.toDouble / sincTableOversampling).toFloat
-			check(tmp, "1")
-			out(i)	= tmp
+			out(i)	= windowedSinc(i.toDouble / sincTableOversampling).toFloat
 			i	= i + 1
 		}
 		out
@@ -201,11 +191,4 @@ object Sinc extends Interpolation {
 	def blackman(x:Double):Double	=
 			if (abs(x) <= wingSize)	0.42 + 0.5 * cos(Pi * x / wingSize) + 0.08 * cos(2 * Pi * x / wingSize)
 			else					0.0
-		
-	//------------------------------------------------------------------------------
-	
-	def check(it:Float, msg:String) {
-		val nrm	= math normalizeFloat it
-		if (nrm != it)	println(s"!!! denormal $msg !!!")
-	}
 }
