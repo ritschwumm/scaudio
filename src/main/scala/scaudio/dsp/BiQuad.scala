@@ -9,8 +9,8 @@ final class BiQuad {
 	// transposed direct form 2
 	def process(in:Double, cs:BiQuadCoeffs):Double	= {
 		val out	= math normalizeDouble (in * cs.a0 + z1)
-		z1		= in * cs.a1 + z2 + out * -cs.b1
-		z2		= in * cs.a2      + out * -cs.b2
+		z1		= in * cs.a1 + out * -cs.b1 + z2
+		z2		= in * cs.a2 + out * -cs.b2
 		out
 	}
 

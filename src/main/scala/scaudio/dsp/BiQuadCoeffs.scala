@@ -10,7 +10,7 @@ bandwidth = freq / Q
 object BiQuadCoeffs {
 	val sqrt2:Double		= sqrt(2)
 
-	// standard Q
+	// standard Q for a flat corner in a single biquad, same as sqrt(0.5)
 	val sqrt2half:Double	= sqrt2 / 2
 
 	// 0	=> 1
@@ -183,6 +183,8 @@ object BiQuadCoeffs {
 
 	//------------------------------------------------------------------------------
 
+	// TODO these give weird results when plotted
+
 	def lpButterworth(freq:Double):BiQuadCoeffs	= {
 		val k	= tan(Pi * freq)
 
@@ -248,6 +250,20 @@ object BiQuadCoeffs {
 				b1	= a1 / a0,
 				b2	= a2 / a0
 			)
+
+	/*
+	def main(args:Array[String]) {
+		val coeffs	= lpBessel(0.25)
+		import coeffs._
+		println(a0)
+		println(a1)
+		println(a2)
+		println("")
+		println(1.0)
+		println(b1)
+		println(b2)
+	}
+	*/
 }
 
 final case class BiQuadCoeffs(
