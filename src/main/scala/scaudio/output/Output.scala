@@ -16,7 +16,7 @@ object Output {
 
 /** a audio output using javax.sound.sampled */
 final class Output(config:OutputConfig, producer:FrameProducer) extends Logging {
-	private val mixerInfos:ISeq[Mixer.Info]	=
+	private val mixerInfos:Seq[Mixer.Info]	=
 			for {
 				mixerName	<- config.mixerNames map Some.apply
 				mixerInfo	<- AudioSystem.getMixerInfo.toVector
@@ -25,7 +25,7 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 			yield mixerInfo
 
 	// NOTE null is the default mixer, we try this as a last resort
-	private val mixers:ISeq[Mixer]	=
+	private val mixers:Seq[Mixer]	=
 			mixerInfos :+ null map AudioSystem.getMixer
 
 	private def mkLineInfo(audioFormat:AudioFormat):DataLine.Info	=
@@ -43,14 +43,14 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 				false				// little endian
 			)
 
-	private val desiredChannels:ISeq[Int]	=
+	private val desiredChannels:Seq[Int]	=
 			config.headphone cata (
-				ISeq(Output.lineChannels),
-				ISeq(2*Output.lineChannels, Output.lineChannels)
+				Seq(Output.lineChannels),
+				Seq(2*Output.lineChannels, Output.lineChannels)
 			)
 
 	@SuppressWarnings(Array("org.wartremover.warts.AsInstanceOf"))
-	private val openDataLineCandidates:ISeq[Thunk[SourceDataLine]]	=
+	private val openDataLineCandidates:Seq[Thunk[SourceDataLine]]	=
 			for {
 				mixer		<- mixers
 				channels	<- desiredChannels
