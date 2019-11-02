@@ -4,6 +4,8 @@ import java.nio.ByteOrder
 import java.nio.ByteBuffer
 import java.nio.ShortBuffer
 
+import scala.collection.immutable.ArraySeq
+
 import scaudio.sample._
 import scaudio.format._
 
@@ -15,7 +17,7 @@ final class BufferSample_S2LE(val frameRate:Int, channelCount:Int, byteBuffer:By
 	val sampleBytes	= 2
 
 	val channels:Seq[Channel]	=
-			(0 until channelCount).toArray map { channelIndex =>
+			0 until channelCount to ArraySeq map { channelIndex =>
 				new BufferChannel_S2LE(frameCount, channelCount, channelIndex, shortBuffer)
 			}
 }

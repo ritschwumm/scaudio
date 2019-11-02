@@ -47,7 +47,7 @@ final class Equalizer(lowfreq:Double, highfreq:Double, mixfreq:Double) {
 	}
 
 	/**  EQ one sample */
-	def step(in:Double) {
+	def step(in:Double):Unit	= {
 		// filter #1 (lowpass)
 		f1p0  += (lf * (in - f1p0)) + Equalizer.vsa
 		f1p1  += (lf * (f1p0 - f1p1))
@@ -77,7 +77,7 @@ final class Equalizer(lowfreq:Double, highfreq:Double, mixfreq:Double) {
 		sdm1   = in
 	}
 
-	def reset() {
+	def reset():Unit	= {
 		// lf	= 0.0
 		f1p0	= 0.0
 		f1p1	= 0.0

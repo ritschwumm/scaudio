@@ -10,7 +10,7 @@ object AudioFormat_S2LE {
 	//------------------------------------------------------------------------------
 
 	// next offset is offset+2
-	def putClamped(value:Float, buffer:Array[Byte], offset:Int) {
+	def putClamped(value:Float, buffer:Array[Byte], offset:Int):Unit	= {
 		putShort(clamp(value * factor).toShort, buffer, offset)
 	}
 
@@ -19,7 +19,7 @@ object AudioFormat_S2LE {
 			else if (value > Short.MaxValue)	Short.MaxValue
 			else								value
 
-	def putShort(value:Short, buffer:Array[Byte], offset:Int) {
+	def putShort(value:Short, buffer:Array[Byte], offset:Int):Unit	= {
 		buffer(offset+0)	= (value >> 0).toByte
 		buffer(offset+1)	= (value >> 8).toByte
 	}

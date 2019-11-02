@@ -2,6 +2,8 @@ package scaudio.sample.impl
 
 import java.nio.ByteBuffer
 
+import scala.collection.immutable.ArraySeq
+
 import scaudio.sample._
 import scaudio.format._
 
@@ -11,7 +13,7 @@ final class BufferSample_MuLaw(val frameRate:Int, channelCount:Int, byteBuffer:B
 	val sampleBytes	= 1
 
 	val channels:Seq[Channel]	=
-			(0 until channelCount).toArray map { channelIndex =>
+			0 until channelCount to ArraySeq map { channelIndex =>
 				new BufferChannel_MuLaw(frameCount, channelCount, channelIndex, byteBuffer)
 			}
 }

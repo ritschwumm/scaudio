@@ -14,7 +14,7 @@ final class BiQuad {
 		out
 	}
 
-	def reset() {
+	def reset():Unit	= {
 		z1	= 0.0
 		z2	= 0.0
 	}

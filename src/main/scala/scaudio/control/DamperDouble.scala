@@ -22,17 +22,17 @@ final class DamperDouble(initial:Double, absMaxDelta:Double) {
 	def current:Double	= cur
 
 	/** set the target value */
-	def target(trg:Double) {
+	def target(trg:Double):Unit	= {
 		this.trg	= trg
 	}
 
 	/** immediately set the current value to the target value */
-	def jump() {
+	def jump():Unit	= {
 		cur	= trg
 	}
 
 	/** nudge the current value towards the target value */
-	def step() {
+	def step():Unit	= {
 		val delta	= trg - cur
 		cur	+= min(abs(delta), absMaxDelta) * signum(delta)
 	}

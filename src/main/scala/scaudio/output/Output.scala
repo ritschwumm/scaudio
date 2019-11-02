@@ -63,7 +63,7 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 			}
 
 	private val sourceDataLine	=
-			openDataLineCandidates.headOption getOrError "audio not available" apply ()
+			(openDataLineCandidates.headOption getOrError "audio not available").apply()
 
 	private val usedOutputFormat	= sourceDataLine.getFormat
 
@@ -85,7 +85,7 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 		setPriority(Thread.MAX_PRIORITY)
 		setName("audio driver")
 
-		override def run() {
+		override def run():Unit	= {
 			while (keepOn) {
 				loop()
 			}
@@ -93,7 +93,7 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 	}
 
 	/** Thread main loop */
-	private def loop() {
+	private def loop():Unit	= {
 		// NOTE could use sourceDataLine.available to determine how much data can be written without blocking
 		// SourceDataLine docs says: bufferSize - available
 		// DataLine docs says: available
@@ -134,13 +134,13 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 				frameBytes		= Output.frameBytes
 			)
 
-	def start() {
+	def start():Unit	= {
 		require(keepOn, "already disposed Output cannot be started")
 		driverThread.start()
 	}
 
 	/** release all resources and stop the Thread */
-	def dispose() {
+	def dispose():Unit	= {
 		// NOTE sometimes isInterrupted doesn't seem to return true at all
 		keepOn	= false
 		driverThread.interrupt()
