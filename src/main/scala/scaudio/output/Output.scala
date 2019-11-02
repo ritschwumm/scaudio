@@ -49,6 +49,7 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 				ISeq(2*Output.lineChannels, Output.lineChannels)
 			)
 
+	@SuppressWarnings(Array("org.wartremover.warts.AsInstanceOf"))
 	private val openDataLineCandidates:ISeq[Thunk[SourceDataLine]]	=
 			for {
 				mixer		<- mixers
