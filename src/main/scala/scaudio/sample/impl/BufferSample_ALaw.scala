@@ -9,7 +9,7 @@ import scaudio.format._
 final class BufferSample_ALaw(val frameRate:Int, channelCount:Int, byteBuffer:ByteBuffer) extends Sample {
 	val frameCount	= byteBuffer.limit() / channelCount
 	val sampleBytes	= 1
-	
+
 	val channels:Seq[Channel]	=
 			(0 until channelCount).toArray map { channelIndex =>
 				new BufferChannel_ALaw(frameCount, channelCount, channelIndex, byteBuffer)
@@ -24,7 +24,7 @@ final class BufferChannel_ALaw(val frameCount:Int, channelCount:Int, channelInde
 				)
 			}
 			else 0f
-			
+
 	@inline
 	def index(frame:Int):Int	=
 			frame * channelCount + channelIndex

@@ -14,23 +14,23 @@ object DamperFloat {
 /** a simple, linear animator to be used for parameters */
 final class DamperFloat(initial:Float, absMaxDelta:Float) {
 	require(absMaxDelta > 0, "absMaxDelta must be positive and non-zero")
-	
+
 	private var cur:Float		= initial
 	private var trg:Float	= initial
-	
+
 	/** get the current value */
 	def current:Float	= cur
-	
+
 	/** set the target value */
 	def target(trg:Float) {
 		this.trg	= trg
 	}
-	
+
 	/** immediately set the current value to the target value */
 	def jump() {
 		cur	= trg
 	}
-	
+
 	/** nudge the current value towards the target value */
 	def step() {
 		val delta	= trg - cur

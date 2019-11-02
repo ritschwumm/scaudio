@@ -3,7 +3,7 @@ package scaudio.format
 /** utility functions for 24 bit signed little endian audio data */
 object AudioFormat_S3LE {
 	private val factor	= 1 / (1 << 23).toFloat
-	
+
 	@inline def decode(b0:Byte, b1:Byte, b2:Byte):Float	= {
 			factor *
 			(	(	((b2 & 0xff) << 24)	|

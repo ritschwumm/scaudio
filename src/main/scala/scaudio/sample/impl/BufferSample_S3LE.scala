@@ -9,7 +9,7 @@ import scaudio.format._
 final class BufferSample_S3LE(val frameRate:Int, channelCount:Int, byteBuffer:ByteBuffer) extends Sample {
 	val frameCount	= byteBuffer.limit() / channelCount / 3
 	val sampleBytes	= 3
-	
+
 	val channels:Seq[Channel]	=
 			(0 until channelCount).toArray map { channelIndex =>
 				new BufferChannel_S3LE(frameCount, channelCount, channelIndex, byteBuffer)
@@ -26,7 +26,7 @@ final class BufferChannel_S3LE(val frameCount:Int, channelCount:Int, channelInde
 				AudioFormat_S3LE decode (b0, b1, b2)
 			}
 			else 0f
-	
+
 	@inline
 	def index(frame:Int):Int	=
 			frame * channelCount + channelIndex

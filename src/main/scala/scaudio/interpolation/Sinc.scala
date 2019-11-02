@@ -6,13 +6,13 @@ import scaudio.sample.Channel
 
 object Sinc extends Interpolation {
 	val wingSize	= 13
-	
+
 	/** how many samples are accessed in both directions depending on the pitch */
 	def overshot(pitch:Double):Int	=
 			(wingSize max ceil(wingSize*abs(pitch)).toInt) + 2
-		
+
 	//------------------------------------------------------------------------------
-		
+
 	def interpolate(buffer:Channel, frame:Double, pitch:Double):Float	= {
 		// NOTE when frame is integer and pitch is 1 we don't have to do anything
 		val	apitch	= abs(pitch)
@@ -20,7 +20,7 @@ object Sinc extends Interpolation {
 		else if (apitch < 1)	slower(buffer, frame, apitch)
 		else					faster(buffer, frame, apitch)
 	}
-		
+
 	/**
 	upsampling
 	-	pitch is lower than 1
@@ -33,7 +33,7 @@ object Sinc extends Interpolation {
 		val index	= ceiling.toInt
 		val fract	= ceiling - frame
 		val size	= wingSize
-		
+
 		/*
 		// slow but clear
 		val parts	= -size-1 to size map { pos =>
@@ -41,7 +41,7 @@ object Sinc extends Interpolation {
 		}
 		parts.sum.toFloat
 		*/
-		
+
 		/*
 		// faster and using table, still doing too many calculations
 		var pos	= -size-1
@@ -53,7 +53,7 @@ object Sinc extends Interpolation {
 		}
 		acc.toFloat
 		*/
-		
+
 		/*
 		// forward optimized
 		var sampleIndex	= index - size - 1
@@ -67,7 +67,7 @@ object Sinc extends Interpolation {
 		}
 		accumulator
 		*/
-		
+
 		// premultiplied table oversampling
 		var sampleIndex	= index - size - 1
 		val sampleEnd	= index + size
@@ -81,7 +81,7 @@ object Sinc extends Interpolation {
 		}
 		accumulator // scale is 1.0
 	}
-	
+
 	/**
 	downsampling
 	-	pitch is higher than 1
@@ -94,7 +94,7 @@ object Sinc extends Interpolation {
 		val index	= ceiling.toInt
 		val fract	= ceiling - frame
 		val size	= ceil(wingSize*pitch).toInt
-		
+
 		/*
 		// slow but clear
 		val parts	= -size-1 to size map { pos =>
@@ -102,7 +102,7 @@ object Sinc extends Interpolation {
 		}
 		(parts.sum / pitch).toFloat
 		*/
-		
+
 		/*
 		// faster and using table, still doing too many calculations
 		val scl	= 1.0 / pitch
@@ -115,7 +115,7 @@ object Sinc extends Interpolation {
 		}
 		(acc * scl).toFloat
 		*/
-		
+
 		/*
 		// forward optimized
 		var sampleIndex	= index - size - 1
@@ -130,7 +130,7 @@ object Sinc extends Interpolation {
 		}
 		accumulator * scale.toFloat
 		*/
-		
+
 		// premultiplied table oversampling
 		var sampleIndex	= index - size - 1
 		val sampleEnd	= index + size
@@ -145,12 +145,12 @@ object Sinc extends Interpolation {
 		}
 		accumulator * scale.toFloat
 	}
-	
+
 	//------------------------------------------------------------------------------
-	
+
 	val sincTableOversampling	= 512
 	val sincTableSize			= wingSize * sincTableOversampling
-	
+
 	/** half sinc */
 	val sincTable:Array[Float]	= {
 		val out		= new Array[Float](sincTableSize)
@@ -161,12 +161,12 @@ object Sinc extends Interpolation {
 		}
 		out
 	}
-	
+
 	/*
 	def sincFromTable(x:Double):Float	=
 			sincFromTablePremultiplied(x * sincTableOversampling)
 	*/
-	
+
 	// x is pre-multiplied with sincTableOversampling
 	def sincFromTablePremultiplied(x:Double):Float	= {
 		// TODO include some overshot in the table to save the range check
@@ -174,20 +174,20 @@ object Sinc extends Interpolation {
 		if (index < sincTableSize)	sincTable(index)
 		else						0f
 	}
-		
+
 	//------------------------------------------------------------------------------
-		
+
 	def windowedSinc(x:Double):Double	=
 			sinc(x) * blackman(x)
-		
+
 	def sinc(x:Double):Double	=
 			if (x == 0.0)	1.0
 			else			sin(Pi * x) / (Pi * x)
-	
+
 	def hanning(x:Double):Double	=
 			if (abs(x) <= wingSize)	0.5 + 0.5 * cos(Pi * x / wingSize)
 			else					0.0
-			
+
 	def blackman(x:Double):Double	=
 			if (abs(x) <= wingSize)	0.42 + 0.5 * cos(Pi * x / wingSize) + 0.08 * cos(2 * Pi * x / wingSize)
 			else					0.0

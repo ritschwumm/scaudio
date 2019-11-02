@@ -15,7 +15,7 @@ import scaudio.sample.impl._
 object Wav extends Logging {
 	def load(file:File):Either[Exception,Sample] =
 			Catch.exception in loadImpl(file)
-	
+
 	/** may throw exception if not successful */
 	private def loadImpl(file:File):Sample = {
 		// little endian 4 characters
@@ -27,7 +27,7 @@ object Wav extends Logging {
 			((bytes(1) & 0xff) <<  8) |
 			((bytes(0) & 0xff) <<  0)
 		}
-	
+
 		val	mapped:ByteBuffer	=
 				new RandomAccessFile(file, "r").getChannel use { fc =>
 					fc map (FileChannel.MapMode.READ_ONLY, 0, file.length)
@@ -39,23 +39,23 @@ object Wav extends Logging {
 		mapped order ByteOrder.nativeOrder
 		mapped.asShortBuffer
 		*/
-		
+
 		/*
 		// RIFX instead of RIFF for big endian data
 		// 8 bit is unsigned, 16 bit is signed
 		// left channel comes before right channel
 		*/
-		
+
 		if (mapped.remaining < 12)	throw WavFormatException("cannot find RIFF header")
 		val	tag1	= mapped.getInt
 		if (tag1 != mkTag("RIFF"))	throw WavFormatException("expected RIFF header")
 		/*val	flen	= */mapped.getInt
 		val	tag2	= mapped.getInt
 		if (tag2 != mkTag("WAVE"))	throw WavFormatException("expected WAVE header")
-		
+
 		var decoder:Option[ByteBuffer=>Sample]	= None
 		var sampleData:Option[ByteBuffer]		= None
-		
+
 		while (mapped.remaining != 0 && (decoder.isEmpty || sampleData.isEmpty)) {
 			if (mapped.remaining < 8)	throw WavFormatException("cannot find data tag")
 			val	tag	= mapped.getInt
@@ -85,10 +85,10 @@ object Wav extends Logging {
 				/*val byteRate		= */mapped.getInt	// == SampleRate * NumChannels * BitsPerSample / 8
 				/*val byteAlign		= */mapped.getShort	// == NumChannels * BitsPerSample / 8
 				val bitsPerSample	= mapped.getShort
-				
+
 				// if (channelCount != 2)	throw WavFormatException("unexpected channel count in fmt chunk, expected 2 for stereo: " + channelCount)
 				// if (frameRate != 44100)	throw WavFormatException("unexpected sample rate in fmt chunk, expected 44100 for cd quality: " + frameRate)
-				
+
 				decoder	= (format, bitsPerSample) matchOption {
 					case (1,  8)	=> new BufferSample_U1(frameRate, channelCount, _)
 					case (1, 16)	=> new BufferSample_S2LE(frameRate, channelCount, _)
@@ -128,10 +128,10 @@ object Wav extends Logging {
 				mapped position (mapped.position() + skp)
 			}
 		}
-		
+
 		val decoderX	= decoder		getOrElse { throw WavFormatException("missing format data")	}
 		val sampleDataX	= sampleData	getOrElse { throw WavFormatException("missing sample data") }
-		
+
 		decoderX(sampleDataX)
 	}
 }

@@ -10,10 +10,10 @@ import scaudio.format._
 /** a Sample with 2 byte signed little endian data points interleaved per channel */
 final class BufferSample_S2LE(val frameRate:Int, channelCount:Int, byteBuffer:ByteBuffer) extends Sample {
 	private val shortBuffer	= byteBuffer.duplicate.order(ByteOrder.LITTLE_ENDIAN).asShortBuffer
-	
+
 	val frameCount	= shortBuffer.limit() / channelCount
 	val sampleBytes	= 2
-	
+
 	val channels:Seq[Channel]	=
 			(0 until channelCount).toArray map { channelIndex =>
 				new BufferChannel_S2LE(frameCount, channelCount, channelIndex, shortBuffer)
@@ -28,7 +28,7 @@ final class BufferChannel_S2LE(val frameCount:Int, channelCount:Int, channelInde
 				)
 			}
 			else 0f
-			
+
 	@inline
 	def index(frame:Int):Int	=
 			frame * channelCount + channelIndex

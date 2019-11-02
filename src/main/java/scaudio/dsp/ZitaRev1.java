@@ -118,11 +118,11 @@ public final class ZitaRev1 {
 	public ZitaRev1(int samplingFreq) {
 		init(samplingFreq);
 	}
-	
+
 	/**
 	In Delay
 	Delay in ms before reverberation begins
-	
+
 	unit	ms
 	init	60.0
 	min		20.0
@@ -132,13 +132,13 @@ public final class ZitaRev1 {
 	public void setInDelay(float it) {
 		this.fvslider6	= it;
 	}
-	
+
 	// Decay Times in Bands
-	
+
 	/**
 	LF X
 	Crossover frequency (Hz) separating low and middle frequencies
-	
+
 	unit	Hz
 	init	200.0
 	min		50.0
@@ -148,11 +148,11 @@ public final class ZitaRev1 {
 	public void setLFCrossover(float it) {
 		this.fvslider10	= it;
 	}
-	
+
 	/**
 	Low RT60
 	T60 = time (in seconds) to decay 60dB in low-frequency band
-	
+
 	unit	s
 	init	3.0
 	min		1.0
@@ -162,11 +162,11 @@ public final class ZitaRev1 {
 	public void setLowRT60(float it) {
 		this.fvslider9	= it;
 	}
-	
+
 	/**
 	Mid RT60
 	T60 = time (in seconds) to decay 60dB in middle band
-			
+
 	unit	s
 	init	2.0
 	min		1.0
@@ -176,11 +176,11 @@ public final class ZitaRev1 {
 	public void setMidRT60(float it) {
 		this.fvslider7	= it;
 	}
-	
+
 	/**
 	HF Damping
 	Frequency (Hz) at which the high-frequency T60 is half the middle-band's T60
-	
+
 	unit	Hz
 	init	6000.0
 	min		1500.0
@@ -190,13 +190,13 @@ public final class ZitaRev1 {
 	public void setHFDamping(float it) {
 		this.fvslider8	= it;
 	}
-	
+
 	// RM Peaking Equalizer 1
-	
+
 	/**
 	Eq1 Freq
 	Center-frequency of second-order Regalia-Mitra peaking equalizer section 1
-		
+
 	unit	Hz
 	init	315.0
 	min		40.0
@@ -206,11 +206,11 @@ public final class ZitaRev1 {
 	public void setEq1Freq(float it) {
 		this.fvslider5	= it;
 	}
-	
+
 	/**
 	Eq1 Level
 	Peak level in dB of second-order Regalia-Mitra peaking equalizer section 1
-	
+
 	unit	dB
 	init	0.0
 	min		-15.0
@@ -220,13 +220,13 @@ public final class ZitaRev1 {
 	public void setEq1Level(float it) {
 		this.fvslider4	= it;
 	}
-	
+
 	// RM Peaking Equalizer 2
-	
+
 	/**
 	Eq2 Freq
 	Center-frequency of second-order Regalia-Mitra peaking equalizer section 2
-		
+
 	unit	Hz
 	init	315.0
 	min		40.0
@@ -236,11 +236,11 @@ public final class ZitaRev1 {
 	public void setEq2Freq(float it) {
 		this.fvslider3	= it;
 	}
-	
+
 	/**
 	Eq2 Level
 	Peak level in dB of second-order Regalia-Mitra peaking equalizer section 2
-	
+
 	unit	dB
 	init	0.0
 	min		-15.0
@@ -250,12 +250,12 @@ public final class ZitaRev1 {
 	public void setEq2Level(float it) {
 		this.fvslider2	= it;
 	}
-	
+
 	// Output
-	
+
 	/**
 	Dry/Wet Mix
-	
+
 	unit	-1=dry, +1=wet
 	init	0.0
 	min		-1.0
@@ -265,12 +265,12 @@ public final class ZitaRev1 {
 	public void setDryWetMix(float it) {
 		this.fvslider1	= it;
 	}
-	
+
 	/**
 	Level
 	Output scale factor
-	
-	unit	dB				
+
+	unit	dB
 	init	-20.0
 	min		-70.0
 	max		40.0
@@ -279,7 +279,7 @@ public final class ZitaRev1 {
 	public void setLevel(float it) {
 		this.fvslider0	= it;
 	}
-	
+
 	@SuppressWarnings("cast")
 	public void init(int samplingFreq) {
 		fvslider0 = (float) -20.;
