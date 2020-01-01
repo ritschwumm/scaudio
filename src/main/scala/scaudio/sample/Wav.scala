@@ -29,9 +29,9 @@ object Wav extends Logging {
 		}
 
 		val	mapped:ByteBuffer	=
-				new RandomAccessFile(file, "r").getChannel use { fc =>
-					fc map (FileChannel.MapMode.READ_ONLY, 0, file.length)
-				}
+			new RandomAccessFile(file, "r").getChannel use { fc =>
+				fc map (FileChannel.MapMode.READ_ONLY, 0, file.length)
+			}
 		// mapped.load()
 		mapped order ByteOrder.LITTLE_ENDIAN
 		/*

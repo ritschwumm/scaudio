@@ -17,21 +17,21 @@ final class BufferSample_S2LE(val frameRate:Int, channelCount:Int, byteBuffer:By
 	val sampleBytes	= 2
 
 	val channels:Seq[Channel]	=
-			0 until channelCount to ArraySeq map { channelIndex =>
-				new BufferChannel_S2LE(frameCount, channelCount, channelIndex, shortBuffer)
-			}
+		0 until channelCount to ArraySeq map { channelIndex =>
+			new BufferChannel_S2LE(frameCount, channelCount, channelIndex, shortBuffer)
+		}
 }
 
 final class BufferChannel_S2LE(val frameCount:Int, channelCount:Int, channelIndex:Int, shortBuffer:ShortBuffer) extends Channel {
 	def get(frame:Int):Float	=
-			if (frame >= 0 && frame < frameCount) {
-				AudioFormat_S2LE decode (
-					shortBuffer get index(frame)
-				)
-			}
-			else 0f
+		if (frame >= 0 && frame < frameCount) {
+			AudioFormat_S2LE decode (
+				shortBuffer get index(frame)
+			)
+		}
+		else 0f
 
 	@inline
 	def index(frame:Int):Int	=
-			frame * channelCount + channelIndex
+		frame * channelCount + channelIndex
 }

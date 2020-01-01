@@ -56,7 +56,7 @@ package object math {
 	}
 
 	def cosineFade(it:Double):Double	=
-			(1 - cos(it * Pi)) / 2
+		(1 - cos(it * Pi)) / 2
 
 	//------------------------------------------------------------------------------
 

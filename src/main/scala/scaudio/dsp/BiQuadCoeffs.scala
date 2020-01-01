@@ -243,13 +243,13 @@ object BiQuadCoeffs {
 
 	// NOTE this swaps a and b
 	def mkCoeffs(a0:Double, a1:Double, a2:Double, b0:Double, b1:Double, b2:Double)	=
-			BiQuadCoeffs(
-				a0	= b0 / a0,
-				a1	= b1 / a0,
-				a2	= b2 / a0,
-				b1	= a1 / a0,
-				b2	= a2 / a0
-			)
+		BiQuadCoeffs(
+			a0	= b0 / a0,
+			a1	= b1 / a0,
+			a2	= b2 / a0,
+			b1	= a1 / a0,
+			b2	= a2 / a0
+		)
 
 	/*
 	def main(args:Array[String]) {

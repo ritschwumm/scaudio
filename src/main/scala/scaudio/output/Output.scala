@@ -17,53 +17,53 @@ object Output {
 /** a audio output using javax.sound.sampled */
 final class Output(config:OutputConfig, producer:FrameProducer) extends Logging {
 	private val mixerInfos:Seq[Mixer.Info]	=
-			for {
-				mixerName	<- config.mixerNames map Some.apply
-				mixerInfo	<- AudioSystem.getMixerInfo.toVector
-				if mixerInfo.getName == mixerName
-			}
-			yield mixerInfo
+		for {
+			mixerName	<- config.mixerNames map Some.apply
+			mixerInfo	<- AudioSystem.getMixerInfo.toVector
+			if mixerInfo.getName == mixerName
+		}
+		yield mixerInfo
 
 	// NOTE null is the default mixer, we try this as a last resort
 	private val mixers:Seq[Mixer]	=
 			mixerInfos :+ null map AudioSystem.getMixer
 
 	private def mkLineInfo(audioFormat:AudioFormat):DataLine.Info	=
-			new DataLine.Info(
-				classOf[SourceDataLine],
-				audioFormat
-			)
+		new DataLine.Info(
+			classOf[SourceDataLine],
+			audioFormat
+		)
 
 	private def mkAudioFormat(channels:Int):AudioFormat	=
-			new AudioFormat(
-				config.rate,		// sampleRate
-				Output.sampleBits,	// sampleSizeInBits
-				channels,			// channels
-				true,   			// signed
-				false				// little endian
-			)
+		new AudioFormat(
+			config.rate,		// sampleRate
+			Output.sampleBits,	// sampleSizeInBits
+			channels,			// channels
+			true,   			// signed
+			false				// little endian
+		)
 
 	private val desiredChannels:Seq[Int]	=
-			config.headphone cata (
-				Seq(Output.lineChannels),
-				Seq(2*Output.lineChannels, Output.lineChannels)
-			)
+		config.headphone cata (
+			Seq(Output.lineChannels),
+			Seq(2*Output.lineChannels, Output.lineChannels)
+		)
 
 	@SuppressWarnings(Array("org.wartremover.warts.AsInstanceOf"))
 	private val openDataLineCandidates:Seq[Thunk[SourceDataLine]]	=
-			for {
-				mixer		<- mixers
-				channels	<- desiredChannels
-				audioFormat	= mkAudioFormat(channels)
-				lineInfo	= mkLineInfo(audioFormat)
-				if mixer isLineSupported lineInfo
-			}
-			yield thunk {
-				(mixer getLine lineInfo).asInstanceOf[SourceDataLine]
-			}
+		for {
+			mixer		<- mixers
+			channels	<- desiredChannels
+			audioFormat	= mkAudioFormat(channels)
+			lineInfo	= mkLineInfo(audioFormat)
+			if mixer isLineSupported lineInfo
+		}
+		yield thunk {
+			(mixer getLine lineInfo).asInstanceOf[SourceDataLine]
+		}
 
 	private val sourceDataLine	=
-			(openDataLineCandidates.headOption getOrError "audio not available").apply()
+		(openDataLineCandidates.headOption getOrError "audio not available").apply()
 
 	private val usedOutputFormat	= sourceDataLine.getFormat
 
@@ -126,13 +126,13 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 
 	/** actual configuration */
 	val info:OutputInfo	=
-			OutputInfo(
-				rate			= config.rate,
-				blockFrames		= config.blockFrames,
-				lineBlocks		= config.lineBlocks,
-				headphone		= phoneEnabled,
-				frameBytes		= Output.frameBytes
-			)
+		OutputInfo(
+			rate			= config.rate,
+			blockFrames		= config.blockFrames,
+			lineBlocks		= config.lineBlocks,
+			headphone		= phoneEnabled,
+			frameBytes		= Output.frameBytes
+		)
 
 	def start():Unit	= {
 		require(keepOn, "already disposed Output cannot be started")

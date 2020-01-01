@@ -16,8 +16,8 @@ trait Sample {
 	def channels:Seq[Channel]
 
 	def frameBytes:Int	=
-			sampleBytes * channels.size
+		sampleBytes * channels.size
 
 	def channelOrEmpty(index:Int):Channel	=
-			channels lift index getOrElse Channel.empty
+		channels lift index getOrElse Channel.empty
 }

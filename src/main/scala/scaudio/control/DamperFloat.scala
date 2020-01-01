@@ -8,7 +8,7 @@ object DamperFloat {
 	unitTime how many seconds a change of unit size should take
 	*/
 	def forRates(initial:Float, unitTime:Float, stepRate:Float):DamperFloat	=
-			new DamperFloat(initial, 1f / (stepRate * unitTime))
+		new DamperFloat(initial, 1f / (stepRate * unitTime))
 }
 
 /** a simple, linear animator to be used for parameters */

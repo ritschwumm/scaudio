@@ -8,7 +8,7 @@ object DamperDouble {
 	unitTime how many seconds a change of unit size should take
 	*/
 	def forRates(initial:Double, unitTime:Double, stepRate:Double):DamperDouble	=
-			new DamperDouble(initial, 1d / (stepRate * unitTime))
+		new DamperDouble(initial, 1d / (stepRate * unitTime))
 }
 
 /** a simple, linear animator to be used for parameters */

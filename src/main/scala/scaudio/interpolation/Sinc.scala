@@ -164,7 +164,7 @@ object Sinc extends Interpolation {
 
 	/*
 	def sincFromTable(x:Double):Float	=
-			sincFromTablePremultiplied(x * sincTableOversampling)
+		sincFromTablePremultiplied(x * sincTableOversampling)
 	*/
 
 	// x is pre-multiplied with sincTableOversampling
@@ -178,17 +178,17 @@ object Sinc extends Interpolation {
 	//------------------------------------------------------------------------------
 
 	def windowedSinc(x:Double):Double	=
-			sinc(x) * blackman(x)
+		sinc(x) * blackman(x)
 
 	def sinc(x:Double):Double	=
-			if (x == 0.0)	1.0
-			else			sin(Pi * x) / (Pi * x)
+		if (x == 0.0)	1.0
+		else			sin(Pi * x) / (Pi * x)
 
 	def hanning(x:Double):Double	=
-			if (abs(x) <= wingSize)	0.5 + 0.5 * cos(Pi * x / wingSize)
-			else					0.0
+		if (abs(x) <= wingSize)	0.5 + 0.5 * cos(Pi * x / wingSize)
+		else					0.0
 
 	def blackman(x:Double):Double	=
-			if (abs(x) <= wingSize)	0.42 + 0.5 * cos(Pi * x / wingSize) + 0.08 * cos(2 * Pi * x / wingSize)
-			else					0.0
+		if (abs(x) <= wingSize)	0.42 + 0.5 * cos(Pi * x / wingSize) + 0.08 * cos(2 * Pi * x / wingSize)
+		else					0.0
 }
