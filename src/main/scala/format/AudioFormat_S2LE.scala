@@ -2,19 +2,20 @@ package scaudio.format
 
 /** utility functions for cd quality 16 bit signed audio data */
 object AudioFormat_S2LE {
-	private val factor	= Short.MaxValue.toFloat
+	private final val decodeFactor	= Math.scalb(1, -15)
+	private final val encodeFactor	= Math.scalb(1, +15)
 
-	@inline def decode(value:Short):Float	= value.toFloat / factor
-	@inline def encode(value:Float):Short	= (value * factor).toShort
+	@inline def decode(value:Short):Float	= value.toFloat * decodeFactor
+	@inline def encode(value:Float):Short	= clamp(value * encodeFactor).toShort
 
 	//------------------------------------------------------------------------------
 
 	// next offset is offset+2
 	def putClamped(value:Float, buffer:Array[Byte], offset:Int):Unit	= {
-		putShort(clamp(value * factor).toShort, buffer, offset)
+		putShort(encode(value), buffer, offset)
 	}
 
-	def clamp(value:Float):Float	=
+	@inline def clamp(value:Float):Float	=
 			 if (value < Short.MinValue)	Short.MinValue
 		else if (value > Short.MaxValue)	Short.MaxValue
 		else								value

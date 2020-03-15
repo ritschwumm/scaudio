@@ -2,7 +2,7 @@ package scaudio.format
 
 /** utility functions for 8 bit mu-law audio data */
 object AudioFormat_MuLaw {
-	val table:Array[Short]	=
+	final val table:Array[Short]	=
 		Array(
 			-32124, -31100, -30076, -29052, -28028, -27004, -25980, -24956,
 			-23932, -22908, -21884, -20860, -19836, -18812, -17788, -16764,

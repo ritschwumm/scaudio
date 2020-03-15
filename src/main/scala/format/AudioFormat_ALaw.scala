@@ -2,7 +2,7 @@ package scaudio.format
 
 /** utility functions for 8 bit a-law audio data */
 object AudioFormat_ALaw {
-	val table:Array[Short]	=
+	final val table:Array[Short]	=
 		Array(
 			  -5504,  -5248,  -6016,  -5760,  -4480,  -4224,  -4992,  -4736,
 			  -7552,  -7296,  -8064,  -7808,  -6528,  -6272,  -7040,  -6784,
