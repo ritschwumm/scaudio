@@ -36,11 +36,11 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 
 	private def mkAudioFormat(channels:Int):AudioFormat	=
 		new AudioFormat(
-			config.rate,		// sampleRate
-			Output.sampleBits,	// sampleSizeInBits
-			channels,			// channels
-			true,   			// signed
-			false				// little endian
+			config.rate.toFloat,	// sampleRate
+			Output.sampleBits,		// sampleSizeInBits
+			channels,				// channels
+			true,   				// signed
+			false					// little endian
 		)
 
 	private val desiredChannels:Seq[Int]	=
