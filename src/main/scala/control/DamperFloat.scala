@@ -15,7 +15,7 @@ object DamperFloat {
 final class DamperFloat(initial:Float, absMaxDelta:Float) {
 	require(absMaxDelta > 0, "absMaxDelta must be positive and non-zero")
 
-	private var cur:Float		= initial
+	private var cur:Float	= initial
 	private var trg:Float	= initial
 
 	/** get the current value */
