@@ -68,20 +68,20 @@ class FormatTest extends Specification {
 
 	"AudioFormat_S3LE" should {
 		"see 56 34 12 as 0x00123456" in {
-			 AudioFormat_S3LE toInt (byte"56", byte"34", byte"12") mustEqual int"00123456"
+			 AudioFormat_S3LE.toInt(byte"56", byte"34", byte"12") mustEqual int"00123456"
 		}
 		"see ab cd ef as 0xffefcdab" in {
-			 AudioFormat_S3LE toInt (byte"ab", byte"cd", byte"ef") mustEqual int"ffefcdab"
+			 AudioFormat_S3LE.toInt(byte"ab", byte"cd", byte"ef") mustEqual int"ffefcdab"
 		}
 
 		"decode 0x000000 to 0f" in {
-			 AudioFormat_S3LE decode (byte"00", byte"00", byte"00") mustEqual 0f
+			 AudioFormat_S3LE.decode(byte"00", byte"00", byte"00") mustEqual 0f
 		}
 		"decode 0x800000 to -1f" in {
-			 AudioFormat_S3LE decode (byte"00", byte"00", byte"80") mustEqual -1f
+			 AudioFormat_S3LE.decode(byte"00", byte"00", byte"80") mustEqual -1f
 		}
 		"decode 0x400000 to 0.5f" in {
-			 AudioFormat_S3LE decode (byte"00", byte"00", byte"40") mustEqual 0.5f
+			 AudioFormat_S3LE.decode(byte"00", byte"00", byte"40") mustEqual 0.5f
 		}
 	}
 }

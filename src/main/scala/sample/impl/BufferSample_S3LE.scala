@@ -25,7 +25,7 @@ final class BufferChannel_S3LE(val frameCount:Int, channelCount:Int, channelInde
 			val b0		= byteBuffer get offset+0
 			val b1		= byteBuffer get offset+1
 			val b2		= byteBuffer get offset+2
-			AudioFormat_S3LE decode (b0, b1, b2)
+			AudioFormat_S3LE.decode(b0, b1, b2)
 		}
 		else 0f
 

@@ -1,23 +1,17 @@
 name			:= "scaudio"
 organization	:= "de.djini"
-version			:= "0.171.0"
+version			:= "0.172.0"
 
-scalaVersion	:= "2.13.2"
+scalaVersion	:= "2.13.3"
 scalacOptions	++= Seq(
+	"-feature",
 	"-deprecation",
 	"-unchecked",
-	// "-language:implicitConversions",
-	// "-language:existentials",
-	// "-language:higherKinds",
-	// "-language:reflectiveCalls",
-	// "-language:dynamics",
-	// "-language:experimental.macros"
-	"-feature",
+	"-Werror",
+	"-Xlint",
 	"-opt:l:method",
 	"-opt:l:inline",
 	"-opt-inline-from:scaudio.**",
-	"-Xfatal-warnings",
-	"-Xlint"
 )
 javacOptions	++= Seq(
 	"-source", "1.8",
@@ -26,8 +20,8 @@ javacOptions	++= Seq(
 
 conflictManager		:= ConflictManager.strict withOrganization "^(?!(org\\.scala-lang|org\\.scala-js)(\\..*)?)$"
 libraryDependencies	++= Seq(
-	"de.djini"		%% "scutil-jdk"	% "0.179.0"	% "compile",
-	"org.specs2"	%%	"specs2-core"	% "4.9.4"	% "test"
+	"de.djini"		%% "scutil-jdk"	% "0.180.0"	% "compile",
+	"org.specs2"	%%	"specs2-core"	% "4.10.0"	% "test"
 )
 
 wartremoverErrors ++= Seq(

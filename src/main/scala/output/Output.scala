@@ -26,7 +26,7 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 
 	// NOTE null is the default mixer, we try this as a last resort
 	private val mixers:Seq[Mixer]	=
-			mixerInfos :+ null map AudioSystem.getMixer
+		mixerInfos :+ null map AudioSystem.getMixer
 
 	private def mkLineInfo(audioFormat:AudioFormat):DataLine.Info	=
 		new DataLine.Info(
@@ -44,7 +44,7 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 		)
 
 	private val desiredChannels:Seq[Int]	=
-		config.headphone cata (
+		config.headphone.cata(
 			Seq(Output.lineChannels),
 			Seq(2*Output.lineChannels, Output.lineChannels)
 		)
@@ -75,7 +75,7 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 	private val speakerBuffer	= new FrameBuffer
 	private val phoneBuffer		= new FrameBuffer
 
-	sourceDataLine open (usedOutputFormat, config.lineBlocks * blockBytes)
+	sourceDataLine.open(usedOutputFormat, config.lineBlocks * blockBytes)
 	sourceDataLine.start()
 
 	@volatile
@@ -100,16 +100,16 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 		var offset	= 0
 		val end		= outputBuffer.length
 		while (offset < end) {
-			producer produce (speakerBuffer, phoneBuffer)
+			producer.produce(speakerBuffer, phoneBuffer)
 
-			AudioFormat_S2LE putClamped (speakerBuffer.left,	outputBuffer, offset+0)
-			AudioFormat_S2LE putClamped (speakerBuffer.right,	outputBuffer, offset+2)
+			AudioFormat_S2LE.putClamped(speakerBuffer.left,		outputBuffer, offset+0)
+			AudioFormat_S2LE.putClamped(speakerBuffer.right,	outputBuffer, offset+2)
 			offset	+= 4
 			speakerBuffer.clear()
 
 			if (phoneEnabled) {
-				AudioFormat_S2LE putClamped (phoneBuffer.left,	outputBuffer, offset+0)
-				AudioFormat_S2LE putClamped (phoneBuffer.right,	outputBuffer, offset+2)
+				AudioFormat_S2LE.putClamped(phoneBuffer.left,	outputBuffer, offset+0)
+				AudioFormat_S2LE.putClamped(phoneBuffer.right,	outputBuffer, offset+2)
 				offset	+= 4
 				phoneBuffer.clear()
 			}
@@ -118,7 +118,7 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 		// if (sourceDataLine.available == sourceDataLine.getBufferSize) {
 		// 	ERROR("underrun")
 		// }
-		sourceDataLine write (outputBuffer, 0, outputBuffer.length)
+		sourceDataLine.write(outputBuffer, 0, outputBuffer.length)
 	}
 
 	//------------------------------------------------------------------------------
