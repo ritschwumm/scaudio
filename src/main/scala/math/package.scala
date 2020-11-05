@@ -4,7 +4,6 @@ import java.lang.{ Double => JDouble, Float => JFloat }
 
 import scala.math._
 
-import scutil.lang._
 import scutil.math.functions._
 
 /** math utilities */
@@ -50,7 +49,7 @@ package object math {
 	//------------------------------------------------------------------------------
 
 	/** negative: first slow, then fast; positive: first fast, then slow */
-	def gammaFade(form:Double):Endo[Double]	= {
+	def gammaFade(form:Double):Double=>Double	= {
 		val scale	= exp(form)
 		it	=> exp(log(it) * scale)
 	}

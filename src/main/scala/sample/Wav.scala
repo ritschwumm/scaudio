@@ -5,7 +5,7 @@ import java.nio.ByteOrder
 import java.nio.ByteBuffer
 import java.nio.channels.FileChannel
 
-import scutil.base.implicits._
+import scutil.core.implicits._
 import scutil.lang._
 import scutil.log._
 
