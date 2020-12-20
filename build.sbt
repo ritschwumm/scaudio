@@ -1,6 +1,8 @@
+Global / onChangedBuildSource := ReloadOnSourceChanges
+
 name			:= "scaudio"
 organization	:= "de.djini"
-version			:= "0.182.0"
+version			:= "0.183.0"
 
 scalaVersion	:= "2.13.4"
 scalacOptions	++= Seq(
@@ -20,9 +22,11 @@ javacOptions	++= Seq(
 
 conflictManager		:= ConflictManager.strict withOrganization "^(?!(org\\.scala-lang|org\\.scala-js)(\\..*)?)$"
 libraryDependencies	++= Seq(
-	"de.djini"		%%	"scutil-jdk"	% "0.190.0"	% "compile",
-	"org.specs2"	%%	"specs2-core"	% "4.10.5"	% "test"
+	"de.djini"		%%	"scutil-jdk"	% "0.191.0"	% "compile",
+	"io.monix"		%%	"minitest"		% "2.9.1"	% "test"
 )
+
+testFrameworks	+= new TestFramework("minitest.runner.Framework")
 
 wartremoverErrors ++= Seq(
 	Wart.AsInstanceOf,
