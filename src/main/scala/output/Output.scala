@@ -4,6 +4,7 @@ import javax.sound.sampled._
 
 import scutil.core.implicits._
 import scutil.lang._
+import scutil.concurrent._
 import scutil.log._
 
 import scaudio.format._
@@ -12,6 +13,15 @@ object Output {
 	private val sampleBits		= 16
 	private val lineChannels	= 2
 	private val frameBytes		= sampleBits/8*lineChannels
+
+	// TODO construct this from multiple Usings to ensure all resources are properly freed
+	def create(config:OutputConfig, producer:FrameProducer):Using[Unit]	=
+		Using.of(
+			()	=> new Output(config, producer) doto (_.start())
+		)(
+			_.close()
+		)
+		.void
 }
 
 /** a audio output using javax.sound.sampled */
@@ -78,22 +88,8 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 	sourceDataLine.open(usedOutputFormat, config.lineBlocks * blockBytes)
 	sourceDataLine.start()
 
-	@volatile
-	private var keepOn	= true
-
-	private object driverThread extends Thread {
-		setPriority(Thread.MAX_PRIORITY)
-		setName("audio driver")
-
-		override def run():Unit	= {
-			while (keepOn) {
-				loop()
-			}
-		}
-	}
-
 	/** Thread main loop */
-	private def loop():Unit	= {
+	private def writeChunk():Unit	= {
 		// NOTE could use sourceDataLine.available to determine how much data can be written without blocking
 		// SourceDataLine docs says: bufferSize - available
 		// DataLine docs says: available
@@ -134,18 +130,18 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 			frameBytes		= Output.frameBytes
 		)
 
+	@volatile
+	private var driverThread:Disposable	= Disposable.empty
+
 	def start():Unit	= {
-		require(keepOn, "already closed Output cannot be started")
-		driverThread.start()
+		driverThread	=
+			SimpleWorker.build("audio driver", Thread.MAX_PRIORITY, Io.delay { writeChunk(); true }).openVoid()
 	}
 
 	/** release all resources and stop the Thread */
 	def close():Unit	= {
-		// NOTE sometimes isInterrupted doesn't seem to return true at all
-		keepOn	= false
-		driverThread.interrupt()
 		try {
-			driverThread.join()
+			driverThread.dispose()
 		}
 		catch { case e:InterruptedException =>
 			WARN("driverThread cannot be joined", e)
