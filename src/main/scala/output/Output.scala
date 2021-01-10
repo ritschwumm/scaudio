@@ -15,7 +15,7 @@ object Output {
 }
 
 /** a audio output using javax.sound.sampled */
-final class Output(config:OutputConfig, producer:FrameProducer) extends Logging {
+final class Output(config:OutputConfig, producer:FrameProducer) extends Logging with AutoCloseable {
 	private val mixerInfos:Seq[Mixer.Info]	=
 		for {
 			mixerName	<- config.mixerNames map Some.apply
@@ -135,12 +135,12 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 		)
 
 	def start():Unit	= {
-		require(keepOn, "already disposed Output cannot be started")
+		require(keepOn, "already closed Output cannot be started")
 		driverThread.start()
 	}
 
 	/** release all resources and stop the Thread */
-	def dispose():Unit	= {
+	def close():Unit	= {
 		// NOTE sometimes isInterrupted doesn't seem to return true at all
 		keepOn	= false
 		driverThread.interrupt()
