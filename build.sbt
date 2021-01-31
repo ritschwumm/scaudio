@@ -2,7 +2,7 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 
 name			:= "scaudio"
 organization	:= "de.djini"
-version			:= "0.197.0"
+version			:= "0.198.0"
 
 scalaVersion	:= "2.13.4"
 scalacOptions	++= Seq(

@@ -9,8 +9,7 @@ import scutil.concurrent._
 import scaudio.format._
 
 /** an audio output using javax.sound.sampled */
-@deprecated("use Output", "0.198.0")
-object NewOutput {
+object Output {
 	private val sampleBits		= 16
 	private val lineChannels	= 2
 	private val frameBytes		= sampleBits/8*lineChannels
@@ -18,8 +17,7 @@ object NewOutput {
 	//------------------------------------------------------------------------------
 
 	/** returns None when no audio is available */
-	@deprecated("use Output", "0.198.0")
-	def find(config:OutputConfig):Option[NewOutput]	=
+	def find(config:OutputConfig):Option[Output]	=
 		makeSourceDataLine(config) map { sourceDataLine =>
 			val outputInfo:OutputInfo	=
 				OutputInfo(
@@ -30,7 +28,7 @@ object NewOutput {
 					frameBytes		= frameBytes
 				)
 
-			new NewOutput(outputInfo, sourceDataLine)
+			new Output(outputInfo, sourceDataLine)
 		}
 
 	//------------------------------------------------------------------------------
@@ -83,23 +81,21 @@ object NewOutput {
 	}
 }
 
-@deprecated("use Output", "0.198.0")
-final class NewOutput(info:OutputInfo, sourceDataLine:SourceDataLine) {
+final class Output(info:OutputInfo, sourceDataLine:SourceDataLine) {
 	private val usedOutputFormat	= sourceDataLine.getFormat
 	private val blockBytes			= info.blockFrames * usedOutputFormat.getFrameSize
 
 	val outputInfo:OutputInfo	= info
 
-	// TODO check whether this buys us anyting over runProducerUsingConsumer
-	@deprecated("use Output", "0.198.0")
-	def runProducerChunked(producer:FrameProducer):Using[Unit]	= {
+	// TODO check whether this buys us anything over runProducerUsingConsumer
+	def runProducerChunked(producer:FrameProducer):IoResource[Unit]	= {
 		for {
 			_				<-	sourceDataLineLifecycle(sourceDataLine, usedOutputFormat, info.lineBlocks * blockBytes)
-			_				=	{ sourceDataLine.start() }
-			outputBuffer	=	new Array[Byte](blockBytes)
-			speakerBuffer	=	new FrameBuffer
-			phoneBuffer		=	new FrameBuffer
-			_				<-	SimpleWorker.build(
+			_				<-	IoResource delay { sourceDataLine.start() }
+			outputBuffer	<-	IoResource delay new Array[Byte](blockBytes)
+			speakerBuffer	<-	IoResource delay new FrameBuffer
+			phoneBuffer		<-	IoResource delay new FrameBuffer
+			_				<-	SimpleWorker.ioResource(
 								"audio driver",
 								Thread.MAX_PRIORITY,
 								Io.delay {
@@ -113,12 +109,11 @@ final class NewOutput(info:OutputInfo, sourceDataLine:SourceDataLine) {
 		yield ()
 	}
 
-	@deprecated("use Output", "0.198.0")
-	def runProducerUsingConsumer(producer:FrameProducer):Using[Unit]	=
+	def runProducerUsingConsumer(producer:FrameProducer):IoResource[Unit]	=
 		for {
 			consumer	<-	createConsumer
-			forwarder	=	new Forwarder(producer, consumer, info)
-			_			<-	SimpleWorker.build(
+			forwarder	<-	IoResource delay new Forwarder(producer, consumer, info)
+			_			<-	SimpleWorker.ioResource(
 								"audio driver",
 								Thread.MAX_PRIORITY,
 								Io.delay { forwarder.forward(); true }
@@ -126,11 +121,10 @@ final class NewOutput(info:OutputInfo, sourceDataLine:SourceDataLine) {
 		}
 		yield ()
 
-	@deprecated("use Output", "0.198.0")
-	def createConsumer:Using[FrameConsumer]	= {
+	def createConsumer:IoResource[FrameConsumer]	= {
 		for {
 			_	<-	sourceDataLineLifecycle(sourceDataLine, usedOutputFormat, info.lineBlocks * blockBytes)
-			_	=	{ sourceDataLine.start() }
+			_	<-	IoResource delay { sourceDataLine.start() }
 		}
 		yield {
 			val outputBuffer	= new Array[Byte](blockBytes)
@@ -138,8 +132,8 @@ final class NewOutput(info:OutputInfo, sourceDataLine:SourceDataLine) {
 		}
 	}
 
-	private def sourceDataLineLifecycle(sourceDataLine:SourceDataLine, audioFormat:AudioFormat, bufferSize:Int):Using[Unit]	=
-		Using.of { ()	=>
+	private def sourceDataLineLifecycle(sourceDataLine:SourceDataLine, audioFormat:AudioFormat, bufferSize:Int):IoResource[Unit]	=
+		IoResource.unsafe.disposing{
 			sourceDataLine.open(audioFormat, bufferSize)
 		}{ _	=>
 			sourceDataLine.close()
