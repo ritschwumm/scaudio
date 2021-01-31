@@ -54,10 +54,7 @@ final class Output(config:OutputConfig, producer:FrameProducer) extends Logging 
 		)
 
 	private val desiredChannels:Seq[Int]	=
-		config.headphone.cata(
-			Seq(Output.lineChannels),
-			Seq(2*Output.lineChannels, Output.lineChannels)
-		)
+		config.headphone.vector(2*Output.lineChannels) :+ Output.lineChannels
 
 	@SuppressWarnings(Array("org.wartremover.warts.AsInstanceOf"))
 	private val openDataLineCandidates:Seq[Thunk[SourceDataLine]]	=
