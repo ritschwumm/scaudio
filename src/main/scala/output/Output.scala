@@ -5,6 +5,7 @@ import scutil.lang._
 import scutil.log._
 
 /** a audio output using javax.sound.sampled - legacy variant */
+@deprecated("use NewOutput", "0.196.0")
 final class Output(config:OutputConfig, producer:FrameProducer) extends Logging with AutoCloseable {
 	private val newOutput	= NewOutput.find(config).getOrError("audio is not available")
 	private var disposer	= Disposer.empty
