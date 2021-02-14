@@ -13,11 +13,14 @@ object BiQuadCoeffs {
 	// standard Q for a flat corner in a single biquad, same as sqrt(0.5)
 	val sqrt2half:Double	= sqrt2 / 2
 
+	// pass through
+	val empty	= BiQuadCoeffs(1, 0, 0, 0, 0)
+
 	// 0	=> 1
 	// 6	=> sqrt(2)
 	// shelfA = db2gain(x/2)
 	private def shelfA(dbGain:Double):Double	=
-			pow(10, dbGain * 0.025)
+		pow(10, dbGain * 0.025)
 
 	//------------------------------------------------------------------------------
 

@@ -60,11 +60,13 @@ package object math {
 	//------------------------------------------------------------------------------
 
 	/** force denormalized numbers to zero */
+	@deprecated("use scutil.bit.DoubleUtil.ftz", "0.201.0")
 	def normalizeDouble(it:Double):Double	=
 		if (it <= -JDouble.MIN_NORMAL || it >= JDouble.MIN_NORMAL)	it
 		else														0.0
 
 	/** force denormalized numbers to zero */
+	@deprecated("use scutil.bit.FloatUtil.ftz", "0.201.0")
 	def normalizeFloat(it:Float):Float	=
 		if (it <= -JFloat.MIN_NORMAL || it >= JFloat.MIN_NORMAL)	it
 		else														0.0f

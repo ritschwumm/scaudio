@@ -1,5 +1,10 @@
 package scaudio.output
 
+object FrameProducer {
+	val blackhole:FrameProducer	=
+		(speaker:FrameBuffer, headphone:FrameBuffer) => ()
+}
+
 trait FrameProducer {
 	/**
 	 * this may be called in an arbitrary Thread created by the Output.

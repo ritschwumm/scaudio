@@ -1,6 +1,6 @@
 package scaudio.dsp
 
-import scaudio.math
+import scutil.bit.DoubleUtil.ftz
 
 final class BiQuad {
 	private var z1	= 0.0
@@ -8,9 +8,9 @@ final class BiQuad {
 
 	// transposed direct form 2
 	def process(in:Double, cs:BiQuadCoeffs):Double	= {
-		val out	= math normalizeDouble (in * cs.a0 + z1)
-		z1		= in * cs.a1 + out * -cs.b1 + z2
-		z2		= in * cs.a2 + out * -cs.b2
+		val out	= ftz(in * cs.a0) + z1
+		z1		= ftz(in * cs.a1) + ftz(out * -cs.b1) + z2
+		z2		= ftz(in * cs.a2) + ftz(out * -cs.b2)
 		out
 	}
 
