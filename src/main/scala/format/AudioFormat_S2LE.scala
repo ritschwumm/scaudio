@@ -16,8 +16,8 @@ object AudioFormat_S2LE {
 	}
 
 	@inline def clamp(value:Float):Float	=
-			 if (value < Short.MinValue)	Short.MinValue
-		else if (value > Short.MaxValue)	Short.MaxValue
+		if		(value < Short.MinValue)	Short.MinValue
+		else if	(value > Short.MaxValue)	Short.MaxValue
 		else								value
 
 	def putShort(value:Short, buffer:Array[Byte], offset:Int):Unit	= {

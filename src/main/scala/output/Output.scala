@@ -53,7 +53,7 @@ object Output {
 
 		def mixerInfos:Seq[Mixer.Info]	=
 			for {
-				mixerName	<- config.mixerNames map Some.apply
+				mixerName	<- config.mixerNames
 				mixerInfo	<- AudioSystem.getMixerInfo.toVector
 				if mixerInfo.getName == mixerName
 			}

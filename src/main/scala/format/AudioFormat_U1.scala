@@ -11,7 +11,7 @@ object AudioFormat_U1 {
 	@inline def encode(value:Float):Byte	= (clamp(value * encodeFactor) - offset).toByte
 
 	@inline def clamp(value:Float):Float	=
-			 if (value < Byte.MinValue)	Byte.MinValue
-		else if (value > Byte.MaxValue)	Byte.MaxValue
+		if		(value < Byte.MinValue)	Byte.MinValue
+		else if	(value > Byte.MaxValue)	Byte.MaxValue
 		else							value
 }

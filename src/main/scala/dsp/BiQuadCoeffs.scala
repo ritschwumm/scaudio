@@ -26,9 +26,9 @@ object BiQuadCoeffs {
 
 	// LPF
 	def lp(freq:Double, q:Double):BiQuadCoeffs	= {
-	 	val w		= PiDouble * freq
+		val w		= PiDouble * freq
 		val sinw	= sin(w)
-	 	val cosw	= cos(w)
+		val cosw	= cos(w)
 		val a		= sinw / q * 0.5
 
 		val b1	= 1 - cosw		// 1 - cosw
@@ -43,9 +43,9 @@ object BiQuadCoeffs {
 
 	// HPF
 	def hp(freq:Double, q:Double):BiQuadCoeffs	= {
-	 	val w		= PiDouble * freq
+		val w		= PiDouble * freq
 		val sinw	= sin(w)
-	 	val cosw	= cos(w)
+		val cosw	= cos(w)
 		val a		= sinw / q * 0.5
 
 		val b1	= -1 - cosw		// -(1 + cosw)
@@ -59,10 +59,10 @@ object BiQuadCoeffs {
 	}
 
 	// BPF	constant skirt gain, peak gain = Q
-	def bpSkirt(freq:Double, q:Double):BiQuadCoeffs	= {
-	 	val w		= PiDouble * freq
+	def bpSkirt(freq:Double, q:Double):BiQuadCoeffs = {
+		val w		= PiDouble * freq
 		val sinw	= sin(w)
-	 	val cosw	= cos(w)
+		val cosw	= cos(w)
 		val a		= sinw / q * 0.5
 
 		val b0	= sinw * 0.5	// sinw / 2
@@ -77,10 +77,10 @@ object BiQuadCoeffs {
 
 	// BPF	(constant 0 dB peak gain)
 	def bpPeak(freq:Double, q:Double):BiQuadCoeffs	= {
-	 	val w		= PiDouble * freq
+		val w		= PiDouble * freq
 		val sinw	= sin(w)
-	 	val cosw	= cos(w)
-	 	val a		= sinw / q * 0.5
+		val cosw	= cos(w)
+		val a		= sinw / q * 0.5
 
 		val b0	= a
 		val b1	= 0
@@ -94,9 +94,9 @@ object BiQuadCoeffs {
 
 	// notch
 	def notch(freq:Double, q:Double):BiQuadCoeffs	= {
-	 	val w		= PiDouble * freq
+		val w		= PiDouble * freq
 		val sinw	= sin(w)
-	 	val cosw	= cos(w)
+		val cosw	= cos(w)
 		val a		= sinw / q * 0.5
 
 		val b0	= 1
@@ -111,9 +111,9 @@ object BiQuadCoeffs {
 
 	// APF (allpass)
 	def ap(freq:Double, q:Double):BiQuadCoeffs	= {
-	 	val w		= PiDouble * freq
+		val w		= PiDouble * freq
 		val sinw	= sin(w)
-	 	val cosw	= cos(w)
+		val cosw	= cos(w)
 		val a		= sinw / q * 0.5
 
 		val a2	= 1 - a			// 1 - a
@@ -127,11 +127,11 @@ object BiQuadCoeffs {
 	}
 
 	// peakingEQ
-	def pk(freq:Double, q:Double, gain:Double):BiQuadCoeffs	= {
+	def pk(freq:Double, q:Double, gain:Double):BiQuadCoeffs = {
 		val A		= shelfA(gain)
-	 	val w		= PiDouble * freq
+		val w		= PiDouble * freq
 		val sinw	= sin(w)
-	 	val cosw	= cos(w)
+		val cosw	= cos(w)
 		val a		= sinw / q * 0.5
 
 		val b0	= 1 + a * A		// 1 + a * A
@@ -145,11 +145,11 @@ object BiQuadCoeffs {
 	}
 
 	// lowShelf
-	def ls(freq:Double, q:Double, gain:Double):BiQuadCoeffs	= {
+	def ls(freq:Double, q:Double, gain:Double):BiQuadCoeffs = {
 		val A		= shelfA(gain)
-	 	val w		= PiDouble * freq
+		val w		= PiDouble * freq
 		val sinw	= sin(w)
-	 	val cosw	= cos(w)
+		val cosw	= cos(w)
 		val a		= sinw / q * 0.5
 		val b		= 2 * a * sqrt(A)
 		val c		= (A - 1) * cosw
@@ -165,11 +165,11 @@ object BiQuadCoeffs {
 	}
 
 	// highShelf
-	def hs(freq:Double, q:Double, gain:Double):BiQuadCoeffs	= {
+	def hs(freq:Double, q:Double, gain:Double):BiQuadCoeffs = {
 		val A		= shelfA(gain)
-	 	val w		= PiDouble * freq
+		val w		= PiDouble * freq
 		val sinw	= sin(w)
-	 	val cosw	= cos(w)
+		val cosw	= cos(w)
 		val a		= sinw / q * 0.5
 		val b		= 2 * a * sqrt(A)
 		val c		= (A - 1) * cosw
@@ -188,7 +188,7 @@ object BiQuadCoeffs {
 
 	// TODO these give weird results when plotted
 
-	def lpButterworth(freq:Double):BiQuadCoeffs	= {
+	def lpButterworth(freq:Double):BiQuadCoeffs = {
 		val k	= tan(Pi * freq)
 
 		val b0	= k * k
@@ -201,7 +201,7 @@ object BiQuadCoeffs {
 		mkCoeffs(a0, a1, a2, b0, b1, b2)
 	}
 
-	def hpButterworth(freq:Double):BiQuadCoeffs	= {
+	def hpButterworth(freq:Double):BiQuadCoeffs = {
 		val k		= tan(Pi * freq)
 		val k2p1	= k * k + 1
 
