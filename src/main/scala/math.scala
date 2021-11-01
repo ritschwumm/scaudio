@@ -1,13 +1,11 @@
 package scaudio
 
-import java.lang.{ Double => JDouble, Float => JFloat }
-
 import scala.math._
 
 import scutil.math.functions._
 
 /** math utilities */
-package object math {
+object math {
 	// NOTE unboxed newtypes could be useful here
 
 	val zeroGain		= 0.0
@@ -56,18 +54,4 @@ package object math {
 
 	def cosineFade(it:Double):Double	=
 		(1 - cos(it * Pi)) / 2
-
-	//------------------------------------------------------------------------------
-
-	/** force denormalized numbers to zero */
-	@deprecated("use scutil.bit.DoubleUtil.ftz", "0.201.0")
-	def normalizeDouble(it:Double):Double	=
-		if (it <= -JDouble.MIN_NORMAL || it >= JDouble.MIN_NORMAL)	it
-		else														0.0
-
-	/** force denormalized numbers to zero */
-	@deprecated("use scutil.bit.FloatUtil.ftz", "0.201.0")
-	def normalizeFloat(it:Float):Float	=
-		if (it <= -JFloat.MIN_NORMAL || it >= JFloat.MIN_NORMAL)	it
-		else														0.0f
 }

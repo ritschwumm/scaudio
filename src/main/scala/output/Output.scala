@@ -95,7 +95,7 @@ final class Output(info:OutputInfo, sourceDataLine:SourceDataLine) {
 			outputBuffer	<-	IoResource delay new Array[Byte](blockBytes)
 			speakerBuffer	<-	IoResource delay new FrameBuffer
 			phoneBuffer		<-	IoResource delay new FrameBuffer
-			_				<-	SimpleWorker.ioResource(
+			_				<-	SimpleWorker.create(
 								"audio driver",
 								Thread.MAX_PRIORITY,
 								Io.delay {
@@ -113,7 +113,7 @@ final class Output(info:OutputInfo, sourceDataLine:SourceDataLine) {
 		for {
 			consumer	<-	createConsumer
 			forwarder	<-	IoResource delay new Forwarder(producer, consumer, info)
-			_			<-	SimpleWorker.ioResource(
+			_			<-	SimpleWorker.create(
 								"audio driver",
 								Thread.MAX_PRIORITY,
 								Io.delay { forwarder.forward(); true }
