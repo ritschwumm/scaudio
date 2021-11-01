@@ -4,7 +4,7 @@ ThisBuild / versionScheme := Some("early-semver")
 
 name			:= "scaudio"
 organization	:= "de.djini"
-version			:= "0.202.0"
+version			:= "0.203.0"
 
 scalaVersion	:= "2.13.5"
 scalacOptions	++= Seq(
@@ -24,8 +24,8 @@ javacOptions	++= Seq(
 
 conflictManager		:= ConflictManager.strict withOrganization "^(?!(org\\.scala-lang|org\\.scala-js)(\\..*)?)$"
 libraryDependencies	++= Seq(
-	"de.djini"		%%	"scutil-jdk"	% "0.204.0"	% "compile",
-	"io.monix"		%%	"minitest"		% "2.9.3"	% "test"
+	"de.djini"		%%	"scutil-jdk"	% "0.205.0"	% "compile",
+	"io.monix"		%%	"minitest"		% "2.9.6"	% "test"
 )
 
 testFrameworks	+= new TestFramework("minitest.runner.Framework")
