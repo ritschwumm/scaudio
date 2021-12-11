@@ -19,7 +19,7 @@ final class BufferSample_ALaw(val frameRate:Int, channelCount:Int, byteBuffer:By
 }
 
 final class BufferChannel_ALaw(val frameCount:Int, channelCount:Int, channelIndex:Int, byteBuffer:ByteBuffer) extends Channel {
-	def get(frame:Int):Float	=
+	inline def get(frame:Int):Float	=
 		if (frame >= 0 && frame < frameCount) {
 			AudioFormat_MuLaw decode (
 				byteBuffer get index(frame)
@@ -27,7 +27,6 @@ final class BufferChannel_ALaw(val frameCount:Int, channelCount:Int, channelInde
 		}
 		else 0f
 
-	@inline
-	def index(frame:Int):Int	=
+	inline def index(frame:Int):Int	=
 		frame * channelCount + channelIndex
 }

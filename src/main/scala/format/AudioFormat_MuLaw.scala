@@ -38,6 +38,6 @@ object AudioFormat_MuLaw {
 			56,			48,		40,		32,		24,		16,		 8,		 0
 		)
 
-	@inline def decode(value:Byte):Float	=
+	inline def decode(value:Byte):Float	=
 		AudioFormat_S2LE decode (table apply (value & 0xff))
 }

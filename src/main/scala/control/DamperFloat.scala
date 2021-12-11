@@ -19,7 +19,7 @@ final class DamperFloat(initial:Float, absMaxDelta:Float) {
 	private var trg:Float	= initial
 
 	/** get the current value */
-	def current:Float	= cur
+	inline def current:Float	= cur
 
 	/** set the target value */
 	def target(trg:Float):Unit	= {
@@ -32,7 +32,7 @@ final class DamperFloat(initial:Float, absMaxDelta:Float) {
 	}
 
 	/** nudge the current value towards the target value */
-	def step():Unit	= {
+	inline def step():Unit	= {
 		val delta	= trg - cur
 		cur	+= min(abs(delta), absMaxDelta) * signum(delta)
 	}

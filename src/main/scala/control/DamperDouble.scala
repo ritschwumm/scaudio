@@ -19,7 +19,7 @@ final class DamperDouble(initial:Double, absMaxDelta:Double) {
 	private var trg:Double	= initial
 
 	/** get the current value */
-	def current:Double	= cur
+	inline def current:Double	= cur
 
 	/** set the target value */
 	def target(trg:Double):Unit	= {
@@ -32,7 +32,7 @@ final class DamperDouble(initial:Double, absMaxDelta:Double) {
 	}
 
 	/** nudge the current value towards the target value */
-	def step():Unit	= {
+	inline def step():Unit	= {
 		val delta	= trg - cur
 		cur	+= min(abs(delta), absMaxDelta) * signum(delta)
 	}

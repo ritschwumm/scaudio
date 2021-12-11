@@ -15,9 +15,9 @@ trait Sample {
 	def sampleBytes:Int
 	def channels:Seq[Channel]
 
-	def frameBytes:Int	=
+	inline def frameBytes:Int	=
 		sampleBytes * channels.size
 
-	def channelOrEmpty(index:Int):Channel	=
+	inline def channelOrEmpty(index:Int):Channel	=
 		channels lift index getOrElse Channel.empty
 }

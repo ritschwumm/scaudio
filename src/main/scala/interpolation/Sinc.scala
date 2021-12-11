@@ -8,12 +8,12 @@ object Sinc extends Interpolation {
 	val wingSize	= 13
 
 	/** how many samples are accessed in both directions depending on the pitch */
-	def overshot(pitch:Double):Int	=
+	inline def overshot(pitch:Double):Int	=
 			(wingSize max ceil(wingSize*abs(pitch)).toInt) + 2
 
 	//------------------------------------------------------------------------------
 
-	def interpolate(buffer:Channel, frame:Double, pitch:Double):Float	= {
+	inline def interpolate(buffer:Channel, frame:Double, pitch:Double):Float	= {
 		// NOTE when frame is integer and pitch is 1 we don't have to do anything
 		val	apitch	= abs(pitch)
 			 if (apitch == 0)	0
@@ -28,7 +28,7 @@ object Sinc extends Interpolation {
 	-	output has higher sampling rate
 	-	sinc zero crossings are aligned to input
 	*/
-	def slower(buffer:Channel, frame:Double, pitch:Double):Float	= {
+	inline def slower(buffer:Channel, frame:Double, pitch:Double):Float	= {
 		val ceiling	= ceil(frame)
 		val index	= ceiling.toInt
 		val fract	= ceiling - frame
@@ -89,7 +89,7 @@ object Sinc extends Interpolation {
 	-	output has lower sampling rate
 	-	sinc zero crossings are aligned to output
 	*/
-	def faster(buffer:Channel, frame:Double, pitch:Double):Float	= {
+	inline def faster(buffer:Channel, frame:Double, pitch:Double):Float	= {
 		val ceiling	= ceil(frame)
 		val index	= ceiling.toInt
 		val fract	= ceiling - frame
@@ -168,7 +168,7 @@ object Sinc extends Interpolation {
 	*/
 
 	// x is pre-multiplied with sincTableOversampling
-	def sincFromTablePremultiplied(x:Double):Float	= {
+	inline def sincFromTablePremultiplied(x:Double):Float	= {
 		// TODO include some overshot in the table to save the range check
 		val index	= abs(x).toInt
 		if (index < sincTableSize)	sincTable(index)

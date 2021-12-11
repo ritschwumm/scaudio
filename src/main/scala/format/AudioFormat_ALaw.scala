@@ -38,6 +38,6 @@ object AudioFormat_ALaw {
 			944,    912,   1008,    976,    816,    784,    880,    848
 		)
 
-	@inline def decode(value:Byte):Float	=
+	inline def decode(value:Byte):Float	=
 		AudioFormat_S2LE decode (table apply (value & 0xff))
 }

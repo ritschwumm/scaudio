@@ -4,10 +4,10 @@ package scaudio.format
 object AudioFormat_S3LE {
 	private final val decodeFactor	= Math.scalb(1, -23)
 
-	@inline def decode(b0:Byte, b1:Byte, b2:Byte):Float	=
+	inline def decode(b0:Byte, b1:Byte, b2:Byte):Float	=
 		toInt(b0, b1, b2).toFloat * decodeFactor
 
-	@inline def toInt(b0:Byte, b1:Byte, b2:Byte):Int	=
+	inline def toInt(b0:Byte, b1:Byte, b2:Byte):Int	=
 		// two bytes to keep sign extension alive
 		((b2 & 0xffff)	<< 16)	|
 		((b1 & 0xff)	<< 8)	|

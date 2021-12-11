@@ -41,13 +41,13 @@ final class Equalizer(lowfreq:Double, highfreq:Double, mixfreq:Double) {
 	var m:Double	= 0.0
 	var h:Double	= 0.0
 
-	def process(in:Double, lowGain:Double, midGain:Double, highGain:Double):Double = {
+	inline def process(in:Double, lowGain:Double, midGain:Double, highGain:Double):Double = {
 		step(in)
 		l * lowGain + m * midGain + h * highGain
 	}
 
 	/**  EQ one sample */
-	def step(in:Double):Unit	= {
+	inline def step(in:Double):Unit	= {
 		// filter #1 (lowpass)
 		f1p0  += (lf * (in - f1p0)) + Equalizer.vsa
 		f1p1  += (lf * (f1p0 - f1p1))
@@ -77,7 +77,7 @@ final class Equalizer(lowfreq:Double, highfreq:Double, mixfreq:Double) {
 		sdm1   = in
 	}
 
-	def reset():Unit	= {
+	inline def reset():Unit	= {
 		// lf	= 0.0
 		f1p0	= 0.0
 		f1p1	= 0.0

@@ -21,28 +21,28 @@ object math {
 	//------------------------------------------------------------------------------
 
 	/** convert from an amplitude multiplication factor to a dB value */
-	def gain2db(gain:Double):Double	= 20 * log10(gain)
+	inline def gain2db(gain:Double):Double	= 20 * log10(gain)
 	// roughly Math.log(gain) * 6.0 / Math.log(2);
 
 	/** convert from a dB value to an amplitude multiplication factor */
-	def db2gain(dB:Double):Double	= exp10(dB / 20)
+	inline def db2gain(dB:Double):Double	= exp10(dB / 20)
 	// roughly Math.exp(dB * Math.log(2) / 6.0);
 
 	//------------------------------------------------------------------------------
 
 	/** convert from an amplitude multiplication factor to a dBi value */
-	def gain2dbi(gain:Double):Double	= 10 * log10(gain)
+	inline def gain2dbi(gain:Double):Double	= 10 * log10(gain)
 
 	/** convert from a dBi value to an amplitude multiplication factor */
-	def dbi2gain(dB:Double):Double		= exp10(dB / 10)
+	inline def dbi2gain(dB:Double):Double		= exp10(dB / 10)
 
 	//------------------------------------------------------------------------------
 
 	/** convert from a frequency factor to a linear 1-per-octave value */
-	@inline def frequency2octave(frequency:Double):Double	= log2(frequency)
+	inline def frequency2octave(frequency:Double):Double	= log2(frequency)
 
 	/** convert from a linear 1-per-octave value to a frequency factor */
-	@inline def octave2frequency(octave:Double):Double		= exp2(octave)
+	inline def octave2frequency(octave:Double):Double		= exp2(octave)
 
 	//------------------------------------------------------------------------------
 

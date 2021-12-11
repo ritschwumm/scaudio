@@ -19,7 +19,7 @@ final class BufferSample_U1(val frameRate:Int, channelCount:Int, byteBuffer:Byte
 }
 
 final class BufferChannel_U1(val frameCount:Int, channelCount:Int, channelIndex:Int, byteBuffer:ByteBuffer) extends Channel {
-	def get(frame:Int):Float	=
+	inline def get(frame:Int):Float	=
 		if (frame >= 0 && frame < frameCount) {
 			AudioFormat_U1 decode (
 				byteBuffer get index(frame)
@@ -27,7 +27,6 @@ final class BufferChannel_U1(val frameCount:Int, channelCount:Int, channelIndex:
 		}
 		else 0f
 
-	@inline
-	def index(frame:Int):Int	=
+	inline def index(frame:Int):Int	=
 		frame * channelCount + channelIndex
 }
