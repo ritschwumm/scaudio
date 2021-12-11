@@ -4,19 +4,16 @@ ThisBuild / versionScheme := Some("early-semver")
 
 name			:= "scaudio"
 organization	:= "de.djini"
-version			:= "0.212.0"
+version			:= "0.213.0"
 
-scalaVersion	:= "2.13.7"
+scalaVersion	:= "3.1.0"
 scalacOptions	++= Seq(
 	"-feature",
 	"-deprecation",
 	"-unchecked",
-	"-Werror",
-	"-Xlint",
-	"-Xsource:3",
-	"-opt:l:method",
-	"-opt:l:inline",
-	"-opt-inline-from:scaudio.**",
+	"-Wunused:all",
+	"-Xfatal-warnings",
+	"-Ykind-projector:underscores",
 )
 javacOptions	++= Seq(
 	"-source", "1.8",
@@ -25,7 +22,7 @@ javacOptions	++= Seq(
 
 conflictManager		:= ConflictManager.strict withOrganization "^(?!(org\\.scala-lang|org\\.scala-js)(\\..*)?)$"
 libraryDependencies	++= Seq(
-	"de.djini"		%%	"scutil-jdk"	% "0.213.0"	% "compile",
+	"de.djini"		%%	"scutil-jdk"	% "0.214.0"	% "compile",
 	"io.monix"		%%	"minitest"		% "2.9.6"	% "test"
 )
 
