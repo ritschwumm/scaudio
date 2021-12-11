@@ -1,8 +1,8 @@
 package scaudio.output
 
-import javax.sound.sampled._
+import javax.sound.sampled.*
 
-import scaudio.format._
+import scaudio.format.*
 
 final class FrameConsumer(outputBuffer:Array[Byte], sourceDataLine:SourceDataLine) {
 	private var outputIndex	= 0

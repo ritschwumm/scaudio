@@ -2,18 +2,16 @@ package scaudio.sample.impl
 
 import java.nio.ByteBuffer
 
-import scala.collection.immutable.ArraySeq
-
-import scaudio.sample._
-import scaudio.format._
+import scaudio.sample.*
+import scaudio.format.*
 
 /** a Sample with 3 byte signed little endian data points interleaved per channel */
 final class BufferSample_S3LE(val frameRate:Int, channelCount:Int, byteBuffer:ByteBuffer) extends Sample {
 	val frameCount	= byteBuffer.limit() / channelCount / 3
 	val sampleBytes	= 3
 
-	val channels:Seq[Channel]	=
-		0 until channelCount to ArraySeq map { channelIndex =>
+	val channels:IArray[Channel]	=
+		IArray.from(0 until channelCount) map { channelIndex =>
 			new BufferChannel_S3LE(frameCount, channelCount, channelIndex, byteBuffer)
 		}
 }

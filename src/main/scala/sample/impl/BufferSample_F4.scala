@@ -4,9 +4,7 @@ import java.nio.ByteOrder
 import java.nio.ByteBuffer
 import java.nio.FloatBuffer
 
-import scala.collection.immutable.ArraySeq
-
-import scaudio.sample._
+import scaudio.sample.*
 
 /** a Sample with 4 byte IEEE floating point data points interleaved per channel */
 final class BufferSample_F4(val frameRate:Int, val channelCount:Int, byteBuffer:ByteBuffer) extends Sample {
@@ -15,8 +13,8 @@ final class BufferSample_F4(val frameRate:Int, val channelCount:Int, byteBuffer:
 	val frameCount	= floatBuffer.limit() / channelCount
 	val sampleBytes	= 4
 
-	val channels:Seq[Channel]	=
-		0 until channelCount to ArraySeq map { channelIndex =>
+	val channels:IArray[Channel]	=
+		IArray.from(0 until channelCount) map { channelIndex =>
 			new BufferChannel_F4(frameCount, channelCount, channelIndex, floatBuffer)
 		}
 }

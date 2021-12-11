@@ -1,9 +1,9 @@
 package scaudio.midi
 
-import javax.sound.midi.{MidiEvent => _, _}
+import javax.sound.midi.{MidiEvent as _, *}
 
-import scutil.core.implicits._
-import scutil.lang._
+import scutil.core.implicits.*
+import scutil.lang.*
 
 // TODO drone.midi.MidiServer and melodica.midi.MidiServer are identical
 object MidiServer {

@@ -1,7 +1,7 @@
 package scaudio.dsp
 
-import scala.math._
-import scutil.math.functions._
+import scala.math.*
+import scutil.math.functions.*
 
 /**
 all freq parameters are pre-divided by the sample rate
@@ -257,7 +257,7 @@ object BiQuadCoeffs {
 	/*
 	def main(args:Array[String]) {
 		val coeffs	= lpBessel(0.25)
-		import coeffs._
+		import coeffs.*
 		println(a0)
 		println(a1)
 		println(a2)

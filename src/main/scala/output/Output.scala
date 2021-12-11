@@ -1,12 +1,12 @@
 package scaudio.output
 
-import javax.sound.sampled._
+import javax.sound.sampled.*
 
-import scutil.core.implicits._
-import scutil.lang._
-import scutil.concurrent._
+import scutil.core.implicits.*
+import scutil.lang.*
+import scutil.concurrent.*
 
-import scaudio.format._
+import scaudio.format.*
 
 /** an audio output using javax.sound.sampled */
 object Output {

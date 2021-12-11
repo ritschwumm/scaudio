@@ -1,8 +1,8 @@
 package scaudio.midi
 
-import javax.sound.midi._
+import javax.sound.midi.*
 
-import scutil.core.implicits._
+import scutil.core.implicits.*
 
 object MidiEvent {
 	def parse(message:MidiMessage):Option[MidiEvent]	=

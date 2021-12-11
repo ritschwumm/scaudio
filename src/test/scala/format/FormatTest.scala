@@ -1,8 +1,8 @@
 package scaudio.format
 
-import minitest._
+import minitest.*
 
-import scutil.lang.implicits._
+import scutil.lang.implicits.*
 
 object FormatTest extends SimpleTestSuite {
 	test("AudioFormat_S2LE should work") {

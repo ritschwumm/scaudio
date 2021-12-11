@@ -1,6 +1,6 @@
 package scaudio.dsp
 
-import scala.math._
+import scala.math.*
 
 object Equalizer {
 	/** denormal fix */

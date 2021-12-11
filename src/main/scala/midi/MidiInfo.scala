@@ -1,8 +1,8 @@
 package scaudio.midi
 
-import javax.sound.midi.{MidiEvent => _, _}
+import javax.sound.midi.{MidiEvent as _, *}
 
-import scutil.lang._
+import scutil.lang.*
 
 object MidiInfo {
 	@SuppressWarnings(Array("org.wartremover.warts.ToString"))

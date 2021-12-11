@@ -1,15 +1,15 @@
 package scaudio.sample
 
-import java.io._
+import java.io.*
 import java.nio.ByteOrder
 import java.nio.ByteBuffer
 import java.nio.channels.FileChannel
 
-import scutil.core.implicits._
-import scutil.lang._
-import scutil.log._
+import scutil.core.implicits.*
+import scutil.lang.*
+import scutil.log.*
 
-import scaudio.sample.impl._
+import scaudio.sample.impl.*
 
 /** audio sample loaded from a wav file using a MappedByteBuffer */
 object Wav extends Logging {

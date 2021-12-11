@@ -2,10 +2,10 @@ package scaudio.sample
 
 object Sample {
 	object empty extends Sample {
-		val frameRate:Int			= 1
-		val frameCount:Int			= 0
-		val sampleBytes:Int			= 0
-		val channels:Seq[Channel]	= Nil
+		val frameRate:Int				= 1
+		val frameCount:Int				= 0
+		val sampleBytes:Int				= 0
+		val channels:IArray[Channel]	= IArray.empty
 	}
 }
 
@@ -13,7 +13,7 @@ trait Sample {
 	def frameRate:Int
 	def frameCount:Int
 	def sampleBytes:Int
-	def channels:Seq[Channel]
+	def channels:IArray[Channel]
 
 	inline def frameBytes:Int	=
 		sampleBytes * channels.size
