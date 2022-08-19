@@ -37,7 +37,7 @@ object MidiClient {
 			def send(event:MidiEvent, time:MidiTime):Io[Either[Exception,Unit]]	=
 				Io
 				.delay {
-					receiver.send(MidiEvent.unparse(event), time)
+					receiver.send(MidiEvent.unparse(event), time.value)
 				}
 				.attempt
 		}
