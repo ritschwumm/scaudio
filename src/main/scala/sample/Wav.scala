@@ -1,6 +1,7 @@
 package scaudio.sample
 
 import java.io.*
+import java.nio.file.Path
 import java.nio.ByteOrder
 import java.nio.ByteBuffer
 import java.nio.channels.FileChannel
@@ -13,7 +14,11 @@ import scaudio.sample.impl.*
 
 /** audio sample loaded from a wav file using a MappedByteBuffer */
 object Wav extends Logging {
-	def load(file:File):Either[Exception,Sample] =
+	def load(path:Path):Either[Exception,Sample] =
+		Catch.exception in loadImpl(path.toFile)
+
+	// TODO path get rid of this
+	def loadFile(file:File):Either[Exception,Sample] =
 		Catch.exception in loadImpl(file)
 
 	/** may throw exception if not successful */
