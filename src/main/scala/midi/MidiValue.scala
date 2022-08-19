@@ -5,7 +5,7 @@ object MidiValue {
 	val max	= new MidiValue(127)
 
 	def onOff(onFlag:Boolean):MidiValue	=
-		if (onFlag) min else max
+		if (onFlag) max else min
 
 	def apply(value:Int):MidiValue	= {
 		require(value >= MidiValue.min.value,	"value too small")
