@@ -1,7 +1,7 @@
 package scaudio.sample
 
-import java.io.*
-import java.nio.file.Path
+import java.io.RandomAccessFile
+import java.nio.file.*
 import java.nio.ByteOrder
 import java.nio.ByteBuffer
 import java.nio.channels.FileChannel
@@ -14,15 +14,11 @@ import scaudio.sample.impl.*
 
 /** audio sample loaded from a wav file using a MappedByteBuffer */
 object Wav extends Logging {
-	def load(path:Path):Either[Exception,Sample] =
-		Catch.exception in loadImpl(path.toFile)
-
-	// TODO path get rid of this
-	def loadFile(file:File):Either[Exception,Sample] =
+	def load(file:Path):Either[Exception,Sample] =
 		Catch.exception in loadImpl(file)
 
 	/** may throw exception if not successful */
-	private def loadImpl(file:File):Sample = {
+	private def loadImpl(file:Path):Sample = {
 		// little endian 4 characters
 		def mkTag(s:String):Long	= {
 			val bytes	= s getBytes "US-ASCII"
@@ -34,8 +30,8 @@ object Wav extends Logging {
 		}
 
 		val	mapped:ByteBuffer	=
-			new RandomAccessFile(file, "r").getChannel use { fc =>
-				fc.map(FileChannel.MapMode.READ_ONLY, 0, file.length)
+			new RandomAccessFile(file.toFile, "r").getChannel use { fc =>
+				fc.map(FileChannel.MapMode.READ_ONLY, 0, Files.size(file))
 			}
 		// mapped.load()
 		mapped order ByteOrder.LITTLE_ENDIAN
