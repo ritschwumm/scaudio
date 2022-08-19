@@ -6,6 +6,8 @@ import scutil.core.implicits.*
 import scutil.lang.*
 
 object MidiClient {
+	val mock:MidiClient	= (event:MidiEvent, time:MidiTime) => Io.pure(Right(()))
+
 	def open(selectDevice:Predicate[MidiDeviceInfo]):IoResource[Option[MidiClient]]	=
 		for {
 			candidates	<-	IoResource.lift(findDevice(selectDevice))
