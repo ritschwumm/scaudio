@@ -9,7 +9,9 @@ object MidiVelocity {
 }
 
 // 0..127
-final case class MidiVelocity(value:Int) {
+final case class MidiVelocity(value:Int) extends Ordered[MidiVelocity] {
 	require(value >= MidiVelocity.min.value,	"value too small")
 	require(value <= MidiVelocity.max.value,	"value too large")
+
+	def compare(that:MidiVelocity):Int	= this.value.compare(that.value)
 }

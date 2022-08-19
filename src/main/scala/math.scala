@@ -47,10 +47,8 @@ object math {
 	//------------------------------------------------------------------------------
 
 	/** negative: first slow, then fast; positive: first fast, then slow */
-	def gammaFade(form:Double):Double=>Double	= {
-		val scale	= exp(form)
-		it	=> exp(log(it) * scale)
-	}
+	def gammaFade(form:Double):Double=>Double	=
+		it	=> exp(log(it) * exp(form))
 
 	def cosineFade(it:Double):Double	=
 		(1 - cos(it * Pi)) / 2
