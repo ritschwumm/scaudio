@@ -6,19 +6,34 @@ import scutil.core.implicits.*
 import scutil.lang.*
 
 object MidiServer {
-	def open(selectDevice:Predicate[String], handler:MidiHandler):IoResource[Boolean]	=
+	def open(selectDevice:Predicate[MidiDeviceInfo], handler:MidiHandler):IoResource[Boolean]	=
 		for {
-			candidates	<-	IoResource.lift(findCandidates(selectDevice))
-			result		<-	candidates.headOption.traverse(openCandidate(handler))
+			candidates	<-	IoResource.lift(findDevice(selectDevice))
+			result		<-	candidates.headOption.traverse(openDevice(handler))
 		}
 		yield result.isDefined
 
-	private def openCandidate(handler:MidiHandler)(candidate:Candidate):IoResource[Unit]	=
+	private def findDevice(selectDevice:Predicate[MidiDevice.Info]):Io[Vector[MidiDevice]]	=
+		Io delay {
+			for {
+				deviceInfo	<- MidiSystem.getMidiDeviceInfo.toVector
+				if selectDevice(deviceInfo)
+
+				device		<- midiAvailable(MidiSystem.getMidiDevice(deviceInfo)).toVector
+				if device.getMaxTransmitters != 0
+			}
+			yield device
+		}
+
+	// NOTE closing the device closes all transmitters and receivers
+	private def openDevice(handler:MidiHandler)(device:MidiDevice):IoResource[Unit]	=
 		for {
-			// closing the device closes all transmitters and receivers
-			_			<-	IoResource.unsafe.disposing(candidate.device.open())(_ => candidate.device.close())
+			// TODO midi deal with MidiUnavailableException here?
+			_			<-	IoResource.unsafe.disposing(device.open())(_ => device.close())
+			// TODO midi deal with MidiUnavailableException here?
+			transmitter	<-	IoResource.unsafe.disposing(device.getTransmitter)(_.close())
 			_			<-	IoResource delay {
-								candidate.transmitter setReceiver new Receiver {
+								transmitter setReceiver new Receiver {
 									def send(message:MidiMessage, timeStamp:Long):Unit	= {
 										MidiEvent.parse(message).traverse(handler.handle(_, timeStamp)).unsafeRun()
 									}
@@ -27,22 +42,6 @@ object MidiServer {
 							}
 		}
 		yield ()
-
-	private final case class Candidate(device:MidiDevice, transmitter:Transmitter)
-
-	private def findCandidates(selectDevice:Predicate[String]):Io[Vector[Candidate]]	=
-		Io delay {
-			for {
-				deviceInfo	<- MidiSystem.getMidiDeviceInfo.toVector
-				if selectDevice(deviceInfo.getName)
-
-				device		<- midiAvailable(MidiSystem.getMidiDevice(deviceInfo)).toVector
-				if device.getMaxTransmitters != 0
-
-				transmitter	<- midiAvailable(device.getTransmitter).toVector
-			}
-			yield Candidate(device, transmitter)
-		}
 
 	private def midiAvailable[T](it: =>T):Option[T]	=
 		Catch.byType[MidiUnavailableException].in(it).toOption
