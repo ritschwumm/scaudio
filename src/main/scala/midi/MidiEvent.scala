@@ -1,6 +1,6 @@
 package scaudio.midi
 
-import javax.sound.midi.*
+import javax.sound.midi.{ MidiChannel as _ , * }
 
 import scutil.core.implicits.*
 
@@ -21,7 +21,7 @@ object MidiEvent {
 }
 
 enum MidiEvent {
-	case NoteOn(channel:Int, note:Int, velocity:Int)
-	case NoteOff(channel:Int, note:Int, velocity:Int)
-	case ControlChange(channel:Int, control:Int, value:Int)
+	case NoteOn(channel:MidiChannel, note:MidiValue, velocity:MidiValue)
+	case NoteOff(channel:MidiChannel, note:MidiValue, velocity:MidiValue)
+	case ControlChange(channel:MidiChannel, control:MidiValue, value:MidiValue)
 }

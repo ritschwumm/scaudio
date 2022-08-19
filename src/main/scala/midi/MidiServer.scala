@@ -34,8 +34,8 @@ object MidiServer {
 			transmitter	<-	IoResource.unsafe.disposing(device.getTransmitter)(_.close())
 			_			<-	IoResource delay {
 								transmitter setReceiver new Receiver {
-									def send(message:MidiMessage, timeStamp:Long):Unit	= {
-										MidiEvent.parse(message).traverse(handler.handle(_, timeStamp)).unsafeRun()
+									def send(message:MidiMessage, time:MidiTime):Unit	= {
+										MidiEvent.parse(message).traverse(handler.handle(_, time)).unsafeRun()
 									}
 									def close():Unit	= {}
 								}

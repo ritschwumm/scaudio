@@ -6,8 +6,6 @@ import scutil.core.implicits.*
 import scutil.lang.*
 
 object MidiClient {
-	val noTime	= -1L
-
 	def open(selectDevice:Predicate[MidiDeviceInfo]):IoResource[Option[MidiClient]]	=
 		for {
 			candidates	<-	IoResource.lift(findDevice(selectDevice))
@@ -36,7 +34,7 @@ object MidiClient {
 			receiver	<-	IoResource.unsafe.disposing(device.getReceiver)(_.close())
 		}
 		yield new MidiClient {
-			def send(event:MidiEvent, time:Long):Io[Unit]	=
+			def send(event:MidiEvent, time:MidiTime):Io[Unit]	=
 				Io delay {
 					// TODO midi deal with MidiUnavailableException or others here?
 					receiver.send(MidiEvent.unparse(event), time)
@@ -48,7 +46,6 @@ object MidiClient {
 }
 
 trait MidiClient {
-	// time is -1 (noTime) if not supported
 	// TODO throws exceptions when the device is unplugged, right?
-	def send(event:MidiEvent, time:Long):Io[Unit]
+	def send(event:MidiEvent, time:MidiTime):Io[Unit]
 }
