@@ -1,14 +1,13 @@
 package scaudio.sample
 
-import java.io.RandomAccessFile
 import java.nio.file.*
 import java.nio.ByteOrder
 import java.nio.ByteBuffer
-import java.nio.channels.FileChannel
 
 import scutil.core.implicits.*
 import scutil.lang.*
 import scutil.log.*
+import scutil.io.*
 
 import scaudio.sample.impl.*
 
@@ -29,10 +28,7 @@ object Wav extends Logging {
 			((bytes(0) & 0xff) <<  0)
 		}
 
-		val	mapped:ByteBuffer	=
-			new RandomAccessFile(file.toFile, "r").getChannel use { fc =>
-				fc.map(FileChannel.MapMode.READ_ONLY, 0, Files.size(file))
-			}
+		val	mapped:ByteBuffer	= MoreFiles.mapReadOnly(file)
 		// mapped.load()
 		mapped order ByteOrder.LITTLE_ENDIAN
 		/*
