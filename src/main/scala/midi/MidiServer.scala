@@ -5,20 +5,22 @@ import javax.sound.midi.{MidiEvent as _, *}
 import scutil.core.implicits.*
 import scutil.lang.*
 
-// TODO drone.midi.MidiServer and melodica.midi.MidiServer are identical
 object MidiServer {
-	// TODO using throws
-	def open(selectDevice:Predicate[String], handler:MidiHandler):IoResource[Unit]	=
+	def open(selectDevice:Predicate[String], handler:MidiHandler):IoResource[Boolean]	=
 		for {
-			candidate	<-	IoResource delay {
-								findDevices(selectDevice).headOption getOrError "no midi device found"
-							}
+			candidates	<-	IoResource.lift(findCandidates(selectDevice))
+			result		<-	candidates.headOption.traverse(openCandidate(handler))
+		}
+		yield result.isDefined
+
+	private def openCandidate(handler:MidiHandler)(candidate:Candidate):IoResource[Unit]	=
+		for {
 			// closing the device closes all transmitters and receivers
 			_			<-	IoResource.unsafe.disposing(candidate.device.open())(_ => candidate.device.close())
 			_			<-	IoResource delay {
 								candidate.transmitter setReceiver new Receiver {
 									def send(message:MidiMessage, timeStamp:Long):Unit	= {
-										MidiEvent parse message foreach { handler.handle(_, timeStamp) }
+										MidiEvent.parse(message).traverse(handler.handle(_, timeStamp)).unsafeRun()
 									}
 									def close():Unit	= {}
 								}
@@ -28,15 +30,19 @@ object MidiServer {
 
 	private final case class Candidate(device:MidiDevice, transmitter:Transmitter)
 
-	private def findDevices(selectDevice:Predicate[String]):Vector[Candidate]	=
-		for {
-			deviceInfo	<- MidiSystem.getMidiDeviceInfo.toVector
-			if selectDevice(deviceInfo.getName)
-			device		<- midiAvailable(MidiSystem getMidiDevice deviceInfo).toVector
-			if device.getMaxTransmitters != 0
-			transmitter	<- midiAvailable(device.getTransmitter).toVector
+	private def findCandidates(selectDevice:Predicate[String]):Io[Vector[Candidate]]	=
+		Io delay {
+			for {
+				deviceInfo	<- MidiSystem.getMidiDeviceInfo.toVector
+				if selectDevice(deviceInfo.getName)
+
+				device		<- midiAvailable(MidiSystem.getMidiDevice(deviceInfo)).toVector
+				if device.getMaxTransmitters != 0
+
+				transmitter	<- midiAvailable(device.getTransmitter).toVector
+			}
+			yield Candidate(device, transmitter)
 		}
-		yield Candidate(device, transmitter)
 
 	private def midiAvailable[T](it: =>T):Option[T]	=
 		Catch.byType[MidiUnavailableException].in(it).toOption

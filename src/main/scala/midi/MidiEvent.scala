@@ -12,9 +12,16 @@ object MidiEvent {
 			case sm:ShortMessage if sm.getCommand == ShortMessage.CONTROL_CHANGE	=> ControlChange(sm.getChannel, sm.getData1, sm.getData2)
 		}
 
-	final case class NoteOn(channel:Int, note:Int, velocity:Int)		extends MidiEvent
-	final case class NoteOff(channel:Int, note:Int, velocity:Int)		extends MidiEvent
-	final case class ControlChange(channel:Int, control:Int, value:Int)	extends MidiEvent
+	def unparse(event:MidiEvent):MidiMessage	=
+		event match {
+			case NoteOn(channel, note, velocity)		=> new ShortMessage(ShortMessage.NOTE_ON, note, velocity)
+			case NoteOff(channel, note, velocity)		=> new ShortMessage(ShortMessage.NOTE_OFF, note, velocity)
+			case ControlChange(channel, control, value)	=> new ShortMessage(ShortMessage.CONTROL_CHANGE, control, value)
+		}
 }
 
-sealed trait MidiEvent
+enum MidiEvent {
+	case NoteOn(channel:Int, note:Int, velocity:Int)
+	case NoteOff(channel:Int, note:Int, velocity:Int)
+	case ControlChange(channel:Int, control:Int, value:Int)
+}

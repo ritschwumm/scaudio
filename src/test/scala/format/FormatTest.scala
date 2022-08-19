@@ -28,31 +28,31 @@ object FormatTest extends SimpleTestSuite {
 	test("AudioFormat_S2LE should work") {
 		assertEquals(
 			 AudioFormat_S2LE encode -2f,
-			 -32768
+			 -32768.toShort
 		)
 	}
 	test("AudioFormat_S2LE should work") {
 		assertEquals(
 			 AudioFormat_S2LE encode -1f,
-			 -32768
+			 -32768.toShort
 		)
 	}
 	test("AudioFormat_S2LE should work") {
 		assertEquals(
 			 AudioFormat_S2LE encode 0f,
-			 0
+			 0.toShort
 		)
 	}
 	test("AudioFormat_S2LE should work") {
 		assertEquals(
 			 AudioFormat_S2LE encode 1f,
-			 +32767.toShort
+			 32767.toShort
 		)
 	}
 	test("AudioFormat_S2LE should work") {
 		assertEquals(
 			 AudioFormat_S2LE encode 2f,
-			 +32767.toShort
+			 32767.toShort
 		)
 	}
 
@@ -81,13 +81,13 @@ object FormatTest extends SimpleTestSuite {
 	test("AudioFormat_U1 should work") {
 		assertEquals(
 			 AudioFormat_U1 encode -2f,
-			 0
+			 0.toByte
 		)
 	}
 	test("AudioFormat_U1 should work") {
 		assertEquals(
 			 AudioFormat_U1 encode -1f,
-			 0
+			 0.toByte
 		)
 	}
 	test("AudioFormat_U1 should work") {
