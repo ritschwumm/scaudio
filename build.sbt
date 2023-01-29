@@ -4,9 +4,9 @@ ThisBuild / versionScheme := Some("early-semver")
 
 name			:= "scaudio"
 organization	:= "de.djini"
-version			:= "0.238.0"
+version			:= "0.239.0"
 
-scalaVersion	:= "3.1.3"
+scalaVersion	:= "3.2.0"
 scalacOptions	++= Seq(
 	"-feature",
 	"-deprecation",
@@ -22,7 +22,7 @@ javacOptions	++= Seq(
 
 conflictManager		:= ConflictManager.strict withOrganization "^(?!(org\\.scala-lang|org\\.scala-js)(\\..*)?)$"
 libraryDependencies	++= Seq(
-	"de.djini"		%%	"scutil-jdk"	% "0.231.0"	% "compile",
+	"de.djini"		%%	"scutil-jdk"	% "0.232.0"	% "compile",
 	"io.monix"		%%	"minitest"		% "2.9.6"	% "test"
 )
 
