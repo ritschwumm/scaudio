@@ -4,7 +4,7 @@ ThisBuild / versionScheme := Some("early-semver")
 
 name			:= "scaudio"
 organization	:= "de.djini"
-version			:= "0.239.0"
+version			:= "0.239.1"
 
 scalaVersion	:= "3.2.0"
 scalacOptions	++= Seq(

@@ -12,7 +12,7 @@ NOTE the mpk mini II alledgedly support changing the rest of the buttons on the 
 object Pad {
 	val midiChannel:MidiChannel	= MidiChannel(1)
 
-	val all	= PadBank.all.flatMap(_.pads)
+	lazy val all	= PadBank.all.flatMap(_.pads)
 
 	val fromMidiKey:MidiKey=>Option[Pad]	=
 		all.mapBy(_.midiKey).get(_)
