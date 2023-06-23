@@ -1,7 +1,5 @@
 package scaudio.device.mpkMini.protocol
 
-import scaudio.midi.*
-
 object Led {
 	val midiChannel	= Pad.midiChannel
 
