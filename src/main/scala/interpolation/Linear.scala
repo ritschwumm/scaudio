@@ -1,6 +1,6 @@
 package scaudio.interpolation
 
-import scala.math.*
+import java.lang.Math.*
 
 import scaudio.sample.Channel
 

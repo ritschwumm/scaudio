@@ -1,8 +1,8 @@
 package scaudio
 
-import scala.math.*
+import java.lang.Math.{ exp, log, log10, cos, PI }
 
-import scutil.math.functions.*
+import scutil.math.functions.{ exp2, log2, exp10 }
 
 /** math utilities */
 object math {
@@ -51,5 +51,5 @@ object math {
 		it	=> exp(log(it) * exp(form))
 
 	def cosineFade(it:Double):Double	=
-		(1 - cos(it * Pi)) / 2
+		(1 - cos(it * PI)) / 2
 }

@@ -1,6 +1,6 @@
 package scaudio.dsp
 
-import scala.math.*
+import java.lang.Math.*
 
 object Equalizer {
 	/** denormal fix */
@@ -18,14 +18,14 @@ object Equalizer {
  */
 final class Equalizer(lowfreq:Double, highfreq:Double, mixfreq:Double) {
 	// filter #1 (lowpass)
-	private val lf:Double	= 2 * sin(Pi * lowfreq / mixfreq)
+	private val lf:Double	= 2 * sin(PI * lowfreq / mixfreq)
 	private var f1p0:Double = 0.0		// poles
 	private var f1p1:Double = 0.0
 	private var f1p2:Double = 0.0
 	private var f1p3:Double = 0.0
 
 	// filter #2 (highpass)
-	private val hf:Double	= 2 * sin(Pi * highfreq / mixfreq)
+	private val hf:Double	= 2 * sin(PI * highfreq / mixfreq)
 	private var f2p0:Double = 0.0		// poles
 	private var f2p1:Double = 0.0
 	private var f2p2:Double = 0.0

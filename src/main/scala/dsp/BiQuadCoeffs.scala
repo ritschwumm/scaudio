@@ -1,6 +1,7 @@
 package scaudio.dsp
 
-import scala.math.*
+import java.lang.Math.*
+
 import scutil.math.functions.*
 
 /**
@@ -189,7 +190,7 @@ object BiQuadCoeffs {
 	// TODO these give weird results when plotted
 
 	def lpButterworth(freq:Double):BiQuadCoeffs = {
-		val k	= tan(Pi * freq)
+		val k	= tan(PI * freq)
 
 		val b0	= k * k
 		val b2	= b0
@@ -202,7 +203,7 @@ object BiQuadCoeffs {
 	}
 
 	def hpButterworth(freq:Double):BiQuadCoeffs = {
-		val k		= tan(Pi * freq)
+		val k		= tan(PI * freq)
 		val k2p1	= k * k + 1
 
 		val b0	= 1
@@ -216,7 +217,7 @@ object BiQuadCoeffs {
 	}
 
 	def lpBessel(freq:Double):BiQuadCoeffs	= {
-		val w	= tan(Pi * freq)
+		val w	= tan(PI * freq)
 
 		val b0	= 3 * w * w
 		val b2	= b0
@@ -229,7 +230,7 @@ object BiQuadCoeffs {
 	}
 
 	def hpBessel(freq:Double):BiQuadCoeffs	= {
-		val w	= tan(Pi * freq)
+		val w	= tan(PI * freq)
 		val w2	= w * w
 
 		val b0	= 3

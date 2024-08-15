@@ -1,6 +1,6 @@
 package scaudio.interpolation
 
-import scala.math.*
+import java.lang.Math.*
 
 import scaudio.sample.Channel
 
@@ -182,13 +182,13 @@ object Sinc extends Interpolation {
 
 	def sinc(x:Double):Double	=
 		if (x == 0.0)	1.0
-		else			sin(Pi * x) / (Pi * x)
+		else			sin(PI * x) / (PI * x)
 
 	def hanning(x:Double):Double	=
-		if (abs(x) <= wingSize)	0.5 + 0.5 * cos(Pi * x / wingSize)
+		if (abs(x) <= wingSize)	0.5 + 0.5 * cos(PI * x / wingSize)
 		else					0.0
 
 	def blackman(x:Double):Double	=
-		if (abs(x) <= wingSize)	0.42 + 0.5 * cos(Pi * x / wingSize) + 0.08 * cos(2 * Pi * x / wingSize)
+		if (abs(x) <= wingSize)	0.42 + 0.5 * cos(PI * x / wingSize) + 0.08 * cos(2 * PI * x / wingSize)
 		else					0.0
 }

@@ -1,6 +1,6 @@
 package scaudio.control
 
-import scala.math.*
+import java.lang.Math.*
 
 object DamperFloat {
 	/**
