@@ -2,7 +2,7 @@ package scaudio.dsp
 
 import java.lang.Math.*
 
-import scutil.math.functions.*
+import scutil.math.constants.*
 
 /**
 all freq parameters are pre-divided by the sample rate
