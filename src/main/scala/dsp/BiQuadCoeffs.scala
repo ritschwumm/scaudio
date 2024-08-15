@@ -9,10 +9,8 @@ all freq parameters are pre-divided by the sample rate
 bandwidth = freq / Q
 */
 object BiQuadCoeffs {
-	val sqrt2:Double		= sqrt(2)
-
-	// standard Q for a flat corner in a single biquad, same as sqrt(0.5)
-	val sqrt2half:Double	= sqrt2 / 2
+	// standard Q for a flat corner in a single biquad, same as sqrt(0.5) and sqrt(2)/2
+	val flatCornerQ	= SqrtHalf
 
 	// pass through
 	val empty	= BiQuadCoeffs(1, 0, 0, 0, 0)
@@ -27,7 +25,7 @@ object BiQuadCoeffs {
 
 	// LPF
 	def lp(freq:Double, q:Double):BiQuadCoeffs	= {
-		val w		= PiDouble * freq
+		val w		= TwicePi * freq
 		val sinw	= sin(w)
 		val cosw	= cos(w)
 		val a		= sinw / q * 0.5
@@ -44,7 +42,7 @@ object BiQuadCoeffs {
 
 	// HPF
 	def hp(freq:Double, q:Double):BiQuadCoeffs	= {
-		val w		= PiDouble * freq
+		val w		= TwicePi * freq
 		val sinw	= sin(w)
 		val cosw	= cos(w)
 		val a		= sinw / q * 0.5
@@ -61,7 +59,7 @@ object BiQuadCoeffs {
 
 	// BPF	constant skirt gain, peak gain = Q
 	def bpSkirt(freq:Double, q:Double):BiQuadCoeffs = {
-		val w		= PiDouble * freq
+		val w		= TwicePi * freq
 		val sinw	= sin(w)
 		val cosw	= cos(w)
 		val a		= sinw / q * 0.5
@@ -78,7 +76,7 @@ object BiQuadCoeffs {
 
 	// BPF	(constant 0 dB peak gain)
 	def bpPeak(freq:Double, q:Double):BiQuadCoeffs	= {
-		val w		= PiDouble * freq
+		val w		= TwicePi * freq
 		val sinw	= sin(w)
 		val cosw	= cos(w)
 		val a		= sinw / q * 0.5
@@ -95,7 +93,7 @@ object BiQuadCoeffs {
 
 	// notch
 	def notch(freq:Double, q:Double):BiQuadCoeffs	= {
-		val w		= PiDouble * freq
+		val w		= TwicePi * freq
 		val sinw	= sin(w)
 		val cosw	= cos(w)
 		val a		= sinw / q * 0.5
@@ -112,7 +110,7 @@ object BiQuadCoeffs {
 
 	// APF (allpass)
 	def ap(freq:Double, q:Double):BiQuadCoeffs	= {
-		val w		= PiDouble * freq
+		val w		= TwicePi * freq
 		val sinw	= sin(w)
 		val cosw	= cos(w)
 		val a		= sinw / q * 0.5
@@ -130,7 +128,7 @@ object BiQuadCoeffs {
 	// peakingEQ
 	def pk(freq:Double, q:Double, gain:Double):BiQuadCoeffs = {
 		val A		= shelfA(gain)
-		val w		= PiDouble * freq
+		val w		= TwicePi * freq
 		val sinw	= sin(w)
 		val cosw	= cos(w)
 		val a		= sinw / q * 0.5
@@ -148,7 +146,7 @@ object BiQuadCoeffs {
 	// lowShelf
 	def ls(freq:Double, q:Double, gain:Double):BiQuadCoeffs = {
 		val A		= shelfA(gain)
-		val w		= PiDouble * freq
+		val w		= TwicePi * freq
 		val sinw	= sin(w)
 		val cosw	= cos(w)
 		val a		= sinw / q * 0.5
@@ -168,7 +166,7 @@ object BiQuadCoeffs {
 	// highShelf
 	def hs(freq:Double, q:Double, gain:Double):BiQuadCoeffs = {
 		val A		= shelfA(gain)
-		val w		= PiDouble * freq
+		val w		= TwicePi * freq
 		val sinw	= sin(w)
 		val cosw	= cos(w)
 		val a		= sinw / q * 0.5
@@ -195,9 +193,9 @@ object BiQuadCoeffs {
 		val b0	= k * k
 		val b2	= b0
 		val b1	= 2 * b0
-		val a0	= b0 + sqrt2 * k + 1
+		val a0	= b0 + SqrtTwo * k + 1
 		val a1	= 2 * (b0 - 1)
-		val a2	= b0 - sqrt2 * k + 1
+		val a2	= b0 - SqrtTwo * k + 1
 
 		mkCoeffs(a0, a1, a2, b0, b1, b2)
 	}
@@ -209,9 +207,9 @@ object BiQuadCoeffs {
 		val b0	= 1
 		val b1	= -2
 		val b2	= 1
-		val a0	= k2p1 + (sqrt2 * k)
+		val a0	= k2p1 + (SqrtTwo * k)
 		val a1	= 2f * (k2p1 - 2)
-		val a2	= k2p1 - (sqrt2 * k)
+		val a2	= k2p1 - (SqrtTwo * k)
 
 		mkCoeffs(a0, a1, a2, b0, b1, b2)
 	}
