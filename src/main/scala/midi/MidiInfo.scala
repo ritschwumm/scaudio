@@ -9,7 +9,7 @@ object MidiInfo {
 	def main(args:Array[String]):Unit	= {
 		for {
 			deviceInfo	<- MidiSystem.getMidiDeviceInfo
-			device		<- midiAvailable(MidiSystem getMidiDevice deviceInfo)
+			device		<- midiAvailable(MidiSystem.getMidiDevice(deviceInfo))
 		} {
 			println("-------------------------------")
 

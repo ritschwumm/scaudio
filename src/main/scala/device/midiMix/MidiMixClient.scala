@@ -12,7 +12,7 @@ object MidiMixClient {
 
 	val open:IoResource[Option[MidiMixClient]]	=
 		MidiClient.open(MidiMixDevice.devicePredicate).map{ clientOpt =>
-			clientOpt map { client =>
+			clientOpt.map { client =>
 				(output) => {
 					client.send(Protocol.writeOutput(output), MidiTime.unsupported)
 				}

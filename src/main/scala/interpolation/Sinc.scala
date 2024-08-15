@@ -16,7 +16,7 @@ object Sinc extends Interpolation {
 	inline def interpolate(buffer:Channel, frame:Double, pitch:Double):Float	= {
 		// NOTE when frame is integer and pitch is 1 we don't have to do anything
 		val	apitch	= abs(pitch)
-			 if (apitch == 0)	0
+		if		(apitch == 0)	0
 		else if (apitch < 1)	slower(buffer, frame, apitch)
 		else					faster(buffer, frame, apitch)
 	}
@@ -75,7 +75,7 @@ object Sinc extends Interpolation {
 		var tableIndex	= (fract - size - 1) * scaleOver
 		var accumulator	= 0.0f
 		while (sampleIndex <= sampleEnd) {
-			accumulator	= accumulator + (sincFromTablePremultiplied(tableIndex) * (buffer get sampleIndex))
+			accumulator	= accumulator + (sincFromTablePremultiplied(tableIndex) * buffer.get(sampleIndex))
 			sampleIndex	= sampleIndex + 1
 			tableIndex	= tableIndex  + scaleOver
 		}
@@ -139,7 +139,7 @@ object Sinc extends Interpolation {
 		var tableIndex	= (fract - size - 1) * scaleOver
 		var accumulator	= 0.0f
 		while (sampleIndex <= sampleEnd) {
-			accumulator	= accumulator + (sincFromTablePremultiplied(tableIndex) * (buffer get sampleIndex))
+			accumulator	= accumulator + (sincFromTablePremultiplied(tableIndex) * buffer.get(sampleIndex))
 			sampleIndex	= sampleIndex + 1
 			tableIndex	= tableIndex  + scaleOver
 		}

@@ -11,7 +11,7 @@ final class BufferSample_MuLaw(val frameRate:Int, channelCount:Int, byteBuffer:B
 	val sampleBytes	= 1
 
 	val channels:IArray[Channel]	=
-		IArray.from(0 until channelCount) map { channelIndex =>
+		IArray.from(0.until(channelCount)).map { channelIndex =>
 			new BufferChannel_MuLaw(frameCount, channelCount, channelIndex, byteBuffer)
 		}
 }
@@ -19,8 +19,8 @@ final class BufferSample_MuLaw(val frameRate:Int, channelCount:Int, byteBuffer:B
 final class BufferChannel_MuLaw(val frameCount:Int, channelCount:Int, channelIndex:Int, byteBuffer:ByteBuffer) extends Channel {
 	inline def get(frame:Int):Float	=
 		if (frame >= 0 && frame < frameCount) {
-			AudioFormat_MuLaw decode (
-				byteBuffer get index(frame)
+			AudioFormat_MuLaw.decode(
+				byteBuffer.get(index(frame))
 			)
 		}
 		else 0f

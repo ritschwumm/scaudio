@@ -11,7 +11,7 @@ object MpkMiniClient {
 
 	val open:IoResource[Option[MpkMiniClient]]	=
 		MidiClient.open(MpkMiniDevice.devicePredicate).map{ clientOpt =>
-			clientOpt map { client =>
+			clientOpt.map { client =>
 				(output) => {
 					client.send(Protocol.writeOutput(output), MidiTime.unsupported)
 				}

@@ -8,7 +8,7 @@ object MidiChannel {
 
 	def vector(min:MidiChannel, max:MidiChannel):Vector[MidiChannel]	= {
 		require(min <= max, "bad order")
-		min.value.to(max.value).toVector.map(MidiChannel.apply)
+		Vector.range(min.value, max.value+1).map(MidiChannel.apply)
 	}
 
 	def apply(value:Int):MidiChannel	= {

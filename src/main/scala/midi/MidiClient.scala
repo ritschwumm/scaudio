@@ -16,12 +16,12 @@ object MidiClient {
 		yield client
 
 	private def findDevice(selectDevice:Predicate[MidiDevice.Info]):Io[Vector[MidiDevice]]	=
-		Io delay {
+		Io.delay {
 			for {
 				deviceInfo	<- MidiSystem.getMidiDeviceInfo.toVector
 				if selectDevice(deviceInfo)
 
-				device		<- midiAvailable(MidiSystem getMidiDevice deviceInfo).toVector
+				device		<- midiAvailable(MidiSystem.getMidiDevice(deviceInfo)).toVector
 				if device.getMaxReceivers != 0
 			}
 			yield device

@@ -14,8 +14,8 @@ object Linear extends Interpolation {
 		val xb	= xa + 1
 		val fa	= (frame - x1).toFloat
 		val fb	= (1.0f - fa)
-		val ya	= buffer get xa
-		val yb	= buffer get xb
+		val ya	= buffer.get(xa)
+		val yb	= buffer.get(xb)
 		ya*fa + yb*fb
 	}
 }

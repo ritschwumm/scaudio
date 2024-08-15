@@ -11,5 +11,5 @@ object AudioFormat_S3LE {
 		// two bytes to keep sign extension alive
 		((b2 & 0xffff)	<< 16)	|
 		((b1 & 0xff)	<< 8)	|
-		((b0 & 0xff) 	<< 0)
+		((b0 & 0xff)	<< 0)
 }

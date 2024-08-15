@@ -14,13 +14,13 @@ import scaudio.sample.impl.*
 /** audio sample loaded from a wav file using a MappedByteBuffer */
 object Wav extends Logging {
 	def load(file:Path):Either[Exception,Sample] =
-		Catch.exception in loadImpl(file)
+		Catch.exception.in { loadImpl(file) }
 
 	/** may throw exception if not successful */
 	private def loadImpl(file:Path):Sample = {
 		// little endian 4 characters
 		def mkTag(s:String):Long	= {
-			val bytes	= s getBytes "US-ASCII"
+			val bytes	= s.getBytes("US-ASCII")
 			require(bytes.length == 4, "expected exactly 4 characters")
 			((bytes(3) & 0xff) << 24) |
 			((bytes(2) & 0xff) << 16) |
@@ -30,7 +30,7 @@ object Wav extends Logging {
 
 		val	mapped:ByteBuffer	= MoreFiles.mapReadOnly(file)
 		// mapped.load()
-		mapped order ByteOrder.LITTLE_ENDIAN
+		mapped.order(ByteOrder.LITTLE_ENDIAN)
 		/*
 		// madplay in raw mode outputs native order
 		mapped order ByteOrder.nativeOrder
@@ -63,11 +63,11 @@ object Wav extends Logging {
 			if (tag == mkTag("fmt ")) {
 				if (siz < 16)			throw WavFormatException(show"unexpected fmt chunk size: ${siz}")
 				/*
-				0x0001 	WAVE_FORMAT_PCM			PCM
-				0x0003 	WAVE_FORMAT_IEEE_FLOAT	IEEE float
-				0x0006 	WAVE_FORMAT_ALAW		8-bit ITU-T G.711 A-law
-				0x0007 	WAVE_FORMAT_MULAW		8-bit ITU-T G.711 µ-law
-				0xFFFE 	WAVE_FORMAT_EXTENSIBLE 	Determined by SubFormat
+				0x0001	WAVE_FORMAT_PCM			PCM
+				0x0003	WAVE_FORMAT_IEEE_FLOAT	IEEE float
+				0x0006	WAVE_FORMAT_ALAW		8-bit ITU-T G.711 A-law
+				0x0007	WAVE_FORMAT_MULAW		8-bit ITU-T G.711 µ-law
+				0xFFFE	WAVE_FORMAT_EXTENSIBLE	Determined by SubFormat
 				*/
 				/*
 				WAVE_FORMAT_IEEE_FLOAT
@@ -105,7 +105,7 @@ object Wav extends Logging {
 					// skip extension:
 					// short size of extra params, doesn't exist with PCM
 					// extra params
-					mapped position (mapped.position() + skp - 16)
+					mapped.position(mapped.position() + skp - 16)
 				}
 			}
 			else if (tag == mkTag("data")) {
@@ -115,14 +115,14 @@ object Wav extends Logging {
 				val (todo, skip)	=
 						if (enough)	(siz,				skp)
 						else		(mapped.remaining,	mapped.remaining)
-				mapped limit	(mapped.position() + todo)
+				mapped.limit(mapped.position() + todo)
 				sampleData		= Some(mapped.slice.asReadOnlyBuffer)
-				mapped limit	oldLimit
-				mapped position	(mapped.position() + skip)
+				mapped.limit(oldLimit)
+				mapped.position(mapped.position() + skip)
 			}
 			else {
 				// skip unexpected chunk
-				mapped position (mapped.position() + skp)
+				mapped.position(mapped.position() + skp)
 			}
 		}
 

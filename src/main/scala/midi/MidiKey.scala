@@ -8,7 +8,7 @@ object MidiKey {
 
 	def vector(min:MidiKey, max:MidiKey):Vector[MidiKey]	= {
 		require(min <= max, "bad order")
-		min.value.to(max.value).toVector.map(MidiKey.apply)
+		Vector.range(min.value, max.value-1).map(MidiKey.apply)
 	}
 
 	def apply(value:Int):MidiKey	= {

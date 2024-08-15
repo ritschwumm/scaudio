@@ -39,5 +39,5 @@ object AudioFormat_ALaw {
 		)
 
 	inline def decode(value:Byte):Float	=
-		AudioFormat_S2LE decode (table apply (value & 0xff))
+		AudioFormat_S2LE.decode(table(value & 0xff))
 }

@@ -14,7 +14,7 @@ object MidiServer {
 		yield result.isDefined
 
 	private def findDevice(selectDevice:Predicate[MidiDevice.Info]):Io[Vector[MidiDevice]]	=
-		Io delay {
+		Io.delay {
 			for {
 				deviceInfo	<- MidiSystem.getMidiDeviceInfo.toVector
 				if selectDevice(deviceInfo)
@@ -32,14 +32,16 @@ object MidiServer {
 			_			<-	IoResource.unsafe.disposing(device.open())(_ => device.close())
 			// TODO midi deal with MidiUnavailableException here?
 			transmitter	<-	IoResource.unsafe.disposing(device.getTransmitter)(_.close())
-			_			<-	IoResource delay {
-								transmitter setReceiver new Receiver {
-									def send(message:MidiMessage, rawTime:Long):Unit	= {
-										val time	= MidiTime(rawTime)
-										MidiEvent.parse(message).traverse(handler.handle(_, time)).unsafeRun()
+			_			<-	IoResource.delay {
+								transmitter.setReceiver(
+									new Receiver {
+										def send(message:MidiMessage, rawTime:Long):Unit	= {
+											val time	= MidiTime(rawTime)
+											MidiEvent.parse(message).traverse(handler.handle(_, time)).unsafeRun()
+										}
+										def close():Unit	= {}
 									}
-									def close():Unit	= {}
-								}
+								)
 							}
 		}
 		yield ()

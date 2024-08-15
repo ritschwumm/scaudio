@@ -10,8 +10,8 @@ object MidiMixDevice {
 
 	// TODO device hardcoded
 	val devicePredicate:Predicate[MidiDeviceInfo] = {
-		val linuxPredicate:Predicate[MidiDeviceInfo]	= { _.getName startsWith "Mix " }
-		val osxPredicate:Predicate[MidiDeviceInfo]		= { _.getName == "MIDI Mix" }
+		val linuxPredicate:Predicate[MidiDeviceInfo]	= _.getName.startsWith("Mix ")
+		val osxPredicate:Predicate[MidiDeviceInfo]		= _.getName == "MIDI Mix"
 		linuxPredicate || osxPredicate
 	}
 }

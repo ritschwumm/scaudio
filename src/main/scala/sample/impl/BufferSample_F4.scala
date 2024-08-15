@@ -14,7 +14,7 @@ final class BufferSample_F4(val frameRate:Int, val channelCount:Int, byteBuffer:
 	val sampleBytes	= 4
 
 	val channels:IArray[Channel]	=
-		IArray.from(0 until channelCount) map { channelIndex =>
+		IArray.from(0.until(channelCount)).map { channelIndex =>
 			new BufferChannel_F4(frameCount, channelCount, channelIndex, floatBuffer)
 		}
 }
@@ -22,7 +22,7 @@ final class BufferSample_F4(val frameRate:Int, val channelCount:Int, byteBuffer:
 final class BufferChannel_F4(val frameCount:Int, channelCount:Int, channelIndex:Int, floatBuffer:FloatBuffer) extends Channel {
 	inline def get(frame:Int):Float	=
 		if (frame >= 0 && frame < frameCount) {
-			floatBuffer get index(frame)
+			floatBuffer.get(index(frame))
 		}
 		else 0f
 

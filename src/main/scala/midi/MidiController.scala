@@ -8,7 +8,7 @@ object MidiController {
 
 	def vector(min:MidiController, max:MidiController):Vector[MidiController]	= {
 		require(min <= max, "bad order")
-		min.value.to(max.value).toVector.map(MidiController.apply)
+		Vector.range(min.value, max.value-1).map(MidiController.apply)
 	}
 
 	def apply(value:Int):MidiController	= {

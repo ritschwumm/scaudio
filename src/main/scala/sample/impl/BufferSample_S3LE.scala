@@ -11,7 +11,7 @@ final class BufferSample_S3LE(val frameRate:Int, channelCount:Int, byteBuffer:By
 	val sampleBytes	= 3
 
 	val channels:IArray[Channel]	=
-		IArray.from(0 until channelCount) map { channelIndex =>
+		IArray.from(0.until(channelCount)).map { channelIndex =>
 			new BufferChannel_S3LE(frameCount, channelCount, channelIndex, byteBuffer)
 		}
 }
@@ -20,9 +20,9 @@ final class BufferChannel_S3LE(val frameCount:Int, channelCount:Int, channelInde
 	inline def get(frame:Int):Float	=
 		if (frame >= 0 && frame < frameCount) {
 			val offset	= index(frame) * 3
-			val b0		= byteBuffer get offset+0
-			val b1		= byteBuffer get offset+1
-			val b2		= byteBuffer get offset+2
+			val b0		= byteBuffer.get(offset+0)
+			val b1		= byteBuffer.get(offset+1)
+			val b2		= byteBuffer.get(offset+2)
 			AudioFormat_S3LE.decode(b0, b1, b2)
 		}
 		else 0f

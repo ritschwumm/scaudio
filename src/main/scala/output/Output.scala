@@ -41,7 +41,7 @@ object Output {
 				channels	<- desiredChannels
 				audioFormat	= mkAudioFormat(channels)
 				lineInfo	= mkLineInfo(audioFormat)
-				if mixer isLineSupported lineInfo
+				if mixer.isLineSupported(lineInfo)
 			}
 			yield thunk {
 				mixer.getLine(lineInfo).asInstanceOf[SourceDataLine]
@@ -70,7 +70,7 @@ object Output {
 				config.rate.toFloat,	// sampleRate
 				sampleBits,				// sampleSizeInBits
 				channels,				// channels
-				true,   				// signed
+				true,					// signed
 				false					// little endian
 			)
 
@@ -91,10 +91,10 @@ final class Output(info:OutputInfo, sourceDataLine:SourceDataLine) {
 	def runProducerChunked(producer:FrameProducer):IoResource[Unit]	= {
 		for {
 			_				<-	sourceDataLineLifecycle(sourceDataLine, usedOutputFormat, info.lineBlocks * blockBytes)
-			_				<-	IoResource delay { sourceDataLine.start() }
-			outputBuffer	<-	IoResource delay new Array[Byte](blockBytes)
-			speakerBuffer	<-	IoResource delay new FrameBuffer
-			phoneBuffer		<-	IoResource delay new FrameBuffer
+			_				<-	IoResource.delay { sourceDataLine.start() }
+			outputBuffer	<-	IoResource.delay { new Array[Byte](blockBytes) }
+			speakerBuffer	<-	IoResource.delay { new FrameBuffer }
+			phoneBuffer		<-	IoResource.delay { new FrameBuffer }
 			_				<-	SimpleWorker.create(
 								"audio driver",
 								Thread.MAX_PRIORITY,
@@ -112,7 +112,7 @@ final class Output(info:OutputInfo, sourceDataLine:SourceDataLine) {
 	def runProducerUsingConsumer(producer:FrameProducer):IoResource[Unit]	=
 		for {
 			consumer	<-	createConsumer
-			forwarder	<-	IoResource delay new Forwarder(producer, consumer, info)
+			forwarder	<-	IoResource.delay { new Forwarder(producer, consumer, info) }
 			_			<-	SimpleWorker.create(
 								"audio driver",
 								Thread.MAX_PRIORITY,
@@ -124,7 +124,7 @@ final class Output(info:OutputInfo, sourceDataLine:SourceDataLine) {
 	def createConsumer:IoResource[FrameConsumer]	= {
 		for {
 			_	<-	sourceDataLineLifecycle(sourceDataLine, usedOutputFormat, info.lineBlocks * blockBytes)
-			_	<-	IoResource delay { sourceDataLine.start() }
+			_	<-	IoResource.delay { sourceDataLine.start() }
 		}
 		yield {
 			val outputBuffer	= new Array[Byte](blockBytes)
