@@ -4,9 +4,9 @@ ThisBuild / versionScheme := Some("early-semver")
 
 name			:= "scaudio"
 organization	:= "de.djini"
-version			:= "0.257.0"
+version			:= "0.258.0"
 
-scalaVersion	:= "3.4.2"
+scalaVersion	:= "3.5.0"
 scalacOptions	++= Seq(
 	"-feature",
 	"-deprecation",
@@ -14,7 +14,7 @@ scalacOptions	++= Seq(
 	"-source:future",
 	"-Wunused:all",
 	"-Xfatal-warnings",
-	"-Ykind-projector:underscores",
+	"-Xkind-projector:underscores",
 )
 javacOptions	++= Seq(
 	"-source", "1.8",
@@ -22,7 +22,7 @@ javacOptions	++= Seq(
 )
 
 libraryDependencies	++= Seq(
-	"de.djini"	%%	"scutil-jdk"	% "0.249.0"	% "compile",
+	"de.djini"	%%	"scutil-jdk"	% "0.250.0"	% "compile",
 	"io.monix"	%%	"minitest"		% "2.9.6"	% "test"
 )
 
