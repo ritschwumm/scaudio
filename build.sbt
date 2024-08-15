@@ -4,7 +4,7 @@ ThisBuild / versionScheme := Some("early-semver")
 
 name			:= "scaudio"
 organization	:= "de.djini"
-version			:= "0.247.0"
+version			:= "0.248.0"
 
 scalaVersion	:= "3.3.1"
 scalacOptions	++= Seq(
@@ -22,8 +22,8 @@ javacOptions	++= Seq(
 )
 
 libraryDependencies	++= Seq(
-	"de.djini"		%%	"scutil-jdk"	% "0.240.0"	% "compile",
-	"io.monix"		%%	"minitest"		% "2.9.6"	% "test"
+	"de.djini"	%%	"scutil-jdk"	% "0.240.0"	% "compile",
+	"io.monix"	%%	"minitest"		% "2.9.6"	% "test"
 )
 
 testFrameworks	+= new TestFramework("minitest.runner.Framework")
