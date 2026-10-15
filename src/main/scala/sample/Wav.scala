@@ -113,8 +113,8 @@ object Wav extends Logging {
 				val enough		= skp <= mapped.remaining
 				if (!enough)	WARN("data tag too large")
 				val (todo, skip)	=
-						if (enough)	(siz,				skp)
-						else		(mapped.remaining,	mapped.remaining)
+					if (enough)	(siz,				skp)
+					else		(mapped.remaining,	mapped.remaining)
 				mapped.limit(mapped.position() + todo)
 				sampleData		= Some(mapped.slice.asReadOnlyBuffer)
 				mapped.limit(oldLimit)

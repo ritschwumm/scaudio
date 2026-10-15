@@ -9,7 +9,7 @@ object Sinc extends Interpolation {
 
 	/** how many samples are accessed in both directions depending on the pitch */
 	inline def overshot(pitch:Double):Int	=
-			(wingSize max ceil(wingSize*abs(pitch)).toInt) + 2
+		wingSize.max(ceil(wingSize*abs(pitch)).toInt) + 2
 
 	//------------------------------------------------------------------------------
 
@@ -152,15 +152,10 @@ object Sinc extends Interpolation {
 	val sincTableSize			= wingSize * sincTableOversampling
 
 	/** half sinc */
-	val sincTable:Array[Float]	= {
-		val out		= new Array[Float](sincTableSize)
-		var i		= 0
-		while (i < sincTableSize) {
-			out(i)	= windowedSinc(i.toDouble / sincTableOversampling).toFloat
-			i	= i + 1
+	val sincTable:IArray[Float]	=
+		IArray.tabulate(sincTableSize) { i =>
+			windowedSinc(i.toDouble / sincTableOversampling).toFloat
 		}
-		out
-	}
 
 	/*
 	def sincFromTable(x:Double):Float	=
