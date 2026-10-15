@@ -4,9 +4,9 @@ ThisBuild / versionScheme := Some("early-semver")
 
 name			:= "scaudio"
 organization	:= "de.djini"
-version			:= "0.265.0"
+version			:= "0.266.0"
 
-scalaVersion	:= "3.6.3"
+scalaVersion	:= "3.7.1"
 scalacOptions	++= Seq(
 	"-feature",
 	"-deprecation",
@@ -24,7 +24,7 @@ javacOptions	++= Seq(
 )
 
 libraryDependencies	++= Seq(
-	"de.djini"	%%	"scutil-jdk"	% "0.257.0"	% "compile",
+	"de.djini"	%%	"scutil-jdk"	% "0.258.0"	% "compile",
 	"io.monix"	%%	"minitest"		% "2.9.6"	% "test"
 )
 
@@ -40,18 +40,14 @@ wartremoverErrors ++= Seq(
 	Wart.TryPartial,
 	Wart.Enumeration,
 	Wart.FinalCaseClass,
-	Wart.JavaConversions,
 	Wart.Option2Iterable,
-	Wart.JavaSerializable,
 	//Wart.Any,
 	Wart.AnyVal,
 	//Wart.Nothing,
 	Wart.ArrayEquals,
 	Wart.ImplicitParameter,
-	Wart.ExplicitImplicitTypes,
 	Wart.LeakingSealed,
 	Wart.DefaultArguments,
 	Wart.Overloading,
-	//Wart.PublicInference,
-	//Wart.TraversableOps,
+	//Wart.IterableOps,
 )

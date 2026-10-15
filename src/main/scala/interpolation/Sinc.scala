@@ -1,9 +1,12 @@
 package scaudio.interpolation
 
+import scala.annotation.nowarn
+
 import java.lang.Math.*
 
 import scaudio.sample.Channel
 
+@nowarn("msg=unused explicit parameter")
 object Sinc extends Interpolation {
 	val wingSize	= 13
 

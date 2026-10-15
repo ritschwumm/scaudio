@@ -35,7 +35,7 @@ object Output {
 
 	private def makeSourceDataLine(config:OutputConfig):Option[SourceDataLine]	= {
 		@SuppressWarnings(Array("org.wartremover.warts.AsInstanceOf"))
-		def openDataLineCandidates(config:OutputConfig):Seq[Thunk[SourceDataLine]]	=
+		def openDataLineCandidates():Seq[Thunk[SourceDataLine]]	=
 			for {
 				mixer		<- mixers
 				channels	<- desiredChannels
@@ -77,7 +77,7 @@ object Output {
 		def desiredChannels:Seq[Int]	=
 			config.headphone.vector(2*lineChannels) :+ lineChannels
 
-		openDataLineCandidates(config).headOption.map(_.apply())
+		openDataLineCandidates().headOption.map(_.apply())
 	}
 }
 

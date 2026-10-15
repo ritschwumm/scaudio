@@ -2,7 +2,7 @@ package scaudio.output
 
 object FrameProducer {
 	val blackhole:FrameProducer	=
-		(speaker:FrameBuffer, headphone:FrameBuffer) => ()
+		(_:FrameBuffer, _:FrameBuffer) => ()
 }
 
 trait FrameProducer {
