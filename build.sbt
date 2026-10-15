@@ -4,9 +4,9 @@ ThisBuild / versionScheme := Some("early-semver")
 
 name			:= "scaudio"
 organization	:= "de.djini"
-version			:= "0.276.0"
+version			:= "0.277.0"
 
-scalaVersion	:= "3.8.3"
+scalaVersion	:= "3.8.4"
 scalacOptions	++= Seq(
 	"-preview",
 	"-feature",
@@ -27,7 +27,7 @@ javacOptions	++= Seq(
 )
 
 libraryDependencies	++= Seq(
-	"de.djini"	%%	"scutil-jdk"	% "0.268.0"	% "compile",
+	"de.djini"	%%	"scutil-jdk"	% "0.269.0"	% "compile",
 	"io.monix"	%%	"minitest"		% "2.9.6"	% "test"
 )
 
