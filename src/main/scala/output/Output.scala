@@ -145,13 +145,13 @@ final class Output(info:OutputInfo, sourceDataLine:SourceDataLine) {
 
 		def forward():Unit	= {
 			var i = 0
-			while (i < outputInfo.blockFrames) {
+			while i < outputInfo.blockFrames do {
 				producer.produce(speakerBuffer, phoneBuffer)
 
 				consumer.consume(speakerBuffer.left, speakerBuffer.right)
 				speakerBuffer.clear()
 
-				if (outputInfo.headphone) {
+				if outputInfo.headphone then {
 					consumer.consume(phoneBuffer.left, phoneBuffer.right)
 					phoneBuffer.clear()
 				}
@@ -168,7 +168,7 @@ final class Output(info:OutputInfo, sourceDataLine:SourceDataLine) {
 		// DataLine docs says: available
 		var offset	= 0
 		val end		= outputBuffer.length
-		while (offset < end) {
+		while offset < end do {
 			producer.produce(speakerBuffer, phoneBuffer)
 
 			AudioFormat_S2LE.putClamped(speakerBuffer.left,		outputBuffer, offset+0)
@@ -176,7 +176,7 @@ final class Output(info:OutputInfo, sourceDataLine:SourceDataLine) {
 			offset	+= 4
 			speakerBuffer.clear()
 
-			if (phoneEnabled) {
+			if phoneEnabled then {
 				AudioFormat_S2LE.putClamped(phoneBuffer.left,	outputBuffer, offset+0)
 				AudioFormat_S2LE.putClamped(phoneBuffer.right,	outputBuffer, offset+2)
 				offset	+= 4

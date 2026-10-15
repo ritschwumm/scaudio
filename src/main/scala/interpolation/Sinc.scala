@@ -19,9 +19,9 @@ object Sinc extends Interpolation {
 	inline def interpolate(buffer:Channel, frame:Double, pitch:Double):Float	= {
 		// NOTE when frame is integer and pitch is 1 we don't have to do anything
 		val	apitch	= abs(pitch)
-		if		(apitch == 0)	0
-		else if (apitch < 1)	slower(buffer, frame, apitch)
-		else					faster(buffer, frame, apitch)
+		if		apitch == 0		then	0
+		else if apitch < 1		then	slower(buffer, frame, apitch)
+		else							faster(buffer, frame, apitch)
 	}
 
 	/**
@@ -39,7 +39,7 @@ object Sinc extends Interpolation {
 
 		/*
 		// slow but clear
-		val parts	= -size-1 to size map { pos =>
+		val parts	= (-size-1).to(size).map { pos =>
 			windowedSinc(fract + pos) * (buffer get (index + pos))
 		}
 		parts.sum.toFloat
@@ -49,7 +49,7 @@ object Sinc extends Interpolation {
 		// faster and using table, still doing too many calculations
 		var pos	= -size-1
 		var acc	= 0.0
-		while (pos <= size) {
+		while pos <= size do {
 			val part	= sincFromTable(fract + pos) * (buffer get (index + pos))
 			acc	= acc + part
 			pos	= pos + 1
@@ -63,7 +63,7 @@ object Sinc extends Interpolation {
 		val sampleEnd	= index + size
 		var tableIndex	= fract - size - 1
 		var accumulator	= 0.0f
-		while (sampleIndex <= sampleEnd) {
+		while sampleIndex <= sampleEnd do {
 			accumulator	= accumulator + (sincFromTable(tableIndex) * (buffer get sampleIndex))
 			sampleIndex	= sampleIndex + 1
 			tableIndex	= tableIndex + 1
@@ -77,7 +77,7 @@ object Sinc extends Interpolation {
 		val scaleOver	= sincTableOversampling // scale is 1.0
 		var tableIndex	= (fract - size - 1) * scaleOver
 		var accumulator	= 0.0f
-		while (sampleIndex <= sampleEnd) {
+		while sampleIndex <= sampleEnd do {
 			accumulator	= accumulator + (sincFromTablePremultiplied(tableIndex) * buffer.get(sampleIndex))
 			sampleIndex	= sampleIndex + 1
 			tableIndex	= tableIndex  + scaleOver
@@ -100,7 +100,7 @@ object Sinc extends Interpolation {
 
 		/*
 		// slow but clear
-		val parts	= -size-1 to size map { pos =>
+		val parts	= (-size-1).to(size).map { pos =>
 			windowedSinc((fract + pos) / pitch) * (buffer get (index + pos))
 		}
 		(parts.sum / pitch).toFloat
@@ -111,7 +111,7 @@ object Sinc extends Interpolation {
 		val scl	= 1.0 / pitch
 		var pos	= -size-1
 		var acc	= 0.0
-		while (pos <= size) {
+		while pos <= size do {
 			val part	= sincFromTable((fract + pos) * scl) * (buffer get (index + pos))
 			acc	= acc + part
 			pos	= pos + 1
@@ -126,7 +126,7 @@ object Sinc extends Interpolation {
 		val scale		= 1.0 / pitch
 		var tableIndex	= (fract - size - 1) * scale
 		var accumulator	= 0.0f
-		while (sampleIndex <= sampleEnd) {
+		while sampleIndex <= sampleEnd do {
 			accumulator	= accumulator + (sincFromTable(tableIndex) * (buffer get sampleIndex))
 			sampleIndex	= sampleIndex + 1
 			tableIndex	= tableIndex + scale
@@ -141,7 +141,7 @@ object Sinc extends Interpolation {
 		val scaleOver	= sincTableOversampling * scale
 		var tableIndex	= (fract - size - 1) * scaleOver
 		var accumulator	= 0.0f
-		while (sampleIndex <= sampleEnd) {
+		while sampleIndex <= sampleEnd do {
 			accumulator	= accumulator + (sincFromTablePremultiplied(tableIndex) * buffer.get(sampleIndex))
 			sampleIndex	= sampleIndex + 1
 			tableIndex	= tableIndex  + scaleOver
@@ -169,8 +169,9 @@ object Sinc extends Interpolation {
 	inline def sincFromTablePremultiplied(x:Double):Float	= {
 		// TODO include some overshot in the table to save the range check
 		val index	= abs(x).toInt
-		if (index < sincTableSize)	sincTable(index)
-		else						0f
+		if index < sincTableSize
+		then sincTable(index)
+		else 0f
 	}
 
 	//------------------------------------------------------------------------------
@@ -179,14 +180,19 @@ object Sinc extends Interpolation {
 		sinc(x) * blackman(x)
 
 	def sinc(x:Double):Double	=
-		if (x == 0.0)	1.0
-		else			sin(PI * x) / (PI * x)
+		if x == 0.0
+		then 1.0
+		else sin(PI * x) / (PI * x)
 
+	// for x in [-wingSize..+wingSize]
 	def hanning(x:Double):Double	=
-		if (abs(x) <= wingSize)	0.5 + 0.5 * cos(PI * x / wingSize)
-		else					0.0
+		if abs(x) <= wingSize
+		then 0.5 + 0.5 * cos(PI * x / wingSize)
+		else 0.0
 
+	// for x in [-wingSize..+wingSize]
 	def blackman(x:Double):Double	=
-		if (abs(x) <= wingSize)	0.42 + 0.5 * cos(PI * x / wingSize) + 0.08 * cos(2 * PI * x / wingSize)
-		else					0.0
+		if abs(x) <= wingSize
+		then 0.42 + 0.5 * cos(PI * x / wingSize) + 0.08 * cos(2 * PI * x / wingSize)
+		else 0.0
 }

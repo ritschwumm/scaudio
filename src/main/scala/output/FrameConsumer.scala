@@ -14,7 +14,7 @@ final class FrameConsumer(outputBuffer:Array[Byte], sourceDataLine:SourceDataLin
 		AudioFormat_S2LE.putClamped(left,	outputBuffer, outputIndex+0)
 		AudioFormat_S2LE.putClamped(right,	outputBuffer, outputIndex+2)
 		outputIndex	+= 4
-		if (outputIndex >= outputBuffer.size) {
+		if outputIndex >= outputBuffer.size then {
 			sourceDataLine.write(outputBuffer, 0, outputBuffer.length)
 			outputIndex	= 0
 		}

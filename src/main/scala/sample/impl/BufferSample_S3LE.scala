@@ -18,7 +18,7 @@ final class BufferSample_S3LE(val frameRate:Int, channelCount:Int, byteBuffer:By
 
 final class BufferChannel_S3LE(val frameCount:Int, channelCount:Int, channelIndex:Int, byteBuffer:ByteBuffer) extends Channel {
 	inline def get(frame:Int):Float	=
-		if (frame >= 0 && frame < frameCount) {
+		if frame >= 0 && frame < frameCount then {
 			val offset	= index(frame) * 3
 			val b0		= byteBuffer.get(offset+0)
 			val b1		= byteBuffer.get(offset+1)

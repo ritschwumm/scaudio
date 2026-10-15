@@ -43,25 +43,25 @@ object Wav extends Logging {
 		// left channel comes before right channel
 		*/
 
-		if (mapped.remaining < 12)	throw WavFormatException("cannot find RIFF header")
+		if mapped.remaining < 12	then throw WavFormatException("cannot find RIFF header")
 		val	tag1	= mapped.getInt
-		if (tag1 != mkTag("RIFF"))	throw WavFormatException("expected RIFF header")
+		if tag1 != mkTag("RIFF")	then throw WavFormatException("expected RIFF header")
 		/*val	flen	= */mapped.getInt
 		val	tag2	= mapped.getInt
-		if (tag2 != mkTag("WAVE"))	throw WavFormatException("expected WAVE header")
+		if tag2 != mkTag("WAVE")	then throw WavFormatException("expected WAVE header")
 
 		var decoder:Option[ByteBuffer=>Sample]	= None
 		var sampleData:Option[ByteBuffer]		= None
 
-		while (mapped.remaining != 0 && (decoder.isEmpty || sampleData.isEmpty)) {
-			if (mapped.remaining < 8)	throw WavFormatException("cannot find data tag")
+		while mapped.remaining != 0 && (decoder.isEmpty || sampleData.isEmpty) do {
+			if mapped.remaining < 8		then throw WavFormatException("cannot find data tag")
 			val	tag	= mapped.getInt
 			val siz	= mapped.getInt
-			if (siz + 1 == 0)			throw WavFormatException(show"unexpected chunk size: ${siz}")
+			if siz + 1 == 0				then throw WavFormatException(show"unexpected chunk size: ${siz}")
 			// chunks are aligned to even addresses
 			val skp	= (siz + 1) & -2
-			if (tag == mkTag("fmt ")) {
-				if (siz < 16)			throw WavFormatException(show"unexpected fmt chunk size: ${siz}")
+			if tag == mkTag("fmt ") then {
+				if siz < 16				then throw WavFormatException(show"unexpected fmt chunk size: ${siz}")
 				/*
 				0x0001	WAVE_FORMAT_PCM			PCM
 				0x0003	WAVE_FORMAT_IEEE_FLOAT	IEEE float
@@ -101,20 +101,21 @@ object Wav extends Logging {
 					case (f,  _)	=> throw WavFormatException(show"unexpected audio format in fmt chunk, expected 1 (PCM), 3 (IEEE), 6 (A-Law) or 7 (Mu-Law): ${f}")
 				}
 
-				if (skp > 16) {
+				if skp > 16 then {
 					// skip extension:
 					// short size of extra params, doesn't exist with PCM
 					// extra params
 					mapped.position(mapped.position() + skp - 16)
 				}
 			}
-			else if (tag == mkTag("data")) {
+			else if tag == mkTag("data") then {
 				val oldLimit	= mapped.limit()
 				val enough		= skp <= mapped.remaining
-				if (!enough)	WARN("data tag too large")
+				if (!enough)	then WARN("data tag too large")
 				val (todo, skip)	=
-					if (enough)	(siz,				skp)
-					else		(mapped.remaining,	mapped.remaining)
+					if enough
+					then (siz,				skp)
+					else (mapped.remaining,	mapped.remaining)
 				mapped.limit(mapped.position() + todo)
 				sampleData		= Some(mapped.slice.asReadOnlyBuffer)
 				mapped.limit(oldLimit)
