@@ -19,5 +19,5 @@ trait Sample {
 		sampleBytes * channels.size
 
 	inline def channelOrEmpty(index:Int):Channel	=
-		channels lift index getOrElse Channel.empty
+		channels.lift(index).getOrElse(Channel.empty)
 }

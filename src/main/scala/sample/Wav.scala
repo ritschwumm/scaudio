@@ -126,8 +126,8 @@ object Wav extends Logging {
 			}
 		}
 
-		val decoderX	= decoder		getOrElse { throw WavFormatException("missing format data")	}
-		val sampleDataX	= sampleData	getOrElse { throw WavFormatException("missing sample data") }
+		val decoderX	= decoder		.getOrElse { throw WavFormatException("missing format data")	}
+		val sampleDataX	= sampleData	.getOrElse { throw WavFormatException("missing sample data") }
 
 		decoderX(sampleDataX)
 	}
